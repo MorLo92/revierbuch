@@ -877,6 +877,7 @@ function renderHunt(){
     $('#hMap').onclick=function(){showHuntOnMap(h)};
     $('#hShare').onclick=function(){shareText(standText(h),h.name)};
     $('#hEdit').onclick=function(){huntForm(h)};
+    var mt=$('#hMeet');if(mt)mt.onclick=function(){showMeet(h)};
     $$('[data-p]',root).forEach(function(b){b.onclick=function(){postSheet(h,b.dataset.p)}});
   }
 }
@@ -892,7 +893,7 @@ function huntDetailHtml(h){
   var posts=(h.posts||[]).slice().sort(function(a,b){return nat(postGroup(a.id)||'~',postGroup(b.id)||'~')||nat(postName(a.id),postName(b.id))});
   var no=(h.shots||[]).filter(nachOpen).map(function(s){return {h:h,s:s}});
   var html='<div class="toolbar"><button class="btn sm" id="hBack" type="button">‹ Alle Jagden</button></div>'+
-    '<h2 class="sec">'+esc(h.name)+'</h2><p class="hint">'+esc(fmtDay(h.date))+(h.time?' · Beginn '+esc(h.time):'')+(h.place?' · '+esc(h.place):'')+'</p>'+(h.note?'<p>'+esc(h.note)+'</p>':'')+
+    '<h2 class="sec">'+esc(h.name)+'</h2><p class="hint">'+esc(fmtDay(h.date))+(h.time?' · Beginn '+esc(h.time):'')+(h.place?' · '+esc(h.place):'')+'</p>'+(h.pLat!=null?'<button class="btn sm" id="hMeet" type="button">Treffpunkt: '+esc(meetName(h))+' · anzeigen</button>':'')+(h.note?'<p>'+esc(h.note)+'</p>':'')+
     '<div class="toolbar"><button class="btn primary" id="hShot" type="button">Schuss melden</button><button class="btn" id="hPosts" type="button">Posten wählen</button></div>'+
     '<div class="toolbar"><button class="btn" id="hMap" type="button">Auf Karte</button><button class="btn" id="hShare" type="button">Standliste teilen</button><button class="btn" id="hEdit" type="button">Bearbeiten</button></div>';
   if(no.length)html+='<div class="warnbox"><b>Offene Nachsuchen ('+no.length+')</b></div>'+nachRowsHtml(no);
@@ -911,24 +912,50 @@ function huntDetailHtml(h){
 
 /* ----- jagd anlegen / bearbeiten ----- */
 function huntForm(h){
-  var d=h?h:{id:uid('j'),name:'',date:toLocalInput().slice(0,10),time:'',place:'',note:'',posts:[],shots:[]};
-  openSheet('<h2>'+(h?'Drückjagd bearbeiten':'Neue Drückjagd')+'</h2>'+
+  var d=h?clone(h):{id:uid('j'),name:'',date:toLocalInput().slice(0,10),time:'',place:'',pLat:null,pLon:null,note:'',posts:[],shots:[]};
+  huntFormShow(d,!!h);
+}
+function huntFormShow(d,edit){
+  openSheet('<h2>'+(edit?'Drückjagd bearbeiten':'Neue Drückjagd')+'</h2>'+
     '<label class="field"><span class="lbl">Name</span><input type="text" id="hf-name" value="'+esc(d.name)+'" placeholder="z. B. Drückjagd Eichberg" autocomplete="off"></label>'+
     '<div class="grid2"><label class="field"><span class="lbl">Datum</span><input type="date" id="hf-date" value="'+esc(d.date||'')+'"></label><label class="field"><span class="lbl">Beginn</span><input type="time" id="hf-time" value="'+esc(d.time||'')+'"></label></div>'+
-    '<label class="field"><span class="lbl">Treffpunkt / Ort</span><input type="text" id="hf-place" value="'+esc(d.place||'')+'" autocomplete="off"></label>'+
+    '<label class="field"><span class="lbl">Treffpunkt (Name)</span><input type="text" id="hf-place" value="'+esc(d.place||'')+'" placeholder="z. B. Parkplatz Waldhütte" autocomplete="off"></label>'+
+    '<div class="field"><span class="lbl">Treffpunkt auf der Karte</span><div class="posrow"><code id="hf-pos"></code><div class="btnrow"><button type="button" class="btn sm" id="hf-pick">Auf Karte setzen</button><button type="button" class="btn sm" id="hf-gps">Mein Standort</button><button type="button" class="btn sm" id="hf-nopos">Entfernen</button></div></div></div>'+
     '<label class="field"><span class="lbl">Notiz</span><textarea rows="2" id="hf-note">'+esc(d.note||'')+'</textarea></label>'+
-    '<div class="btnrow"><button class="btn primary" id="hf-save" type="button" style="flex:2">Speichern</button><button class="btn" id="hf-cancel" type="button" style="flex:1">Abbrechen</button></div>'+(h?'<button class="btn danger" id="hf-del" type="button">Jagd löschen</button>':''));
+    '<div class="btnrow"><button class="btn primary" id="hf-save" type="button" style="flex:2">Speichern</button><button class="btn" id="hf-cancel" type="button" style="flex:1">Abbrechen</button></div>'+(edit?'<button class="btn danger" id="hf-del" type="button">Jagd löschen</button>':''));
+  function grab(){d.name=$('#hf-name').value.trim();d.date=$('#hf-date').value;d.time=$('#hf-time').value;d.place=$('#hf-place').value.trim();d.note=$('#hf-note').value.trim()}
+  function upd(){$('#hf-pos').textContent=d.pLat!=null?posText({lat:d.pLat,lon:d.pLon}):'noch nicht festgelegt'}
+  upd();
   $('#hf-cancel').onclick=closeSheet;
+  var gp=$('#hf-gps');gp.onclick=function(){gp.disabled=true;locate(false).then(function(p){d.pLat=p.lat;d.pLon=p.lon;upd()}).catch(function(){}).then(function(){gp.disabled=false})};
+  $('#hf-nopos').onclick=function(){d.pLat=null;d.pLon=null;upd()};
+  $('#hf-pick').onclick=function(){
+    grab();closeSheet();switchTab('map');if(d.pLat!=null)centerOn(d.pLat,d.pLon,Math.max(S.view.z,16));
+    $('#placeTitle').textContent='Treffpunkt festlegen';
+    var back=function(){endPlace();switchTab('hunt');huntFormShow(d,edit)};
+    S.placing={ok:function(){d.pLat=S.view.lat;d.pLon=S.view.lon;back()},no:back};renderAll();
+  };
   $('#hf-save').onclick=function(){
-    var o=Object.assign({},d,{name:$('#hf-name').value.trim()||'Drückjagd',date:$('#hf-date').value,time:$('#hf-time').value,place:$('#hf-place').value.trim(),note:$('#hf-note').value.trim()});
-    (h?updHunt(o):saveHunts(hunts().concat([o]))).then(function(){
+    grab();var o=Object.assign({},d,{name:d.name||'Drückjagd'});
+    (edit?updHunt(o):saveHunts(hunts().concat([o]))).then(function(){
       toast('Gespeichert');
-      if(!h){S.hid=o.id;renderHunt();postsPicker(huntById(o.id))}else closeSheet();
+      if(!edit){S.hid=o.id;renderHunt();postsPicker(huntById(o.id))}else{closeSheet();renderHunt()}
     },function(){});
   };
   var del=$('#hf-del');if(del)del.onclick=function(){if(del.dataset.s!=='1'){del.dataset.s='1';del.textContent='Wirklich löschen? Alle Schussmeldungen gehen verloren.';return}
     saveHunts(hunts().filter(function(x){return x.id!==d.id})).then(function(){if(S.hunt===d.id)S.hunt=null;S.hid=null;closeSheet();renderHunt();toast('Gelöscht')},function(){})};
 }
+/* ----- treffpunkt ----- */
+function meetName(h){return h.place||'Treffpunkt'}
+function showMeet(h){
+  openSheet('<h2>'+esc(meetName(h))+'</h2><p class="hint">Treffpunkt · '+esc(h.name)+(h.time?' · '+esc(h.time):'')+'</p><dl class="kv"><dt>Position</dt><dd><code>'+posText({lat:h.pLat,lon:h.pLon})+'</code></dd></dl>'+
+    '<div class="btnrow"><button class="btn primary" id="mt-guide" type="button">Hinführen</button><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination='+h.pLat+','+h.pLon+'&travelmode=driving" target="_blank" rel="noopener">Route Auto</a><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination='+h.pLat+','+h.pLon+'&travelmode=walking" target="_blank" rel="noopener">Route zu Fuß</a></div>'+
+    '<div class="btnrow"><button class="btn" id="mt-open" type="button">Jagd öffnen</button><button class="btn" id="mt-close" type="button">Schließen</button></div>');
+  $('#mt-close').onclick=closeSheet;
+  $('#mt-guide').onclick=function(){startGuide({lat:h.pLat,lon:h.pLon,name:meetName(h)})};
+  $('#mt-open').onclick=function(){closeSheet();S.hid=h.id;switchTab('hunt')};
+}
+function meetHit(px,py){var cur=S.hunt&&huntById(S.hunt);if(!cur||cur.pLat==null)return null;var p=toScr(cur.pLat,cur.pLon);return Math.hypot(p.x-px,p.y-py)<28?cur:null}
 
 /* ----- posten wählen ----- */
 function postsPicker(h){
@@ -1030,7 +1057,7 @@ function nachText(h,s){
   L.push('Anschuss: '+s.lat.toFixed(5)+', '+s.lon.toFixed(5),'Karte: '+mapsLink(s.lat,s.lon));return L.join('\n');
 }
 function standText(h){
-  var L=[h.name,fmtDay(h.date)+(h.time?', Beginn '+h.time:'')+(h.place?'\nTreffpunkt: '+h.place:''),''],order=[],map={};
+  var L=[h.name,fmtDay(h.date)+(h.time?', Beginn '+h.time:'')+(h.place||h.pLat!=null?'\nTreffpunkt: '+(h.place||'')+(h.pLat!=null?' '+mapsLink(h.pLat,h.pLon):''):''),''],order=[],map={};
   (h.posts||[]).slice().sort(function(a,b){return nat(postGroup(a.id)||'~',postGroup(b.id)||'~')||nat(postName(a.id),postName(b.id))}).forEach(function(p){var g=postGroup(p.id)||'Ohne Gruppe';if(!map[g]){map[g]=[];order.push(g)}map[g].push(p)});
   order.forEach(function(g){L.push(g);map[g].forEach(function(p){L.push('  '+postName(p.id)+' – '+(p.shooter||'frei')+(p.phone?' ('+p.phone+')':''))});L.push('')});
   return L.join('\n').trim();
@@ -1067,13 +1094,17 @@ function showShot(hid,sid){
 function showHuntOnMap(h){
   S.hunt=h.id;switchTab('map');
   var b=[1e9,1e9,-1e9,-1e9],n=0;function add(la,lo){if(la==null)return;n++;b[0]=Math.min(b[0],lo);b[1]=Math.min(b[1],la);b[2]=Math.max(b[2],lo);b[3]=Math.max(b[3],la)}
-  (h.posts||[]).forEach(function(p){var m=postMarker(p.id);if(m)add(m.lat,m.lon)});(h.shots||[]).forEach(function(s){add(s.lat,s.lon)});
+  (h.posts||[]).forEach(function(p){var m=postMarker(p.id);if(m)add(m.lat,m.lon)});(h.shots||[]).forEach(function(s){add(s.lat,s.lon)});add(h.pLat,h.pLon);
   if(n)fitBox(b);renderAll();
 }
 function shotsOnMap(){var a=[],cur=S.hunt&&huntById(S.hunt);hunts().forEach(function(h){(h.shots||[]).forEach(function(s){if(s.lat!=null&&(nachOpen(s)||(cur&&cur.id===h.id)))a.push({h:h,s:s})})});return a}
 function shotHit(px,py){var a=shotsOnMap(),best=null,bd=24;a.forEach(function(x){var p=toScr(x.s.lat,x.s.lon),d=Math.hypot(p.x-px,p.y-py);if(d<bd){bd=d;best=x}});return best}
 function drawHunt(v){
   var cur=S.hunt&&huntById(S.hunt);
+  if(cur&&cur.pLat!=null){var mp=toScr(cur.pLat,cur.pLon);
+    ctx.beginPath();ctx.arc(mp.x,mp.y,17,0,7);ctx.fillStyle=pal.surface;ctx.fill();ctx.beginPath();ctx.arc(mp.x,mp.y,13.5,0,7);ctx.fillStyle=pal.ink;ctx.fill();
+    ctx.fillStyle=pal.surface;ctx.font='700 14px "Barlow Condensed",Arial Narrow,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('T',mp.x,mp.y+.5);
+    ctx.font='700 13px "Atkinson Hyperlegible",sans-serif';ctx.textBaseline='top';halo(meetName(cur),mp.x,mp.y+21)}
   if(cur)(cur.posts||[]).forEach(function(p){var m=postMarker(p.id);if(!m)return;var s=toScr(m.lat,m.lon);
     ctx.beginPath();ctx.arc(s.x,s.y,20,0,7);ctx.lineWidth=5;ctx.strokeStyle=pal.surface;ctx.stroke();ctx.lineWidth=3;ctx.strokeStyle=pal.accent;ctx.stroke();
     ctx.font='600 12px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';var nm=v.z>=15.2&&m.name,tx=nm?(p.shooter||''):(m.name||'')+(p.shooter?' · '+p.shooter:'');if(tx)halo(tx,s.x,s.y+(nm?31:24))});
@@ -1138,6 +1169,7 @@ cv.addEventListener('wheel',function(e){e.preventDefault();anchor(fromScr(e.offs
 function onTap(px,py){
   if(S.placing)return;
   var hs=shotHit(px,py);if(hs){showShot(hs.h.id,hs.s.id);return}
+  var mh=meetHit(px,py);if(mh){showMeet(mh);return}
   var its=items(),best=null,bd=24;
   for(var i=its.length-1;i>=0;i--){var s=toScr(its[i].o.lat,its[i].o.lon),d=Math.hypot(s.x-px,s.y-py);if(d<bd){bd=d;best=its[i]}}
   if(best){S.sel={k:best.k,id:best.o.id};dirty=true;showDetail(best.k,best.o);return}
