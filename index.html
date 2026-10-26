@@ -874,6 +874,8 @@ function renderHunt(){
     $('#hBack').onclick=function(){S.hid=null;renderHunt()};
     $('#hShot').onclick=function(){shotForm(h,null,null)};
     $('#hPosts').onclick=function(){postsPicker(h)};
+    $('#hNewPost').onclick=function(){newPost(h)};
+    $('#hNewLine').onclick=function(){lineWizard(h)};
     $('#hMap').onclick=function(){showHuntOnMap(h)};
     $('#hShare').onclick=function(){shareText(standText(h),h.name)};
     $('#hEdit').onclick=function(){huntForm(h)};
@@ -895,6 +897,7 @@ function huntDetailHtml(h){
   var html='<div class="toolbar"><button class="btn sm" id="hBack" type="button">‹ Alle Jagden</button></div>'+
     '<h2 class="sec">'+esc(h.name)+'</h2><p class="hint">'+esc(fmtDay(h.date))+(h.time?' · Beginn '+esc(h.time):'')+(h.place?' · '+esc(h.place):'')+'</p>'+(h.pLat!=null?'<button class="btn sm" id="hMeet" type="button">Treffpunkt: '+esc(meetName(h))+' · anzeigen</button>':'')+(h.note?'<p>'+esc(h.note)+'</p>':'')+
     '<div class="toolbar"><button class="btn primary" id="hShot" type="button">Schuss melden</button><button class="btn" id="hPosts" type="button">Posten wählen</button></div>'+
+    '<div class="toolbar"><button class="btn" id="hNewPost" type="button">+ Posten</button><button class="btn" id="hNewLine" type="button">+ Linie</button></div>'+
     '<div class="toolbar"><button class="btn" id="hMap" type="button">Auf Karte</button><button class="btn" id="hShare" type="button">Standliste teilen</button><button class="btn" id="hEdit" type="button">Bearbeiten</button></div>';
   if(no.length)html+='<div class="warnbox"><b>Offene Nachsuchen ('+no.length+')</b></div>'+nachRowsHtml(no);
   html+='<h2 class="sec">Posten und Schützen</h2>';
@@ -987,13 +990,14 @@ function postSheet(h,pid){
     '<label class="field"><span class="lbl">Telefon</span><input type="tel" id="ps-ph" value="'+esc(p.phone||'')+'" inputmode="tel" autocomplete="off"></label>'+
     '<label class="field"><span class="lbl">Notiz</span><textarea rows="2" id="ps-note">'+esc(p.note||'')+'</textarea></label>'+
     '<div class="btnrow"><button class="btn primary" id="ps-save" type="button">Speichern</button><button class="btn" id="ps-shot" type="button">Schuss melden</button></div>'+
-    '<div class="btnrow"><button class="btn" id="ps-guide" type="button">Hinführen</button><button class="btn danger" id="ps-rm" type="button">Aus Jagd entfernen</button><button class="btn" id="ps-close" type="button">Schließen</button></div>');
+    '<div class="btnrow"><button class="btn" id="ps-guide" type="button">Hinführen</button><button class="btn" id="ps-edit" type="button">Name / Linie / Lage</button><button class="btn danger" id="ps-rm" type="button">Aus Jagd entfernen</button><button class="btn" id="ps-close" type="button">Schließen</button></div>');
   $('#ps-close').onclick=closeSheet;
   function collect(){return Object.assign({},p,{shooter:$('#ps-sh').value.trim(),phone:$('#ps-ph').value.trim(),note:$('#ps-note').value.trim()})}
   function put(np){return updHunt(Object.assign({},h,{posts:h.posts.map(function(q){return q.id===pid?np:q})}))}
   $('#ps-sh').addEventListener('change',function(){var n=names[$('#ps-sh').value.trim()];if(n&&!$('#ps-ph').value)$('#ps-ph').value=n});
   $('#ps-save').onclick=function(){put(collect()).then(function(){closeSheet();toast('Gespeichert')},function(){})};
   $('#ps-shot').onclick=function(){put(collect()).then(function(){shotForm(huntById(h.id),null,pid)},function(){})};
+  $('#ps-edit').onclick=function(){var mk=postMarker(pid);if(!mk)return;put(collect()).then(function(){var c=clone(mk);c.posManual=true;openForm('marker',c,true)},function(){})};
   var m=postMarker(pid),g=$('#ps-guide');if(!m)g.disabled=true;else g.onclick=function(){startGuide({lat:m.lat,lon:m.lon,name:postName(pid)})};
   var rm=$('#ps-rm');rm.onclick=function(){if(rm.dataset.s!=='1'){rm.dataset.s='1';rm.textContent='Wirklich entfernen?';return}
     updHunt(Object.assign({},h,{posts:h.posts.filter(function(q){return q.id!==pid})})).then(function(){closeSheet();toast('Entfernt')},function(){})};
@@ -1105,6 +1109,10 @@ function drawHunt(v){
     ctx.beginPath();ctx.arc(mp.x,mp.y,17,0,7);ctx.fillStyle=pal.surface;ctx.fill();ctx.beginPath();ctx.arc(mp.x,mp.y,13.5,0,7);ctx.fillStyle=pal.ink;ctx.fill();
     ctx.fillStyle=pal.surface;ctx.font='700 14px "Barlow Condensed",Arial Narrow,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('T',mp.x,mp.y+.5);
     ctx.font='700 13px "Atkinson Hyperlegible",sans-serif';ctx.textBaseline='top';halo(meetName(cur),mp.x,mp.y+21)}
+  if(cur){var gr={};(cur.posts||[]).forEach(function(p){var m=postMarker(p.id);if(m&&m.group)(gr[m.group]=gr[m.group]||[]).push(m)});
+    Object.keys(gr).forEach(function(g){var a=gr[g].slice().sort(function(x,y){return nat(x.name||'',y.name||'')}).map(function(m){return toScr(m.lat,m.lon)});
+      if(a.length>1){ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();a.forEach(function(q,i){i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.setLineDash([]);ctx.lineWidth=6;ctx.strokeStyle=pal.surface;ctx.globalAlpha=.85;ctx.stroke();ctx.globalAlpha=1;ctx.lineWidth=3;ctx.strokeStyle=pal.accent;ctx.setLineDash([9,7]);ctx.stroke();ctx.setLineDash([])}
+      ctx.font='700 14px "Barlow Condensed",Arial Narrow,sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';halo(g,a[0].x,a[0].y-26,pal.accent)});}
   if(cur)(cur.posts||[]).forEach(function(p){var m=postMarker(p.id);if(!m)return;var s=toScr(m.lat,m.lon);
     ctx.beginPath();ctx.arc(s.x,s.y,20,0,7);ctx.lineWidth=5;ctx.strokeStyle=pal.surface;ctx.stroke();ctx.lineWidth=3;ctx.strokeStyle=pal.accent;ctx.stroke();
     ctx.font='600 12px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';var nm=v.z>=15.2&&m.name,tx=nm?(p.shooter||''):(m.name||'')+(p.shooter?' · '+p.shooter:'');if(tx)halo(tx,s.x,s.y+(nm?31:24))});
@@ -1112,6 +1120,48 @@ function drawHunt(v){
     ctx.beginPath();ctx.arc(s.x,s.y,op?15:10,0,7);ctx.fillStyle=pal.surface;ctx.fill();
     ctx.beginPath();ctx.arc(s.x,s.y,op?12:7.5,0,7);ctx.fillStyle=op?pal.kill:pal.ink2;ctx.fill();
     ctx.fillStyle=pal.on;ctx.font='700 '+(op?15:11)+'px "Barlow Condensed",Arial Narrow,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(op?'!':'S',s.x,s.y+.5)});
+}
+
+/* ----- posten und linien direkt in der jagd anlegen ----- */
+function lineInfo(g){
+  var ms=D.markers.filter(function(m){return (m.group||'')===g}),mx=0,pre='Posten';
+  ms.forEach(function(m){var r=/^(.*?)(\d+)\s*$/.exec(m.name||'');if(r){mx=Math.max(mx,+r[2]);if(r[1].trim())pre=r[1].trim()}});
+  return {pre:pre,next:ms.length?Math.max(mx,ms.length)+1:1}}
+function huntLines(h){var a=[];(h.posts||[]).forEach(function(p){var g=postGroup(p.id);if(g&&a.indexOf(g)<0)a.push(g)});return a.sort(nat)}
+function newPost(h){
+  var ls=huntLines(h),g=ls.indexOf(S.lastLine)>-1?S.lastLine:(ls[ls.length-1]||''),li=lineInfo(g),pos=defaultPos();
+  openForm('marker',{id:uid('m'),lat:pos.lat,lon:pos.lon,posManual:false,type:'posten',name:li.pre+' '+li.next,group:g,note:'',_hunt:h.id},false);
+}
+function hookNewPost(o,d){
+  if(!d._hunt||SEATS.indexOf(o.type)<0)return;var h=huntById(d._hunt);if(!h)return;
+  if((h.posts||[]).some(function(p){return p.id===o.id}))return;
+  S.hid=h.id;S.lastLine=o.group||'';
+  updHunt(Object.assign({},h,{posts:(h.posts||[]).concat([{id:o.id,shooter:'',phone:'',note:''}])})).then(function(){switchTab('hunt');renderHunt();toast(o.name+' zur Jagd hinzugefügt')},function(){});
+}
+function lineWizard(h){
+  var def='Linie '+(huntLines(h).length+1);
+  openSheet('<h2>Neue Linie</h2><p class="hint">Eine Linie fasst mehrere Posten zusammen. Du setzt die Posten danach nacheinander auf der Karte: Karte verschieben, bis das Fadenkreuz auf dem Standplatz liegt, dann „Hier setzen“.</p>'+
+    '<label class="field"><span class="lbl">Name der Linie (frei wählbar)</span><input type="text" id="ln-name" value="'+esc(def)+'" list="lnDl" autocomplete="off"><datalist id="lnDl">'+groupNames().map(function(g){return '<option value="'+esc(g)+'">'}).join('')+'</datalist></label>'+
+    '<div class="grid2"><label class="field"><span class="lbl">Bezeichnung der Posten</span><input type="text" id="ln-pre" value="Posten" autocomplete="off"></label><label class="field"><span class="lbl">Erste Nummer</span><input type="number" inputmode="numeric" min="1" id="ln-start" value="1"></label></div>'+
+    '<div class="btnrow"><button class="btn primary" id="ln-go" type="button" style="flex:2">Posten auf Karte setzen</button><button class="btn" id="ln-cancel" type="button" style="flex:1">Abbrechen</button></div>');
+  $('#ln-cancel').onclick=closeSheet;
+  $('#ln-name').addEventListener('input',function(){var g=$('#ln-name').value.trim();if(groupNames().indexOf(g)>-1){var li=lineInfo(g);$('#ln-pre').value=li.pre;$('#ln-start').value=li.next}});
+  $('#ln-go').onclick=function(){var line=$('#ln-name').value.trim();if(!line){toast('Bitte einen Namen für die Linie eingeben.');return}
+    lineSet(h.id,line,$('#ln-pre').value.trim()||'Posten',Math.max(1,parseInt($('#ln-start').value,10)||1))};
+}
+function lineSet(hid,line,pre,n){
+  closeSheet();var h0=huntById(hid);S.hunt=hid;S.lastLine=line;switchTab('map');
+  var ob=$('#pOk'),nb=$('#pNo'),t0=ob.textContent,t1=nb.textContent,c=h0&&h0.pLat!=null?{lat:h0.pLat,lon:h0.pLon}:null;
+  if(h0&&(h0.posts||[]).length){var m=postMarker(h0.posts[h0.posts.length-1].id);if(m)c={lat:m.lat,lon:m.lon}}
+  if(c)centerOn(c.lat,c.lon,Math.max(S.view.z,16));
+  function title(){$('#placeTitle').textContent=line+' · '+pre+' '+n+' setzen'}
+  function finish(){ob.textContent=t0;nb.textContent=t1;endPlace();switchTab('hunt');S.hid=hid;renderHunt()}
+  ob.textContent='Hier setzen';nb.textContent='Fertig';title();
+  S.placing={ok:function(){
+    var m={id:uid('m'),type:'posten',name:pre+' '+n,group:line,lat:S.view.lat,lon:S.view.lon,note:'',photos:[]};
+    Store.put('markers',m).then(function(){var cur=huntById(hid);return updHunt(Object.assign({},cur,{posts:(cur.posts||[]).concat([{id:m.id,shooter:'',phone:'',note:''}])}))}).then(function(){toast(m.name+' gesetzt');n++;title();dirty=true},function(){});
+  },no:finish};
+  renderAll();
 }
 function loop(){if(dirty)draw();requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
@@ -1353,7 +1403,7 @@ function saveForm(){
   }
   o.photos=(d.photos||[]).slice();o.group=(d.group||'').trim();
   var b=$('#f-save');b.disabled=true;
-  guard(Store.put(coll,o)).then(function(){f.saved=true;phSaved(d);closeSheet();toast('Gespeichert');if(S.tab==='map'){S.sel={k:f.kind==='marker'?'fac':f.kind==='sight'?'sight':'kill',id:o.id};dirty=true}},function(){b.disabled=false});
+  guard(Store.put(coll,o)).then(function(){f.saved=true;phSaved(d);hookNewPost(o,d);closeSheet();toast('Gespeichert');if(S.tab==='map'){S.sel={k:f.kind==='marker'?'fac':f.kind==='sight'?'sight':'kill',id:o.id};dirty=true}},function(){b.disabled=false});
 }
 
 /* ---------- detail sheets ---------- */
