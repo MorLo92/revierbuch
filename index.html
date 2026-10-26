@@ -484,11 +484,11 @@ function draw(){
 /* ---------- base map (Geoportail.lu raster tiles) ---------- */
 var SRC_DEF={
   topo:{label:'Topokarte',url:'https://wmts1.geoportail.lu/opendata/wmts/topogr_global/GLOBAL_WEBMERCATOR_4_V3/{z}/{x}/{y}.png',max:19,attr:'© Administration du cadastre et de la topographie (CC0)',cache:true},
-  ortho:{label:'Luftbild',url:'https://wmts1.geoportail.lu/opendata/wmts/ortho_latest/GLOBAL_WEBMERCATOR/{z}/{x}/{y}.jpeg',max:19,attr:'© Administration du cadastre et de la topographie (CC0)',cache:true},
+  ortho:{label:'Luftbild',url:'https://wmts1.geoportail.lu/opendata/wmts/ortho_latest/GLOBAL_WEBMERCATOR_4_V3/{z}/{x}/{y}.jpeg',max:19,attr:'© Administration du cadastre et de la topographie (CC0)',cache:true},
   osm:{label:'Straßenkarte',url:'https://tile.openstreetmap.org/{z}/{x}/{y}.png',max:19,attr:'© OpenStreetMap-Mitwirkende',cache:false},
   none:{label:'Raster',url:'',max:0,attr:'',cache:false}
 };
-var SRC_KEY=LS+'.src',BASE_KEY=LS+'.base',ORDER=['topo','ortho','osm','none'];
+var SRC_KEY=LS+'.src2',BASE_KEY=LS+'.base',ORDER=['topo','ortho','osm','none'];
 function srcUrls(){var u={topo:SRC_DEF.topo.url,ortho:SRC_DEF.ortho.url,osm:SRC_DEF.osm.url};try{var j=JSON.parse(localStorage.getItem(SRC_KEY)||'null');if(j){if(j.topo)u.topo=j.topo;if(j.ortho)u.ortho=j.ortho}}catch(e){}return u}
 function tileUrl(k,z,x,y){var u=srcUrls()[k];return u?u.replace('{z}',z).replace('{x}',x).replace('{y}',y):''}
 S.base='topo';try{var sb=localStorage.getItem(BASE_KEY);if(sb&&SRC_DEF[sb])S.base=sb}catch(e){}
@@ -564,14 +564,32 @@ function srcCardHtml(){
   '<p class="hint">Der Kartenhintergrund kommt von Geoportail.lu (Administration du cadastre et de la topographie, frei nutzbar unter CC0). Auf der Karte wechselst du mit dem ersten Knopf zwischen Topokarte, Luftbild, Straßenkarte und Raster.</p>'+
   '<label class="field"><span class="lbl">Adresse Topokarte</span><input type="text" class="mono" id="uTopo" value="'+esc(u.topo)+'" autocapitalize="off" autocomplete="off" spellcheck="false"></label>'+
   '<label class="field"><span class="lbl">Adresse Luftbild</span><input type="text" class="mono" id="uOrtho" value="'+esc(u.ortho)+'" autocapitalize="off" autocomplete="off" spellcheck="false"></label>'+
-  '<div class="btnrow"><button class="btn" id="srcTest" type="button">Testen</button><button class="btn" id="srcReset" type="button">Zurücksetzen</button></div><p class="hint" id="srcMsg"></p>'+
+  '<div class="btnrow"><button class="btn primary" id="srcAuto" type="button">Automatisch suchen</button><button class="btn" id="srcTest" type="button">Testen</button><button class="btn" id="srcReset" type="button">Zurücksetzen</button></div><p class="hint" id="srcMsg"></p>'+
   '<div class="btnrow"><button class="btn primary" id="offSave" type="button">Meinen Bereich offline speichern</button></div>'+
   '<p class="hint" id="offMsg">Speichert die gewählte Karte um deine Lose herum, damit sie im Wald ohne Empfang funktioniert. Mit WLAN ausführen.</p></div>'+
   '<div class="card"><h2 class="sec">Als App installieren</h2><p class="hint">iPhone: In Safari auf „Teilen“ tippen, dann „Zum Home-Bildschirm“. Android: In Chrome das Menü öffnen, dann „App installieren“.</p></div>';
 }
 function bindSources(){
   var t=$('#uTopo'),o=$('#uOrtho');if(!t||!o)return;
-  function save(){try{localStorage.setItem(SRC_KEY,JSON.stringify({topo:t.value.trim(),ortho:o.value.trim()}))}catch(e){}resetTiles()}
+  function save(){try{var j={},a=t.value.trim(),b=o.value.trim();if(a&&a!==SRC_DEF.topo.url)j.topo=a;if(b&&b!==SRC_DEF.ortho.url)j.ortho=b;localStorage.setItem(SRC_KEY,JSON.stringify(j))}catch(e){}resetTiles()}
+  function candidates(kind){
+    var hosts=['https://wmts1.geoportail.lu/opendata/wmts','https://wmts3.geoportail.lu/mapproxy_4_v3/wmts'],out=[];
+    var layers=kind==='topo'?['topogr_global','basemap_2015_global','topo_global']:['ortho_latest','ortho_2023'];
+    var exts=kind==='topo'?['png','jpeg']:['jpeg','png'];
+    hosts.forEach(function(h){layers.forEach(function(l){['GLOBAL_WEBMERCATOR_4_V3','GLOBAL_WEBMERCATOR'].forEach(function(s){exts.forEach(function(e){out.push(h+'/'+l+'/'+s+'/{z}/{x}/{y}.'+e)})})})});
+    return out;
+  }
+  function probeUrl(u){return new Promise(function(res){var im=new Image(),to=setTimeout(function(){res(false)},9000);im.onload=function(){clearTimeout(to);res(true)};im.onerror=function(){clearTimeout(to);res(false)};im.src=u+(u.indexOf('?')<0?'?':'&')+'t='+Date.now()})}
+  $('#srcAuto').onclick=function(){
+    var msg=$('#srcMsg'),btn=this,n=Math.pow(2,15),x=Math.floor(mx(6.13,0)/256*n),y=Math.floor(my(49.61,0)/256*n);
+    btn.disabled=true;msg.textContent='Suche passende Adressen. Das dauert bis zu 10 Sekunden …';
+    function find(kind){return Promise.all(candidates(kind).map(function(u){return probeUrl(u.replace('{z}',15).replace('{x}',x).replace('{y}',y)).then(function(ok){return ok?u:null})})).then(function(r){return r.filter(Boolean)[0]||null})}
+    Promise.all([find('topo'),find('ortho')]).then(function(r){
+      if(r[0])t.value=r[0];if(r[1])o.value=r[1];save();
+      msg.textContent='Topokarte: '+(r[0]?'gefunden und eingetragen':'nicht gefunden')+' · Luftbild: '+(r[1]?'gefunden und eingetragen':'nicht gefunden')+(r[0]&&r[1]?'.':'. Prüfe deine Internetverbindung oder schicke mir die Meldung.');
+      btn.disabled=false;
+    });
+  };
   t.onchange=save;o.onchange=save;
   $('#srcReset').onclick=function(){try{localStorage.removeItem(SRC_KEY)}catch(e){}t.value=SRC_DEF.topo.url;o.value=SRC_DEF.ortho.url;resetTiles();$('#srcMsg').textContent='Zurückgesetzt.'};
   $('#srcTest').onclick=function(){
