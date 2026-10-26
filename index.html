@@ -390,7 +390,8 @@ var toastT=null;
 function toast(msg){var t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true},4200)}
 function openSheet(html){$('#sheetBody').innerHTML=html;$('#ov').hidden=false;$('#sheet').hidden=false;$('#sheet').scrollTop=0;$('#sheet').focus()}
 function closeSheet(){if(S.lp){S.lp=null;dirty=true}$('#ov').hidden=true;$('#sheet').hidden=true;$('#sheetBody').innerHTML='';S.form=null}
-$('#ov').addEventListener('click',closeSheet);
+$('#ov').addEventListener('click',function(){if(Date.now()<(S.ovBlock||0))return;closeSheet()});
+$('#sheet').addEventListener('click',function(e){if(Date.now()<(S.ovBlock||0)){e.stopPropagation();e.preventDefault()}},true);
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet()});
 
 /* ---------- map engine ---------- */
@@ -479,6 +480,7 @@ function draw(){
     else if(it.k==='sight')diamond(s.x,s.y,o.count||1,sel);
     else killMark(s.x,s.y,sel);
   });
+  if(S.lpArm){var lk=Math.min(1,(performance.now()-S.lpArm.t0)/450);if(lk>.2){ctx.beginPath();ctx.arc(S.lpArm.sx,S.lpArm.sy,8+14*lk,0,7);ctx.lineWidth=6;ctx.strokeStyle=pal.surface;ctx.stroke();ctx.lineWidth=3;ctx.strokeStyle=pal.accent;ctx.stroke()}dirty=true}
   if(S.lp){var lq=toScr(S.lp.lat,S.lp.lon);ctx.beginPath();ctx.arc(lq.x,lq.y,16,0,7);ctx.lineWidth=6;ctx.strokeStyle=pal.surface;ctx.stroke();ctx.lineWidth=3;ctx.strokeStyle=pal.ink;ctx.stroke();ctx.beginPath();ctx.arc(lq.x,lq.y,3,0,7);ctx.fillStyle=pal.ink;ctx.fill()}
   /* guidance line + target */
   if(S.guide){var tg=toScr(S.guide.lat,S.guide.lon);
@@ -684,14 +686,18 @@ function pickTarget(){
 }
 /* ---------- long press on the map ---------- */
 var lpT=null;
+function clearLong(){clearTimeout(lpT);if(S.lpArm){S.lpArm=null;dirty=true}}
 function armLong(g){
-  clearTimeout(lpT);
+  clearLong();S.lpArm={sx:g.sx,sy:g.sy,t0:performance.now()};dirty=true;
   lpT=setTimeout(function(){
+    S.lpArm=null;
     if(!gest||gest!==g||g.moved||ptrs.size!==1||S.placing)return;
     g.moved=true;g.long=true;var geo=fromScr(g.sx,g.sy);longPress(geo.lat,geo.lon);
-  },550);
+  },450);
 }
 function longPress(lat,lon){
+  if(S.lp||S.placing)return;
+  S.ovBlock=Date.now()+800;
   try{if(navigator.vibrate)navigator.vibrate(30)}catch(e){}
   S.lp={lat:lat,lon:lon};dirty=true;var at={lat:lat,lon:lon},base='https://www.google.com/maps/dir/?api=1&destination='+lat.toFixed(6)+','+lon.toFixed(6);
   openSheet('<h2>Hier eintragen</h2><p class="hint"><code>'+lat.toFixed(5)+'° N, '+lon.toFixed(5)+'° E</code></p>'+
@@ -717,13 +723,13 @@ cv.addEventListener('pointerdown',function(e){
   try{cv.setPointerCapture(e.pointerId)}catch(x){}
   ptrs.set(e.pointerId,{x:e.offsetX,y:e.offsetY});
   if(ptrs.size===1){gest={sx:e.offsetX,sy:e.offsetY,t:performance.now(),moved:false};armLong(gest)}
-  else if(ptrs.size===2){clearTimeout(lpT);gest=gest||{};gest.moved=true;gest.d=pd();gest.mid=pm()}
+  else if(ptrs.size===2){clearLong();gest=gest||{};gest.moved=true;gest.d=pd();gest.mid=pm()}
 });
 cv.addEventListener('pointermove',function(e){
   var p=ptrs.get(e.pointerId);if(!p)return;
   var ox=p.x,oy=p.y;p.x=e.offsetX;p.y=e.offsetY;
   if(ptrs.size===1){
-    if(Math.hypot(p.x-gest.sx,p.y-gest.sy)>10){gest.moved=true;clearTimeout(lpT)}
+    if(Math.hypot(p.x-gest.sx,p.y-gest.sy)>14){gest.moved=true;clearLong()}
     if(gest.moved&&!gest.long)anchor(fromScr(ox,oy),p.x,p.y,S.view.z);
   }else if(ptrs.size===2){
     var d=pd(),m=pm(),geo=fromScr(gest.mid.x,gest.mid.y);
@@ -731,7 +737,7 @@ cv.addEventListener('pointermove',function(e){
   }
 });
 function endPtr(e){
-  if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);clearTimeout(lpT);
+  if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);clearLong();
   if(ptrs.size===0&&gest&&!gest.moved&&performance.now()-gest.t<500&&e.type==='pointerup'){
     var now=Date.now();
     if(now-lastTap.t<320&&Math.hypot(e.offsetX-lastTap.x,e.offsetY-lastTap.y)<30){anchor(fromScr(e.offsetX,e.offsetY),e.offsetX,e.offsetY,S.view.z+1);lastTap.t=0}
@@ -741,7 +747,12 @@ function endPtr(e){
   if(ptrs.size===0)gest=null;
 }
 cv.addEventListener('pointerup',endPtr);cv.addEventListener('pointercancel',endPtr);
-cv.addEventListener('contextmenu',function(e){e.preventDefault()});
+cv.addEventListener('contextmenu',function(e){
+  e.preventDefault();
+  if(S.lp||S.placing||!$('#sheet').hidden||(gest&&gest.moved&&!gest.long))return;
+  var r=cv.getBoundingClientRect(),geo=fromScr(e.clientX-r.left,e.clientY-r.top);
+  clearLong();if(gest){gest.moved=true;gest.long=true}longPress(geo.lat,geo.lon);
+});
 cv.addEventListener('wheel',function(e){e.preventDefault();anchor(fromScr(e.offsetX,e.offsetY),e.offsetX,e.offsetY,S.view.z-e.deltaY*0.0022)},{passive:false});
 function onTap(px,py){
   if(S.placing)return;
@@ -945,10 +956,15 @@ function showDetail(kind,o){
     rows='<dt>Datum</dt><dd>'+fmtDate(o.ts)+'</dd><dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd><dt>Alter</dt><dd>'+AGE[o.age]+'</dd>'+(o.weight!=null?'<dt>Gewicht</dt><dd>'+nf.format(o.weight)+' kg</dd>':'')+(o.kanzelId?'<dt>Kanzel</dt><dd>'+esc(facName(o.kanzelId))+'</dd>':'')+(o.tag?'<dt>Wildmarke</dt><dd><code>'+esc(o.tag)+'</code></dd>':'')+'<dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
   }
   openSheet('<h2>'+esc(title)+'</h2>'+(demo?'<div class="warnbox">Beispieldaten. Trage einen eigenen Eintrag ein, dann verschwinden sie.</div>':'')+'<dl class="kv">'+rows+'</dl>'+
-    '<div class="btnrow"><button class="btn primary" id="d-guide" type="button">Hinführen</button><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lon+'&travelmode=driving" target="_blank" rel="noopener">Route Auto</a><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lon+'&travelmode=walking" target="_blank" rel="noopener">Route zu Fuß</a><button class="btn" id="d-map" type="button">Auf Karte zeigen</button>'+(demo?'':'<button class="btn primary" id="d-edit" type="button">Bearbeiten</button>')+'<button class="btn" id="d-close" type="button">Schließen</button></div>');
+    '<div class="btnrow"><button class="btn primary" id="d-guide" type="button">Hinführen</button><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lon+'&travelmode=driving" target="_blank" rel="noopener">Route Auto</a><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lon+'&travelmode=walking" target="_blank" rel="noopener">Route zu Fuß</a><button class="btn" id="d-map" type="button">Auf Karte zeigen</button>'+(demo?'':'<button class="btn" id="d-edit" type="button">Bearbeiten</button><button class="btn danger" id="d-del" type="button">Löschen</button>')+'<button class="btn" id="d-close" type="button">Schließen</button></div>');
   $('#d-close').onclick=closeSheet;
   $('#d-guide').onclick=function(){startGuide({lat:o.lat,lon:o.lon,name:title})};
   $('#d-map').onclick=function(){closeSheet();S.sel={k:kind,id:o.id};switchTab('map');centerOn(o.lat,o.lon,Math.max(S.view.z,16))};
+  var dd=$('#d-del');if(dd)dd.onclick=function(){
+    if(dd.dataset.s!=='1'){dd.dataset.s='1';dd.textContent='Wirklich löschen?';return}
+    var coll={fac:'markers',sight:'sightings',kill:'kills'}[kind];dd.disabled=true;
+    guard(Store.del(coll,o.id),'Löschen fehlgeschlagen').then(function(){if(S.guide&&S.guide.lat===o.lat&&S.guide.lon===o.lon)stopGuide();S.sel=null;closeSheet();toast('Gelöscht')},function(){dd.disabled=false});
+  };
   var e=$('#d-edit');if(e)e.onclick=function(){var c=clone(o);c.posManual=true;if(kind!=='fac'){c.tsl=toLocalInput(c.ts)}openForm(kind==='fac'?'marker':kind,c,true)};
 }
 function showLot(l){
