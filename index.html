@@ -63,7 +63,7 @@ button.pill{cursor:pointer}
 .views{flex:1;min-height:0;position:relative}
 .view{position:absolute;inset:0;overflow:auto;-webkit-overflow-scrolling:touch}
 #viewMap{overflow:hidden;background:var(--map)}
-#map{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+#map{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
 .pad{padding-block:16px 28px;max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 
 .tabs{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-top:1px solid var(--line);padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
@@ -389,7 +389,7 @@ function guard(p,msg){return p.catch(function(e){toast((msg||'Speichern fehlgesc
 var toastT=null;
 function toast(msg){var t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true},4200)}
 function openSheet(html){$('#sheetBody').innerHTML=html;$('#ov').hidden=false;$('#sheet').hidden=false;$('#sheet').scrollTop=0;$('#sheet').focus()}
-function closeSheet(){$('#ov').hidden=true;$('#sheet').hidden=true;$('#sheetBody').innerHTML='';S.form=null}
+function closeSheet(){if(S.lp){S.lp=null;dirty=true}$('#ov').hidden=true;$('#sheet').hidden=true;$('#sheetBody').innerHTML='';S.form=null}
 $('#ov').addEventListener('click',closeSheet);
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet()});
 
@@ -479,6 +479,7 @@ function draw(){
     else if(it.k==='sight')diamond(s.x,s.y,o.count||1,sel);
     else killMark(s.x,s.y,sel);
   });
+  if(S.lp){var lq=toScr(S.lp.lat,S.lp.lon);ctx.beginPath();ctx.arc(lq.x,lq.y,16,0,7);ctx.lineWidth=6;ctx.strokeStyle=pal.surface;ctx.stroke();ctx.lineWidth=3;ctx.strokeStyle=pal.ink;ctx.stroke();ctx.beginPath();ctx.arc(lq.x,lq.y,3,0,7);ctx.fillStyle=pal.ink;ctx.fill()}
   /* guidance line + target */
   if(S.guide){var tg=toScr(S.guide.lat,S.guide.lon);
     if(S.gps){var me=toScr(S.gps.lat,S.gps.lon);ctx.lineCap='round';ctx.setLineDash([]);ctx.lineWidth=7;ctx.strokeStyle=pal.surface;ctx.globalAlpha=.9;ctx.beginPath();ctx.moveTo(me.x,me.y);ctx.lineTo(tg.x,tg.y);ctx.stroke();ctx.globalAlpha=1;ctx.lineWidth=3.5;ctx.strokeStyle=pal.accent;ctx.setLineDash([10,8]);ctx.stroke();ctx.setLineDash([])}
@@ -681,6 +682,27 @@ function pickTarget(){
   $$('#sheetBody .row').forEach(function(b){b.onclick=function(){var x=ms.filter(function(y){return y.m.id===b.dataset.id})[0].m;startGuide({lat:x.lat,lon:x.lon,name:x.name||FAC[x.type].label})}});
   if(!p)locate(false).catch(function(){});
 }
+/* ---------- long press on the map ---------- */
+var lpT=null;
+function armLong(g){
+  clearTimeout(lpT);
+  lpT=setTimeout(function(){
+    if(!gest||gest!==g||g.moved||ptrs.size!==1||S.placing)return;
+    g.moved=true;g.long=true;var geo=fromScr(g.sx,g.sy);longPress(geo.lat,geo.lon);
+  },550);
+}
+function longPress(lat,lon){
+  try{if(navigator.vibrate)navigator.vibrate(30)}catch(e){}
+  S.lp={lat:lat,lon:lon};dirty=true;var at={lat:lat,lon:lon},base='https://www.google.com/maps/dir/?api=1&destination='+lat.toFixed(6)+','+lon.toFixed(6);
+  openSheet('<h2>Hier eintragen</h2><p class="hint"><code>'+lat.toFixed(5)+'° N, '+lon.toFixed(5)+'° E</code></p>'+
+    '<button class="choice" data-n="kill" type="button"><span class="mk sq" style="background:var(--kill)">✕</span><span><b>Abschuss</b><small>Wildart, Kanzel, Wildmarke</small></span></button>'+
+    '<button class="choice" data-n="sight" type="button"><span class="mk sq" style="background:var(--sicht)">3</span><span><b>Wildsichtung</b><small>Wildart, Anzahl, Uhrzeit</small></span></button>'+
+    '<button class="choice" data-n="marker" type="button"><span class="mk" style="background:var(--kanzel)">K</span><span><b>Einrichtung</b><small>Kanzel, Bock, Futterplatz, Salzlecke, Hütte</small></span></button>'+
+    '<button class="choice" data-n="guide" type="button"><span class="mk" style="background:var(--ink)">➜</span><span><b>Hierher führen</b><small>Pfeil und Entfernung zu diesem Punkt</small></span></button>'+
+    '<div class="btnrow"><a class="btn sm" href="'+base+'&travelmode=driving" target="_blank" rel="noopener">Route Auto</a><a class="btn sm" href="'+base+'&travelmode=walking" target="_blank" rel="noopener">Route zu Fuß</a><button class="btn sm" id="lp-close" type="button">Schließen</button></div>');
+  $$('#sheetBody .choice').forEach(function(b){b.onclick=function(){if(b.dataset.n==='guide'){S.lp=null;startGuide({lat:lat,lon:lon,name:'Markierter Punkt'})}else newEntry(b.dataset.n,at)}});
+  $('#lp-close').onclick=closeSheet;
+}
 function loop(){if(dirty)draw();requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){dirty=true});
@@ -694,22 +716,22 @@ function pm(){var a=Array.from(ptrs.values());return {x:(a[0].x+a[1].x)/2,y:(a[0
 cv.addEventListener('pointerdown',function(e){
   try{cv.setPointerCapture(e.pointerId)}catch(x){}
   ptrs.set(e.pointerId,{x:e.offsetX,y:e.offsetY});
-  if(ptrs.size===1)gest={sx:e.offsetX,sy:e.offsetY,t:performance.now(),moved:false};
-  else if(ptrs.size===2){gest=gest||{};gest.moved=true;gest.d=pd();gest.mid=pm()}
+  if(ptrs.size===1){gest={sx:e.offsetX,sy:e.offsetY,t:performance.now(),moved:false};armLong(gest)}
+  else if(ptrs.size===2){clearTimeout(lpT);gest=gest||{};gest.moved=true;gest.d=pd();gest.mid=pm()}
 });
 cv.addEventListener('pointermove',function(e){
   var p=ptrs.get(e.pointerId);if(!p)return;
   var ox=p.x,oy=p.y;p.x=e.offsetX;p.y=e.offsetY;
   if(ptrs.size===1){
-    if(Math.hypot(p.x-gest.sx,p.y-gest.sy)>6)gest.moved=true;
-    if(gest.moved)anchor(fromScr(ox,oy),p.x,p.y,S.view.z);
+    if(Math.hypot(p.x-gest.sx,p.y-gest.sy)>10){gest.moved=true;clearTimeout(lpT)}
+    if(gest.moved&&!gest.long)anchor(fromScr(ox,oy),p.x,p.y,S.view.z);
   }else if(ptrs.size===2){
     var d=pd(),m=pm(),geo=fromScr(gest.mid.x,gest.mid.y);
     anchor(geo,m.x,m.y,S.view.z+Math.log(d/gest.d)/Math.LN2);gest.d=d;gest.mid=m;
   }
 });
 function endPtr(e){
-  if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);
+  if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);clearTimeout(lpT);
   if(ptrs.size===0&&gest&&!gest.moved&&performance.now()-gest.t<500&&e.type==='pointerup'){
     var now=Date.now();
     if(now-lastTap.t<320&&Math.hypot(e.offsetX-lastTap.x,e.offsetY-lastTap.y)<30){anchor(fromScr(e.offsetX,e.offsetY),e.offsetX,e.offsetY,S.view.z+1);lastTap.t=0}
@@ -719,6 +741,7 @@ function endPtr(e){
   if(ptrs.size===0)gest=null;
 }
 cv.addEventListener('pointerup',endPtr);cv.addEventListener('pointercancel',endPtr);
+cv.addEventListener('contextmenu',function(e){e.preventDefault()});
 cv.addEventListener('wheel',function(e){e.preventDefault();anchor(fromScr(e.offsetX,e.offsetY),e.offsetX,e.offsetY,S.view.z-e.deltaY*0.0022)},{passive:false});
 function onTap(px,py){
   if(S.placing)return;
@@ -807,8 +830,8 @@ $('#fab').onclick=function(){
   '<button class="choice" data-n="guide" type="button"><span class="mk" style="background:var(--ink)">➜</span><span><b>Hinführen</b><small>Zu einer Kanzel oder Einrichtung gehen</small></span></button>');
   $$('#sheetBody .choice').forEach(function(b){b.onclick=function(){newEntry(b.dataset.n)}});
 };
-function newEntry(kind){if(kind==='guide'){pickTarget();return}
-  var p=defaultPos(),d={id:uid(kind==='kill'?'k':kind==='sight'?'s':'m'),lat:p.lat,lon:p.lon,posManual:false};
+function newEntry(kind,at){if(kind==='guide'){pickTarget();return}
+  var p=defaultPos(),d={id:uid(kind==='kill'?'k':kind==='sight'?'s':'m'),lat:(at||p).lat,lon:(at||p).lon,posManual:!!at};
   if(kind==='kill'){Object.assign(d,{species:'Rehwild',sex:'u',age:'u',weight:null,tsl:toLocalInput(),kanzelId:'',tag:'',note:''})}
   else if(kind==='sight'){Object.assign(d,{species:'Rehwild',count:1,sex:'u',tsl:toLocalInput(),kanzelId:'',note:''})}
   else{Object.assign(d,{type:'kanzel',name:'',note:''})}
@@ -1141,6 +1164,7 @@ renderTabs();renderHeader();renderLayers();resize();loadBase();
 Store.init().catch(function(){S.mode='local';Store.loadLocal();markReady()});
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(function(){});
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){});
+try{if(!localStorage.getItem(LS+'.tip1')){localStorage.setItem(LS+'.tip1','1');setTimeout(function(){toast('Tipp: Auf der Karte lange drücken, um dort etwas einzutragen.')},2500)}}catch(e){}
 })();
 </script>
 </body>
