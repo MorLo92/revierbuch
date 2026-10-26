@@ -22,7 +22,7 @@
   --bg:#EDEFE8; --surface:#F8F9F4; --ink:#19231D; --ink-2:#55615A; --line:#CBD1C5;
   --accent:#2D5A43; --accent-ink:#FFFFFF; --map:#E3E8DC; --grid:#D3DACB; --on-mark:#FFFFFF;
   --kanzel:#2D5A43; --bock:#2F5F86; --huette:#7A5A34; --futter:#B07A1E; --kirrung:#A4502F;
-  --salz:#5B6B73; --acker:#6F7A25; --sonst:#6B746E; --sicht:#6A4C93; --kill:#B3261E;
+  --salz:#5B6B73; --acker:#6F7A25; --sonst:#6B746E; --posten:#8A2F5B; --sicht:#6A4C93; --kill:#B3261E;
   --warn:#7A4E00; --warn-bg:#F4E5BF; --shadow:0 6px 24px rgba(20,30,24,.18);
   --font-display:"Barlow Condensed","Arial Narrow",sans-serif;
   --font-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -32,13 +32,13 @@
   --bg:#101612; --surface:#18211B; --ink:#E4EADF; --ink-2:#9BA89F; --line:#2E3B32;
   --accent:#7FC29A; --accent-ink:#0E1A12; --map:#0C120F; --grid:#18231C; --on-mark:#0E1A12;
   --kanzel:#7FC29A; --bock:#7FB3DB; --huette:#D2AE82; --futter:#E0AE55; --kirrung:#E58F6C;
-  --salz:#9DB0BA; --acker:#BCC864; --sonst:#9AA59E; --sicht:#BDA3E6; --kill:#F2837B;
+  --salz:#9DB0BA; --acker:#BCC864; --sonst:#9AA59E; --posten:#E08AB4; --sicht:#BDA3E6; --kill:#F2837B;
   --warn:#F0CF86; --warn-bg:#3A2F12; --shadow:0 6px 24px rgba(0,0,0,.5); color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#101612; --surface:#18211B; --ink:#E4EADF; --ink-2:#9BA89F; --line:#2E3B32;
   --accent:#7FC29A; --accent-ink:#0E1A12; --map:#0C120F; --grid:#18231C; --on-mark:#0E1A12;
   --kanzel:#7FC29A; --bock:#7FB3DB; --huette:#D2AE82; --futter:#E0AE55; --kirrung:#E58F6C;
-  --salz:#9DB0BA; --acker:#BCC864; --sonst:#9AA59E; --sicht:#BDA3E6; --kill:#F2837B;
+  --salz:#9DB0BA; --acker:#BCC864; --sonst:#9AA59E; --posten:#E08AB4; --sicht:#BDA3E6; --kill:#F2837B;
   --warn:#F0CF86; --warn-bg:#3A2F12; --shadow:0 6px 24px rgba(0,0,0,.5); color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -235,14 +235,16 @@ var clone=function(o){return JSON.parse(JSON.stringify(o))};
 var FAC={
   kanzel:{label:'Kanzel',glyph:'K',c:'--kanzel'},
   bock:{label:'Ansitzbock / Drückjagdstand',glyph:'B',c:'--bock'},
+  posten:{label:'Drückjagdposten',glyph:'P',c:'--posten'},
   huette:{label:'Jagdunterstand / Hütte',glyph:'H',c:'--huette'},
   futter:{label:'Futterplatz',glyph:'F',c:'--futter'},
   kirrung:{label:'Kirrung',glyph:'Ki',c:'--kirrung'},
   salz:{label:'Salzlecke',glyph:'S',c:'--salz'},
   acker:{label:'Wildacker / Äsungsfläche',glyph:'W',c:'--acker'},
-  sonst:{label:'Sonstiges',glyph:'·',c:'--sonst'}
+  sonst:{label:'Sonstiges',glyph:'·',c:'--sonst'},
+  text:{label:'Beschriftung (freier Text)',glyph:'T',c:'--ink'}
 };
-var SEATS=['kanzel','bock'];
+var SEATS=['kanzel','bock','posten'];
 var SPECIES=['Rehwild','Rotwild','Schwarzwild','Damwild','Muffelwild','Fuchs','Dachs','Marder','Marderhund','Waschbär','Wildgans','Sonstiges'];
 var SEX={m:'männlich',w:'weiblich',u:'unbekannt',g:'gemischt'};
 var AGE={juv:'Jungtier',ueb:'Überläufer / Jährling',ad:'Adult',u:'unbekannt'};
@@ -480,7 +482,7 @@ function draw(){
   its.forEach(function(it){
     var o=it.o,s=toScr(o.lat,o.lon);if(s.x<-30||s.x>W+30||s.y<-30||s.y>H+30)return;
     var sel=S.sel&&S.sel.id===o.id;
-    if(it.k==='fac'){badge(s.x,s.y,pal[o.type]||pal.sonst,FAC[o.type]?FAC[o.type].glyph:'·',sel);if(v.z>=15.2&&o.name){ctx.font='500 12px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';halo(o.name,s.x,s.y+17)}}
+    if(it.k==='fac'&&o.type==='text'){ctx.beginPath();ctx.arc(s.x,s.y,sel?6:4,0,7);ctx.fillStyle=pal.ink;ctx.fill();ctx.font='600 15px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='left';ctx.textBaseline='middle';halo(o.name,s.x+9,s.y,pal.ink)}else if(it.k==='fac'){badge(s.x,s.y,pal[o.type]||pal.sonst,FAC[o.type]?FAC[o.type].glyph:'·',sel);if(v.z>=15.2&&o.name){ctx.font='500 12px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';halo(o.name,s.x,s.y+17)}}
     else if(it.k==='sight')diamond(s.x,s.y,o.count||1,sel);
     else killMark(s.x,s.y,sel);
   });
@@ -491,7 +493,7 @@ function draw(){
     gm.forEach(function(e){e._s=toScr(e.o.lat,e.o.lon);if(e.k==='fac')gp.push(e)});
     gp.sort(function(a,b){return nat(entLabel(a),entLabel(b))});
     if(gp.length>1){ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();gp.forEach(function(e,i){i?ctx.lineTo(e._s.x,e._s.y):ctx.moveTo(e._s.x,e._s.y)});ctx.setLineDash([]);ctx.lineWidth=6;ctx.strokeStyle=pal.surface;ctx.globalAlpha=.85;ctx.stroke();ctx.globalAlpha=1;ctx.lineWidth=3;ctx.strokeStyle=pal.accent;ctx.setLineDash([9,7]);ctx.stroke();ctx.setLineDash([])}
-    gm.forEach(function(e){ctx.beginPath();ctx.arc(e._s.x,e._s.y,20,0,7);ctx.lineWidth=5;ctx.strokeStyle=pal.surface;ctx.stroke();ctx.lineWidth=3;ctx.strokeStyle=pal.accent;ctx.stroke();ctx.font='600 12px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';if(!(e.k==='fac'&&v.z>=15.2&&e.o.name))halo(entLabel(e),e._s.x,e._s.y+24)})}
+    gm.forEach(function(e){ctx.beginPath();ctx.arc(e._s.x,e._s.y,20,0,7);ctx.lineWidth=5;ctx.strokeStyle=pal.surface;ctx.stroke();ctx.lineWidth=3;ctx.strokeStyle=pal.accent;ctx.stroke();ctx.font='600 12px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';if(!(e.k==='fac'&&(e.o.type==='text'||v.z>=15.2&&e.o.name)))halo(entLabel(e),e._s.x,e._s.y+24)})}
   /* guidance line + target */
   if(S.guide){var tg=toScr(S.guide.lat,S.guide.lon);
     if(S.gps){var me=toScr(S.gps.lat,S.gps.lon);ctx.lineCap='round';ctx.setLineDash([]);ctx.lineWidth=7;ctx.strokeStyle=pal.surface;ctx.globalAlpha=.9;ctx.beginPath();ctx.moveTo(me.x,me.y);ctx.lineTo(tg.x,tg.y);ctx.stroke();ctx.globalAlpha=1;ctx.lineWidth=3.5;ctx.strokeStyle=pal.accent;ctx.setLineDash([10,8]);ctx.stroke();ctx.setLineDash([])}
@@ -713,7 +715,7 @@ function longPress(lat,lon){
   openSheet('<h2>Hier eintragen</h2><p class="hint"><code>'+lat.toFixed(5)+'° N, '+lon.toFixed(5)+'° E</code></p>'+
     '<button class="choice" data-n="kill" type="button"><span class="mk sq" style="background:var(--kill)">✕</span><span><b>Abschuss</b><small>Wildart, Kanzel, Wildmarke</small></span></button>'+
     '<button class="choice" data-n="sight" type="button"><span class="mk sq" style="background:var(--sicht)">3</span><span><b>Wildsichtung</b><small>Wildart, Anzahl, Uhrzeit</small></span></button>'+
-    '<button class="choice" data-n="marker" type="button"><span class="mk" style="background:var(--kanzel)">K</span><span><b>Einrichtung</b><small>Kanzel, Bock, Futterplatz, Salzlecke, Hütte</small></span></button>'+
+    '<button class="choice" data-n="marker" type="button"><span class="mk" style="background:var(--kanzel)">K</span><span><b>Einrichtung</b><small>Kanzel, Posten, Bock, Futterplatz, Hütte, Beschriftung</small></span></button>'+
     '<button class="choice" data-n="guide" type="button"><span class="mk" style="background:var(--ink)">➜</span><span><b>Hierher führen</b><small>Pfeil und Entfernung zu diesem Punkt</small></span></button>'+
     '<div class="btnrow"><a class="btn sm" href="'+base+'&travelmode=driving" target="_blank" rel="noopener">Route Auto</a><a class="btn sm" href="'+base+'&travelmode=walking" target="_blank" rel="noopener">Route zu Fuß</a><button class="btn sm" id="lp-close" type="button">Schließen</button></div>');
   $$('#sheetBody .choice').forEach(function(b){b.onclick=function(){if(b.dataset.n==='guide'){S.lp=null;startGuide({lat:lat,lon:lon,name:'Markierter Punkt'})}else newEntry(b.dataset.n,at)}});
@@ -960,7 +962,7 @@ $('#fab').onclick=function(){
   openSheet('<h2>Eintragen</h2>'+
   '<button class="choice" data-n="kill" type="button"><span class="mk sq" style="background:var(--kill)">✕</span><span><b>Abschuss</b><small>Wildart, Ort, Kanzel, Wildmarke</small></span></button>'+
   '<button class="choice" data-n="sight" type="button"><span class="mk sq" style="background:var(--sicht)">3</span><span><b>Wildsichtung</b><small>Wildart, Anzahl, Uhrzeit</small></span></button>'+
-  '<button class="choice" data-n="marker" type="button"><span class="mk" style="background:var(--kanzel)">K</span><span><b>Einrichtung</b><small>Kanzel, Bock, Futterplatz, Salzlecke, Hütte</small></span></button>'+
+  '<button class="choice" data-n="marker" type="button"><span class="mk" style="background:var(--kanzel)">K</span><span><b>Einrichtung</b><small>Kanzel, Posten, Bock, Futterplatz, Hütte, Beschriftung</small></span></button>'+
   '<button class="choice" data-n="guide" type="button"><span class="mk" style="background:var(--ink)">➜</span><span><b>Hinführen</b><small>Zu einer Kanzel oder Einrichtung gehen</small></span></button>');
   $$('#sheetBody .choice').forEach(function(b){b.onclick=function(){newEntry(b.dataset.n)}});
 };
@@ -982,7 +984,7 @@ function openForm(kind,d,isEdit){
   var title={marker:'Einrichtung',sight:'Wildsichtung',kill:'Abschuss'}[kind],body='';
   if(kind==='marker'){
     body='<div class="field"><span class="lbl">Art</span><div class="types" data-f="type" data-chips>'+Object.keys(FAC).map(function(k){return '<button type="button" class="type" data-v="'+k+'" aria-pressed="'+(d.type===k)+'"><i style="background:var('+FAC[k].c+')">'+FAC[k].glyph+'</i>'+esc(FAC[k].label)+'</button>'}).join('')+'</div></div>'+
-    '<label class="field"><span class="lbl">Name</span><input type="text" data-f="name" value="'+esc(d.name)+'" placeholder="z. B. Kanzel Eichberg" autocomplete="off"></label>'+posRow(d)+
+    '<label class="field"><span class="lbl">Name</span><input type="text" data-f="name" value="'+esc(d.name)+'" placeholder="Name bzw. Text, z. B. Posten 1" autocomplete="off"></label>'+posRow(d)+
     '<label class="field"><span class="lbl">Notiz</span><textarea rows="2" data-f="note">'+esc(d.note)+'</textarea></label>';
   }else if(kind==='sight'){
     body='<div class="grid2"><label class="field"><span class="lbl">Wildart</span><select data-f="species">'+opts(SPECIES,d.species)+'</select></label>'+
