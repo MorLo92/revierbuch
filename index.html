@@ -753,6 +753,13 @@ cv.addEventListener('contextmenu',function(e){
   var r=cv.getBoundingClientRect(),geo=fromScr(e.clientX-r.left,e.clientY-r.top);
   clearLong();if(gest){gest.moved=true;gest.long=true}longPress(geo.lat,geo.lon);
 });
+/* second, independent trigger on plain touch events, in case pointer events behave differently on a device */
+var tlT=null,tl0=null;
+function tlStop(){clearTimeout(tlT);tl0=null}
+cv.addEventListener('touchstart',function(e){tlStop();if(e.touches.length!==1)return;var t=e.touches[0];tl0={x:t.clientX,y:t.clientY};
+  tlT=setTimeout(function(){if(!tl0||S.lp||S.placing||!$('#sheet').hidden)return;var r=cv.getBoundingClientRect(),geo=fromScr(tl0.x-r.left,tl0.y-r.top);tl0=null;clearLong();if(gest){gest.moved=true;gest.long=true}longPress(geo.lat,geo.lon)},480)},{passive:true});
+cv.addEventListener('touchmove',function(e){if(!tl0)return;var t=e.touches[0];if(!t||Math.hypot(t.clientX-tl0.x,t.clientY-tl0.y)>14)tlStop()},{passive:true});
+cv.addEventListener('touchend',tlStop,{passive:true});cv.addEventListener('touchcancel',tlStop,{passive:true});
 cv.addEventListener('wheel',function(e){e.preventDefault();anchor(fromScr(e.offsetX,e.offsetY),e.offsetX,e.offsetY,S.view.z-e.deltaY*0.0022)},{passive:false});
 function onTap(px,py){
   if(S.placing)return;
