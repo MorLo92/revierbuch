@@ -1,11 +1,11 @@
 /* Revierbuch service worker: app shell offline, map tiles cached as they are viewed */
-const VERSION = 'v6';
+const VERSION = 'v7';
 const SHELL = 'shell-' + VERSION, TILES = 'tiles-v1', FONTS = 'fonts-v1';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'lots-lu.geojson', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 const MAX_TILES = 6000;
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(SHELL).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(SHELL).then(c => c.addAll(FILES.map(f => new Request(f, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('shell-') && k !== SHELL).map(k => caches.delete(k)))).then(() => self.clients.claim()));
@@ -35,13 +35,24 @@ async function swr(req, name) {
   return hit || net;
 }
 
+async function page(req) {
+  const cache = await caches.open(SHELL);
+  try {
+    const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 4000);
+    const res = await fetch('index.html', { cache: 'no-cache', signal: ctl.signal });
+    clearTimeout(t);
+    if (res && res.ok) { cache.put('index.html', res.clone()); return res; }
+  } catch (_) {}
+  return (await cache.match('index.html')) || fetch(req);
+}
+
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin === location.origin) {
     if (req.mode === 'navigate') {
-      e.respondWith(caches.match('index.html').then(r => r || fetch(req)));
+      e.respondWith(page(req));
     } else {
       e.respondWith(swr(req, SHELL));
     }
