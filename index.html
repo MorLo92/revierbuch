@@ -165,6 +165,12 @@ h2.sec{margin:0;font:700 20px/1 var(--font-display);letter-spacing:.07em;text-tr
 a{color:var(--accent)}
 .attr{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:100px;max-width:60%;font:400 10px/1.3 var(--font-body);color:var(--ink);background:color-mix(in srgb,var(--surface) 78%,transparent);padding:2px 6px;border-radius:4px;pointer-events:none}
 .attr:empty{display:none}
+.guide{position:absolute;top:0;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--line);padding-block:10px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;box-shadow:var(--shadow);z-index:3}
+.garrow{width:64px;height:64px;flex:none;transition:transform .12s linear}
+.gtext{display:flex;flex-direction:column;gap:2px;flex:1;min-width:130px}
+.gtext b{overflow-wrap:anywhere}
+.gdist{font:700 34px/1 var(--font-display);letter-spacing:.03em}
+.gbtn{display:flex;gap:6px;flex-wrap:wrap;width:100%}
 a.btn{text-decoration:none;color:var(--ink)}
 @media (prefers-reduced-motion:reduce){#sheet{animation:none}}
 </style>
@@ -190,6 +196,11 @@ a.btn{text-decoration:none;color:var(--ink)}
         <button class="rb" id="bOut" type="button" aria-label="Herauszoomen"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
       </div>
       <button class="fab" id="fab" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Eintragen</button>
+      <div class="guide gx" id="guide" hidden>
+        <svg id="gArrow" class="garrow" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="none" stroke="var(--line)" stroke-width="2"/><path d="M32 7 L47 46 L32 38 L17 46 Z" fill="var(--accent)"/></svg>
+        <div class="gtext"><b id="gName"></b><span class="gdist" id="gDist">…</span><span class="hint" id="gSub"></span></div>
+        <div class="gbtn"><a class="btn sm" id="gCar" target="_blank" rel="noopener">Route Auto</a><a class="btn sm" id="gWalk" target="_blank" rel="noopener">Route zu Fuß</a><button class="btn sm danger" id="gEnd" type="button">Beenden</button></div>
+      </div>
       <div class="place gx" id="place" hidden>
         <p><b id="placeTitle">Position wählen</b><br><span class="hint">Karte verschieben, bis das Fadenkreuz auf dem Ort liegt.</span></p>
         <code id="pcoord"></code>
@@ -468,6 +479,10 @@ function draw(){
     else if(it.k==='sight')diamond(s.x,s.y,o.count||1,sel);
     else killMark(s.x,s.y,sel);
   });
+  /* guidance line + target */
+  if(S.guide){var tg=toScr(S.guide.lat,S.guide.lon);
+    if(S.gps){var me=toScr(S.gps.lat,S.gps.lon);ctx.lineCap='round';ctx.setLineDash([]);ctx.lineWidth=7;ctx.strokeStyle=pal.surface;ctx.globalAlpha=.9;ctx.beginPath();ctx.moveTo(me.x,me.y);ctx.lineTo(tg.x,tg.y);ctx.stroke();ctx.globalAlpha=1;ctx.lineWidth=3.5;ctx.strokeStyle=pal.accent;ctx.setLineDash([10,8]);ctx.stroke();ctx.setLineDash([])}
+    ctx.beginPath();ctx.arc(tg.x,tg.y,22,0,7);ctx.lineWidth=6;ctx.strokeStyle=pal.surface;ctx.stroke();ctx.lineWidth=3;ctx.strokeStyle=pal.accent;ctx.stroke()}
   /* own position */
   if(S.gps){var p=toScr(S.gps.lat,S.gps.lon),ar=Math.max(0,Math.min(200,(S.gps.acc||0)/mpp));
     if(ar>8){ctx.beginPath();ctx.arc(p.x,p.y,ar,0,7);ctx.globalAlpha=.12;ctx.fillStyle=pal.accent;ctx.fill();ctx.globalAlpha=1}
@@ -600,6 +615,72 @@ function bindSources(){
   };
   $('#offSave').onclick=prefetchArea;
 }
+/* ---------- guidance: line, distance and arrow to a chosen target ---------- */
+var HEAD=null,headOn=false,lastG=0;
+function rad(d){return d*Math.PI/180}
+function distM(a,b,c,d){var R=6371000,p=rad(c-a),l=rad(d-b),x=Math.sin(p/2)*Math.sin(p/2)+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(l/2)*Math.sin(l/2);return 2*R*Math.asin(Math.sqrt(x))}
+function bearingTo(a,b,c,d){var y=Math.sin(rad(d-b))*Math.cos(rad(c)),x=Math.cos(rad(a))*Math.sin(rad(c))-Math.sin(rad(a))*Math.cos(rad(c))*Math.cos(rad(d-b));return (Math.atan2(y,x)*180/Math.PI+360)%360}
+function dirName(b){return ['N','NO','O','SO','S','SW','W','NW'][Math.round(b/45)%8]}
+function fmtDist(m){return m<1000?Math.round(m)+' m':nf.format(m/1000)+' km'}
+function setHead(h){
+  if(h==null||isNaN(h))return;
+  if(HEAD==null)HEAD=h;else{var d=((h-HEAD+540)%360)-180;HEAD=(HEAD+d*.25+360)%360}
+  if(Date.now()-lastG>100){lastG=Date.now();updateGuide()}
+}
+function onOrient(e){
+  var h=null;
+  if(typeof e.webkitCompassHeading==='number')h=e.webkitCompassHeading;
+  else if(e.absolute&&typeof e.alpha==='number'&&typeof e.beta==='number'&&typeof e.gamma==='number'){
+    var a=rad(e.alpha),b=rad(e.beta),g=rad(e.gamma),cA=Math.cos(a),sA=Math.sin(a),sB=Math.sin(b),cG=Math.cos(g),sG=Math.sin(g);
+    var rA=-cA*sG-sA*sB*cG,rB=-sA*sG+cA*sB*cG,x=Math.atan2(rA,rB);if(x<0)x+=2*Math.PI;h=x*180/Math.PI;
+  }
+  if(h!=null)setHead(h);
+}
+function startCompass(){
+  if(headOn)return;var DO=window.DeviceOrientationEvent;if(!DO)return;
+  function attach(){headOn=true;window.addEventListener('deviceorientationabsolute',onOrient,true);window.addEventListener('deviceorientation',onOrient,true)}
+  attach();
+  if(typeof DO.requestPermission==='function'){DO.requestPermission().then(function(r){if(r!=='granted')toast('Ohne Kompass-Erlaubnis zeigt der Pfeil von Norden. Erlaube die Bewegungssensoren in den Browser-Einstellungen.')}).catch(function(){})}
+}
+function updateGuide(){
+  var g=S.guide;if(!g)return;
+  var dist=$('#gDist'),sub=$('#gSub'),arrow=$('#gArrow');
+  if(!S.gps){dist.textContent='…';sub.textContent=S.gpsState==='busy'?'Standort wird gesucht':'Standort nicht verfügbar. Prüfe die GPS-Erlaubnis.';return}
+  var d=distM(S.gps.lat,S.gps.lon,g.lat,g.lon),b=bearingTo(S.gps.lat,S.gps.lon,g.lat,g.lon),h=null;
+  if(S.gps.sp!=null&&S.gps.sp>.8&&S.gps.hd!=null&&!isNaN(S.gps.hd))h=S.gps.hd;else if(HEAD!=null)h=HEAD;
+  arrow.style.transform='rotate('+(h==null?b:b-h)+'deg)';
+  dist.textContent=d<15?'Angekommen':fmtDist(d);
+  sub.textContent='Richtung '+dirName(b)+' · '+Math.round(b)+'°'+(S.gps.acc?' · GPS ±'+Math.round(S.gps.acc)+' m':'')+(h==null?' · Pfeil zeigt von Norden (Kompass aus)':'');
+}
+function startGuide(t){
+  S.guide={lat:t.lat,lon:t.lon,name:t.name||'Ziel'};
+  closeSheet();switchTab('map');startCompass();
+  $('#gName').textContent=S.guide.name;
+  $('#gCar').href='https://www.google.com/maps/dir/?api=1&destination='+t.lat+','+t.lon+'&travelmode=driving';
+  $('#gWalk').href='https://www.google.com/maps/dir/?api=1&destination='+t.lat+','+t.lon+'&travelmode=walking';
+  $('#guide').hidden=false;keepAwake(true);renderAll();updateGuide();
+  locate(false).then(function(p){fitGuide();updateGuide()}).catch(function(){updateGuide()});
+  if(S.gps)fitGuide();
+}
+function fitGuide(){
+  if(!S.guide||!S.gps)return;var g=S.guide,p=.0015;
+  fitBox([Math.min(S.gps.lon,g.lon)-p,Math.min(S.gps.lat,g.lat)-p*.7,Math.max(S.gps.lon,g.lon)+p,Math.max(S.gps.lat,g.lat)+p*.7]);
+}
+var wakeL=null;
+function keepAwake(on){try{if(on){if(navigator.wakeLock&&!wakeL)navigator.wakeLock.request('screen').then(function(l){wakeL=l;l.addEventListener('release',function(){wakeL=null})}).catch(function(){})}else if(wakeL){wakeL.release();wakeL=null}}catch(e){}}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'&&S.guide)keepAwake(true)});
+function stopGuide(){S.guide=null;$('#guide').hidden=true;keepAwake(false);renderAll()}
+$('#gEnd').onclick=stopGuide;
+function pickTarget(){
+  var p=S.gps,ms=G('markers').map(function(m){return {m:m,d:p?distM(p.lat,p.lon,m.lat,m.lon):null}});
+  ms.sort(function(a,b){return p?a.d-b.d:(a.m.name||'').localeCompare(b.m.name||'','de')});
+  var h='<h2>Hinführen</h2>';
+  if(!ms.length){openSheet(h+'<div class="empty">Noch keine Einrichtungen eingetragen. Lege zuerst eine Kanzel an.</div><button class="btn" id="d-close" type="button">Schließen</button>');$('#d-close').onclick=closeSheet;return}
+  h+='<p class="hint">'+(p?'Sortiert nach Entfernung.':'Dein Standort ist noch unbekannt, die Liste ist nach Namen sortiert.')+'</p><div class="rows">'+ms.map(function(x){var m=x.m;return '<button class="row" type="button" data-id="'+esc(m.id)+'"><span class="mk" style="background:var('+FAC[m.type].c+')">'+FAC[m.type].glyph+'</span><span class="rt"><b>'+esc(m.name||FAC[m.type].label)+'</b><small>'+esc(FAC[m.type].label)+'</small></span>'+(x.d!=null?'<span class="tagc">'+fmtDist(x.d)+'</span>':'')+'</button>'}).join('')+'</div>';
+  openSheet(h);
+  $$('#sheetBody .row').forEach(function(b){b.onclick=function(){var x=ms.filter(function(y){return y.m.id===b.dataset.id})[0].m;startGuide({lat:x.lat,lon:x.lon,name:x.name||FAC[x.type].label})}});
+  if(!p)locate(false).catch(function(){});
+}
 function loop(){if(dirty)draw();requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){dirty=true});
@@ -659,7 +740,7 @@ $('#bIn').onclick=function(){zoomBy(1)};$('#bOut').onclick=function(){zoomBy(-1)
 function gpsFail(e){
   if(S.watch!=null){try{navigator.geolocation.clearWatch(S.watch)}catch(x){}S.watch=null}
   S.gpsState='off';S.gps=null;dirty=true;renderHeader();
-  toast('Der Standort ist in dieser Ansicht nicht abrufbar. Setze die Position über die Karte.');
+  toast('Der Standort ist nicht verfügbar. Erlaube den Standortzugriff in den Einstellungen deines Browsers oder setze die Position über die Karte.');
 }
 function getPos(){
   return new Promise(function(res,rej){
@@ -671,7 +752,7 @@ function getPos(){
 }
 function startWatch(){
   if(S.watch!=null||!navigator.geolocation)return;
-  try{S.watch=navigator.geolocation.watchPosition(function(p){S.gps={lat:p.coords.latitude,lon:p.coords.longitude,acc:p.coords.accuracy,t:Date.now()};S.gpsState='on';dirty=true;renderHeader()},function(){gpsFail()},{enableHighAccuracy:true,maximumAge:3000,timeout:20000})}catch(e){gpsFail()}
+  try{S.watch=navigator.geolocation.watchPosition(function(p){S.gps={lat:p.coords.latitude,lon:p.coords.longitude,acc:p.coords.accuracy,hd:p.coords.heading,sp:p.coords.speed,t:Date.now()};S.gpsState='on';dirty=true;renderHeader();updateGuide()},function(){gpsFail()},{enableHighAccuracy:true,maximumAge:3000,timeout:20000})}catch(e){gpsFail()}
 }
 function locate(center){
   S.gpsState='busy';renderHeader();
@@ -705,12 +786,12 @@ function switchTab(t){
 function renderLayers(){
   var L=[['lots','Meine Lose','--accent'],['all','Alle Lose','--ink-2'],['fac','Einrichtungen','--kanzel'],['sight','Sichtungen','--sicht'],['kill','Abschüsse','--kill']];
   $('#layers').innerHTML='<button type="button" class="chip" id="baseChip" style="--c:var(--ink)"><i></i>Karte: '+SRC_DEF[S.base].label+'</button>'+L.map(function(l){return '<button type="button" class="chip" data-l="'+l[0]+'" aria-pressed="'+S.layers[l[0]]+'" style="--c:var('+l[2]+')"><i></i>'+l[1]+'</button>'}).join('');
-  $('#layers').hidden=!!S.placing;
+  $('#layers').hidden=!!S.placing||!!S.guide;
 }
 $('#layers').addEventListener('click',function(e){if(e.target.closest('#baseChip')){cycleBase();return}var b=e.target.closest('button[data-l]');if(!b)return;S.layers[b.dataset.l]=!S.layers[b.dataset.l];renderLayers();dirty=true});
 $('#demoOff').onclick=function(){guard(Store.setting({hideExamples:true}))};
 
-function renderAll(){renderHeader();renderLayers();$('#demo').hidden=!useDemo()||!!S.placing;renderActive();dirty=true;migrate()}
+function renderAll(){renderHeader();renderLayers();$('#demo').hidden=!useDemo()||!!S.placing||!!S.guide;renderActive();dirty=true;migrate()}
 function renderActive(){
   $('#fab').hidden=!!S.placing;$('#place').hidden=!S.placing;$('.maptools').hidden=false;
   if(S.tab==='log')renderLog();else if(S.tab==='stats')renderStats();else if(S.tab==='data')renderData();
@@ -722,10 +803,11 @@ $('#fab').onclick=function(){
   openSheet('<h2>Eintragen</h2>'+
   '<button class="choice" data-n="kill" type="button"><span class="mk sq" style="background:var(--kill)">✕</span><span><b>Abschuss</b><small>Wildart, Ort, Kanzel, Wildmarke</small></span></button>'+
   '<button class="choice" data-n="sight" type="button"><span class="mk sq" style="background:var(--sicht)">3</span><span><b>Wildsichtung</b><small>Wildart, Anzahl, Uhrzeit</small></span></button>'+
-  '<button class="choice" data-n="marker" type="button"><span class="mk" style="background:var(--kanzel)">K</span><span><b>Einrichtung</b><small>Kanzel, Bock, Futterplatz, Salzlecke, Hütte</small></span></button>');
+  '<button class="choice" data-n="marker" type="button"><span class="mk" style="background:var(--kanzel)">K</span><span><b>Einrichtung</b><small>Kanzel, Bock, Futterplatz, Salzlecke, Hütte</small></span></button>'+
+  '<button class="choice" data-n="guide" type="button"><span class="mk" style="background:var(--ink)">➜</span><span><b>Hinführen</b><small>Zu einer Kanzel oder Einrichtung gehen</small></span></button>');
   $$('#sheetBody .choice').forEach(function(b){b.onclick=function(){newEntry(b.dataset.n)}});
 };
-function newEntry(kind){
+function newEntry(kind){if(kind==='guide'){pickTarget();return}
   var p=defaultPos(),d={id:uid(kind==='kill'?'k':kind==='sight'?'s':'m'),lat:p.lat,lon:p.lon,posManual:false};
   if(kind==='kill'){Object.assign(d,{species:'Rehwild',sex:'u',age:'u',weight:null,tsl:toLocalInput(),kanzelId:'',tag:'',note:''})}
   else if(kind==='sight'){Object.assign(d,{species:'Rehwild',count:1,sex:'u',tsl:toLocalInput(),kanzelId:'',note:''})}
@@ -840,8 +922,9 @@ function showDetail(kind,o){
     rows='<dt>Datum</dt><dd>'+fmtDate(o.ts)+'</dd><dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd><dt>Alter</dt><dd>'+AGE[o.age]+'</dd>'+(o.weight!=null?'<dt>Gewicht</dt><dd>'+nf.format(o.weight)+' kg</dd>':'')+(o.kanzelId?'<dt>Kanzel</dt><dd>'+esc(facName(o.kanzelId))+'</dd>':'')+(o.tag?'<dt>Wildmarke</dt><dd><code>'+esc(o.tag)+'</code></dd>':'')+'<dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
   }
   openSheet('<h2>'+esc(title)+'</h2>'+(demo?'<div class="warnbox">Beispieldaten. Trage einen eigenen Eintrag ein, dann verschwinden sie.</div>':'')+'<dl class="kv">'+rows+'</dl>'+
-    '<div class="btnrow"><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lon+'" target="_blank" rel="noopener">Navigation</a><button class="btn" id="d-map" type="button">Auf Karte zeigen</button>'+(demo?'':'<button class="btn primary" id="d-edit" type="button">Bearbeiten</button>')+'<button class="btn" id="d-close" type="button">Schließen</button></div>');
+    '<div class="btnrow"><button class="btn primary" id="d-guide" type="button">Hinführen</button><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lon+'&travelmode=driving" target="_blank" rel="noopener">Route Auto</a><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lon+'&travelmode=walking" target="_blank" rel="noopener">Route zu Fuß</a><button class="btn" id="d-map" type="button">Auf Karte zeigen</button>'+(demo?'':'<button class="btn primary" id="d-edit" type="button">Bearbeiten</button>')+'<button class="btn" id="d-close" type="button">Schließen</button></div>');
   $('#d-close').onclick=closeSheet;
+  $('#d-guide').onclick=function(){startGuide({lat:o.lat,lon:o.lon,name:title})};
   $('#d-map').onclick=function(){closeSheet();S.sel={k:kind,id:o.id};switchTab('map');centerOn(o.lat,o.lon,Math.max(S.view.z,16))};
   var e=$('#d-edit');if(e)e.onclick=function(){var c=clone(o);c.posManual=true;if(kind!=='fac'){c.tsl=toLocalInput(c.ts)}openForm(kind==='fac'?'marker':kind,c,true)};
 }
