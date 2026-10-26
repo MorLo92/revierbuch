@@ -709,6 +709,27 @@ function longPress(lat,lon){
   $$('#sheetBody .choice').forEach(function(b){b.onclick=function(){if(b.dataset.n==='guide'){S.lp=null;startGuide({lat:lat,lon:lon,name:'Markierter Punkt'})}else newEntry(b.dataset.n,at)}});
   $('#lp-close').onclick=closeSheet;
 }
+function diagCardHtml(){
+  return '<div class="card"><h2 class="sec">Gestentest</h2><p class="hint">Hilft bei Problemen mit dem langen Drücken. Halte einen Finger eine Sekunde auf das Feld und schicke mir den Text darunter.</p>'+
+  '<div id="dgBox" style="height:110px;border:2px dashed var(--line);border-radius:10px;display:grid;place-items:center;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;color:var(--ink-2)">Hier halten</div>'+
+  '<pre id="dgLog" style="font:12px/1.4 var(--font-mono);white-space:pre-wrap;margin:0;max-height:220px;overflow:auto;overflow-wrap:anywhere"></pre></div>';
+}
+function bindDiag(){
+  var b=$('#dgBox'),l=$('#dgLog');if(!b)return;
+  var t0=0,tm=null,moves=0,lines=[];
+  function log(s){lines.unshift(Math.round(performance.now()-t0)+' ms  '+s);if(lines.length>16)lines.pop();l.textContent=lines.join('\n')}
+  ['pointerdown','pointermove','pointerup','pointercancel','touchstart','touchend','touchcancel','contextmenu'].forEach(function(ev){
+    b.addEventListener(ev,function(e){
+      if(ev==='pointerdown'){t0=performance.now();lines=[];moves=0;clearTimeout(tm);
+        log('Gerät: '+(navigator.userAgent.match(/Android [\d.]+|Chrome\/[\d.]+|Samsung[^ ]*|Firefox\/[\d.]+/g)||['?']).join(' ')+' | PointerEvent '+(window.PointerEvent?'ja':'nein')+' | Touch '+('ontouchstart' in window?'ja':'nein'));
+        tm=setTimeout(function(){log('HALTEN ERKANNT (450 ms ohne Bewegung)')},450)}
+      if(ev==='pointermove'){moves++;if(moves>3&&moves%5)return}
+      if(ev==='pointerup'||ev==='pointercancel'||ev==='touchcancel'||ev==='contextmenu'){if(ev!=='contextmenu')clearTimeout(tm)}
+      log(ev+(e.pointerType?' ('+e.pointerType+')':'')+(ev==='pointermove'?' #'+moves:''));
+      if(ev==='contextmenu')e.preventDefault();
+    },{passive:false});
+  });
+}
 function loop(){if(dirty)draw();requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){dirty=true});
@@ -721,6 +742,7 @@ function pd(){var a=Array.from(ptrs.values());return Math.hypot(a[0].x-a[1].x,a[
 function pm(){var a=Array.from(ptrs.values());return {x:(a[0].x+a[1].x)/2,y:(a[0].y+a[1].y)/2}}
 cv.addEventListener('pointerdown',function(e){
   try{cv.setPointerCapture(e.pointerId)}catch(x){}
+  if(e.isPrimary&&ptrs.size>0){ptrs.clear();clearLong()}
   ptrs.set(e.pointerId,{x:e.offsetX,y:e.offsetY});
   if(ptrs.size===1){gest={sx:e.offsetX,sy:e.offsetY,t:performance.now(),moved:false};armLong(gest)}
   else if(ptrs.size===2){clearLong();gest=gest||{};gest.moved=true;gest.d=pd();gest.mid=pm()}
@@ -1056,12 +1078,12 @@ function renderData(){
   '<div class="btnrow"><button class="btn" id="expCsv" type="button"'+''+'>Abschüsse als CSV</button><button class="btn" id="expJson" type="button"'+''+'>Sicherung (JSON)</button><button class="btn" id="impJson" type="button">Sicherung einlesen</button></div>'+
   '</div>';
   html+='<div class="card"><h2 class="sec">Beispieldaten</h2><p class="hint">Solange noch nichts eingetragen ist, zeigt die App Beispieldaten.</p><div class="btnrow"><button class="btn" id="exTog" type="button">'+(D.settings.hideExamples?'Beispieldaten wieder einblenden':'Beispieldaten ausblenden')+'</button></div></div>';
-  html+=srcCardHtml();
+  html+=srcCardHtml()+diagCardHtml();
   $('#dataBody').innerHTML=html;
   $('#impLots').onclick=function(){fileMode='lots';$('#fileIn').click()};
   $('#impJson').onclick=function(){fileMode='backup';$('#fileIn').click()};
   $('#exTog').onclick=function(){guard(Store.setting({hideExamples:!D.settings.hideExamples}))};
-  var c=$('#expCsv');if(c)c.onclick=exportCsv;var j=$('#expJson');if(j)j.onclick=exportJson;bindSources();
+  var c=$('#expCsv');if(c)c.onclick=exportCsv;var j=$('#expJson');if(j)j.onclick=exportJson;bindSources();bindDiag();
   var add=$('#addLot');if(add)add.onclick=function(){
     var n=parseInt($('#addNo').value,10);
     if(!BASE.length){toast('Die Lose sind noch nicht geladen.');return}
