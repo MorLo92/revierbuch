@@ -1571,11 +1571,34 @@ function damageForm(pid,dm){
     saveDmg(damages().filter(function(x){return x.id!==d.id})).then(function(){showParcel(d.parcelId);toast('Gelöscht')},function(){})};
 }
 
+
+/* ----- Gesamtfläche je Kultur ----- */
+function cropSums(Y){
+  var by={},tot=0,n=0,leer=0;
+  parcels().forEach(function(p){
+    var cs;if(Y==null||Y==='all')cs=[curCrop(p)].filter(Boolean);
+    else{var a=cropList(p),y0=Y+'-01-01',y1=Y+'-12-31';cs=a.filter(function(e){return e.from<=y1&&(!e.to||e.to>=y0)}).map(function(e){return e.crop});cs=cs.filter(function(c,i){return cs.indexOf(c)===i})}
+    tot+=p.m2;n++;
+    if(!cs.length){leer+=p.m2;return}
+    cs.forEach(function(c){var k=c.toLowerCase();(by[k]=by[k]||{crop:c,m2:0,n:0}).m2+=p.m2;by[k].n++});
+  });
+  return {rows:Object.keys(by).map(function(k){return by[k]}).sort(function(a,b){return b.m2-a.m2}),tot:tot,n:n,leer:leer};
+}
+function cropSumHtml(Y,card){
+  var r=cropSums(Y);if(!r.n)return '';
+  var mx=Math.max.apply(null,r.rows.map(function(x){return x.m2}).concat([r.leer,1]));
+  function row(lbl,m2,n,col){return '<div class="bar"><span class="bl"><i style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:'+col+'"></i>'+esc(lbl)+'<small>'+n+(n===1?' Fläche':' Flächen')+'</small></span><span class="bt"><i style="width:'+Math.max(2,Math.round(m2/mx*100))+'%;background:'+col+'"></i></span><span class="bv" style="min-width:92px;text-align:right">'+fmtArea(m2)+'</span></div>'}
+  var h=(card?'<div class="card"><h2 class="sec">Fläche nach Kultur'+(Y==null||Y==='all'?' · aktuell':' · '+Y)+'</h2>':'<div class="field" style="margin:0 0 12px"><span class="lbl">Fläche nach Kultur · aktuell</span>')+
+    '<div class="bars">'+r.rows.map(function(x){return row(x.crop,x.m2,x.n,cropCol(x.crop,'feld'))}).join('')+(r.leer?row('Ohne Kultur / leer',r.leer,parcels().filter(function(p){return !curCrop(p)}).length||1,'#9AA0A6'):'')+'</div>'+
+    '<p class="hint" style="margin:8px 0 0"><b>Gesamt: '+fmtArea(r.tot)+'</b> auf '+r.n+(r.n===1?' Fläche':' Flächen')+(Y!=null&&Y!=='all'?'. Hatte eine Fläche im Jahr mehrere Kulturen, zählt sie bei jeder.':'.')+'</p></div>';
+  return h;
+}
+
 /* ----- liste im Einträge-Tab ----- */
 function parcelListHtml(){
   var ps=parcels().slice().sort(function(a,b){return nat(a.name,b.name)});
   if(!ps.length)return '<div class="empty">Noch keine Flächen. Tippe auf „+ Fläche“ und zeichne ein Feld oder eine Waldparzelle ein. Die Größe wird berechnet, danach kannst du Wildschäden mit Preis pro ar eintragen.</div>';
-  return '<div class="rows">'+ps.map(function(p){var t=parTotal(p.id);return '<button class="row" type="button" data-par="'+esc(p.id)+'"><span class="mk sq" style="background:'+parColor(p)+'">'+(PGLY[p.kind]||'S')+'</span><span class="rt"><b>'+esc(p.name)+'</b><small>'+fmtArea(p.m2)+(curCrop(p)?' · '+esc(curCrop(p)):'')+(t?' · Schäden '+EUR.format(t):'')+'</small></span></button>'}).join('')+'</div>';
+  return cropSumHtml(null,false)+'<div class="rows">'+ps.map(function(p){var t=parTotal(p.id);return '<button class="row" type="button" data-par="'+esc(p.id)+'"><span class="mk sq" style="background:'+parColor(p)+'">'+(PGLY[p.kind]||'S')+'</span><span class="rt"><b>'+esc(p.name)+'</b><small>'+fmtArea(p.m2)+(curCrop(p)?' · '+esc(curCrop(p)):'')+(t?' · Schäden '+EUR.format(t):'')+'</small></span></button>'}).join('')+'</div>';
 }
 function bindParcelRows(){$$('#logBody [data-par]').forEach(function(b){b.onclick=function(){showParcel(b.dataset.par)}});var n=$('#newPar');if(n)n.onclick=parcelNew}
 
@@ -1979,7 +2002,7 @@ function renderStats(){
     var rows=Array.from(cnt).sort(function(a,b){return b[1]-a[1]}).map(function(r){return [r[0],{n:r[1]}]});
     if(rows.length)html+='<div class="card"><h2 class="sec">Gesehenes Wild</h2>'+bars(rows)+'</div>';
   }
-  html+=damageCardHtml(Y)+planCardHtml(Y,kills);
+  html+=cropSumHtml(Y==='all'?null:+Y,true)+damageCardHtml(Y)+planCardHtml(Y,kills);
   $('#statsBody').innerHTML=html;
   $('#statYear').onchange=function(e){S.statYear=e.target.value;renderStats()};
   bindPlan(Y);bindDamage();
