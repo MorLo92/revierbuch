@@ -1380,7 +1380,9 @@ function cropCol(c,kind){
 }
 /* Kulturverlauf: [{from:'JJJJ-MM-TT',crop}] */
 function cropList(p){var a=(p.crops&&p.crops.length)?p.crops:(p.crop?[{from:'1900-01-01',crop:p.crop}]:[]);return a.slice().sort(function(x,y){return x.from.localeCompare(y.from)})}
-function cropAt(p,date){var a=cropList(p),r=null;a.forEach(function(e){if(e.from<=date)r=e});return r?r.crop:(a[0]?a[0].crop:'')}
+function cropAt(p,date){var a=cropList(p),r=null;a.forEach(function(e){if(e.from<=date&&(!e.to||date<=e.to))r=e});return r?r.crop:(a[0]&&date<a[0].from?a[0].crop:'')}
+function dShort(x){return new Date(x+'T12:00').toLocaleDateString('de-LU')}
+function cropSpan(e){return (e.from<'1950'?'bisher':'ab '+dShort(e.from))+(e.to?' bis '+dShort(e.to):'')}
 function curCrop(p){return cropAt(p,toLocalInput().slice(0,10))}
 function parColor(p){return cropCol(curCrop(p),p.kind)}
 function parcels(){return D.settings.parcels||[]}
@@ -1431,27 +1433,30 @@ function parcelNew(){
   polyDraw('Neue Fläche',function(pts){parcelForm({id:uid('f'),name:'',kind:'feld',crop:'',note:'',pts:pts,m2:polyArea(pts)},false)});
 }
 function parcelForm(d,edit){
-  if(!d.crops)d.crops=cropList(d);d.crop=d.crop||curCrop({crops:d.crops});var today=toLocalInput().slice(0,10);
+  if(!d.crops)d.crops=cropList(d);d.crop='';d.edIdx=null;var today=toLocalInput().slice(0,10);
   openSheet('<h2>'+(edit?'Fläche bearbeiten':'Neue Fläche')+'</h2>'+
     '<div class="field"><span class="lbl">Berechnete Größe</span><div class="big" id="pf-area">'+fmtArea(d.m2)+'</div></div>'+
     '<label class="field"><span class="lbl">Name</span><input type="text" id="pf-name" value="'+esc(d.name)+'" placeholder="z. B. Maisfeld Eichberg" autocomplete="off"></label>'+
     '<div class="field"><span class="lbl">Art</span><div class="seg" id="pf-kind">'+Object.keys(PKIND).map(function(k){return '<button type="button" data-v="'+k+'" aria-pressed="'+(d.kind===k)+'">'+PKIND[k]+'</button>'}).join('')+'</div></div>'+
-    '<div class="grid2"><label class="field"><span class="lbl">Kultur / Bestand <i id="pf-sw" style="display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;background:'+cropCol(d.crop,d.kind)+'"></i></span><input type="text" id="pf-crop" value="'+esc(d.crop||'')+'" list="pfCrops" placeholder="z. B. Mais" autocomplete="off"><datalist id="pfCrops">'+CROPS.map(function(c){return '<option value="'+esc(c)+'">'}).join('')+'</datalist></label>'+
-    '<label class="field"><span class="lbl">gilt ab</span><input type="date" id="pf-from" value="'+esc(d.from||today)+'"></label></div>'+
-    '<p class="hint">Ändert sich die Kultur im Lauf des Jahres (Mais → Zwischenfrucht), trage die neue Kultur mit Datum ein. Der Verlauf wird gespeichert, die Farbe richtet sich nach der Kultur.</p><div class="rows" id="pf-hist"></div>'+
+    '<div class="grid2"><label class="field"><span class="lbl">Kultur / Bestand (neu) <i id="pf-sw" style="display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;background:'+cropCol(d.crop,d.kind)+'"></i></span><input type="text" id="pf-crop" value="'+esc(d.crop||'')+'" list="pfCrops" placeholder="z. B. Mais" autocomplete="off"><datalist id="pfCrops">'+CROPS.map(function(c){return '<option value="'+esc(c)+'">'}).join('')+'</datalist></label>'+
+    '<label class="field"><span class="lbl">von</span><input type="date" id="pf-from" value="'+esc(d.from||today)+'"></label></div>'+
+    '<label class="field"><span class="lbl">bis (leer = offen)</span><input type="date" id="pf-to" value="'+esc(d.to||'')+'"></label>'+
+    '<p class="hint">Neue Kultur mit Zeitraum eintragen (z. B. Mais bis 10.9., Zwischenfrucht ab 15.9.). Dazwischen gilt das Feld als leer. Tippe einen Eintrag unten an, um ihn zu ändern.</p><div class="rows" id="pf-hist"></div>'+
     '<label class="field"><span class="lbl">Notiz</span><textarea rows="2" id="pf-note">'+esc(d.note||'')+'</textarea></label>'+
     '<div class="btnrow"><button class="btn" id="pf-redraw" type="button">Neu einzeichnen</button></div>'+
     '<div class="btnrow"><button class="btn primary" id="pf-save" type="button" style="flex:2">Speichern</button><button class="btn" id="pf-cancel" type="button" style="flex:1">Abbrechen</button></div>');
-  function grab(){d.name=$('#pf-name').value.trim();d.crop=$('#pf-crop').value.trim();d.from=$('#pf-from').value||today;d.note=$('#pf-note').value.trim()}
-  function hist(){var a=cropList({crops:d.crops});$('#pf-hist').innerHTML=a.map(function(e,i){return '<div class="row" style="cursor:default"><span class="mk sq" style="background:'+cropCol(e.crop,d.kind)+'">'+esc(e.crop.slice(0,1).toUpperCase())+'</span><span class="rt"><b>'+esc(e.crop)+'</b><small>'+(e.from<'1950'?'bisher':'ab '+esc(new Date(e.from+'T12:00').toLocaleDateString('de-LU')))+'</small></span><button type="button" class="btn sm" data-hx="'+i+'" aria-label="Eintrag entfernen">✕</button></div>'}).join('');
-    $$('#pf-hist [data-hx]').forEach(function(b){b.onclick=function(){var l=cropList({crops:d.crops});l.splice(+b.dataset.hx,1);d.crops=l;hist()}})}
+  function grab(){d.name=$('#pf-name').value.trim();d.crop=$('#pf-crop').value.trim();d.from=$('#pf-from').value||today;d.to=$('#pf-to').value||'';d.note=$('#pf-note').value.trim()}
+  function hist(){var a=cropList({crops:d.crops});$('#pf-hist').innerHTML=a.map(function(e,i){return  '<div class="row" data-ed="'+i+'" style="cursor:pointer"><span class="mk sq" style="background:'+cropCol(e.crop,d.kind)+'">'+esc(e.crop.slice(0,1).toUpperCase())+'</span><span class="rt"><b>'+esc(e.crop)+'</b><small>'+esc(cropSpan(e))+'</small></span><button type="button" class="btn sm" data-hx="'+i+'" aria-label="Eintrag entfernen">✕</button></div>'}).join('');
+    $$('#pf-hist [data-hx]').forEach(function(b){b.onclick=function(ev){ev.stopPropagation();var l=cropList({crops:d.crops});l.splice(+b.dataset.hx,1);d.crops=l;d.edIdx=null;hist()}});
+    $$('#pf-hist [data-ed]').forEach(function(r){r.onclick=function(){var e=cropList({crops:d.crops})[+r.dataset.ed];d.crops=cropList({crops:d.crops});d.edIdx=+r.dataset.ed;$('#pf-crop').value=e.crop;$('#pf-from').value=e.from<'1950'?today:e.from;$('#pf-to').value=e.to||'';$('#pf-sw').style.background=cropCol(e.crop,d.kind);$('#pf-crop').scrollIntoView({block:'center'})}})}
   hist();$('#pf-crop').addEventListener('input',function(){$('#pf-sw').style.background=cropCol($('#pf-crop').value,d.kind)});
   $('#pf-kind').addEventListener('click',function(e){var b=e.target.closest('button[data-v]');if(!b)return;d.kind=b.dataset.v;$$('#pf-kind button').forEach(function(x){x.setAttribute('aria-pressed',x===b)})});
   $('#pf-cancel').onclick=closeSheet;
   $('#pf-redraw').onclick=function(){grab();closeSheet();polyDraw('Neu einzeichnen',function(pts){d.pts=pts;d.m2=polyArea(pts);parcelForm(d,edit)})};
   $('#pf-save').onclick=function(){
-    grab();var cs=cropList({crops:d.crops}),last=cs.length?cs[cs.length-1].crop:'';
-    if(d.crop&&d.crop!==last){cs=cs.filter(function(e){return e.from!==d.from});cs.push({from:d.from,crop:d.crop});cs=cropList({crops:cs})}
+    grab();var cs=cropList({crops:d.crops});
+    if(d.to&&d.to<d.from){toast('Das Enddatum liegt vor dem Beginn.');return}
+    if(d.crop){var ne={from:d.from,crop:d.crop};if(d.to)ne.to=d.to;if(d.edIdx!=null&&cs[d.edIdx])cs[d.edIdx]=ne;else cs.push(ne);cs=cropList({crops:cs})}
     var o={id:d.id,name:d.name||PKIND[d.kind],kind:d.kind,crop:'',crops:cs,note:d.note,pts:d.pts,m2:Math.round(d.m2*100)/100};o.crop=curCrop(o);
     var arr=parcels().slice(),i=arr.findIndex(function(x){return x.id===o.id});if(i>-1)arr[i]=o;else arr.push(o);
     savePar(arr).then(function(){toast('Fläche gespeichert');showParcel(o.id);if(S.tab==='log')renderLog()},function(){});
@@ -1467,9 +1472,9 @@ function showParcel(id){
   var ds=damages().filter(function(d){return d.parcelId===id}).sort(function(a,b){return String(b.date).localeCompare(String(a.date))}),tot=ds.reduce(function(s,d){return s+dmgTotal(d)},0);
   var yrs={};ds.forEach(function(d){yrs[dmgYear(d)]=(yrs[dmgYear(d)]||0)+dmgTotal(d)});
   var ylist=Object.keys(yrs).sort(),maxv=Math.max.apply(null,ylist.map(function(y){return yrs[y]}).concat([0]));
-  openSheet('<h2>'+esc(p.name)+'</h2><dl class="kv"><dt>Art</dt><dd>'+esc(PKIND[p.kind]||'')+'</dd>'+(curCrop(p)?'<dt>Kultur</dt><dd><i style="display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;background:'+parColor(p)+'"></i>'+esc(curCrop(p))+'</dd>':'')+(cropList(p).length>1?'<dt>Verlauf</dt><dd>'+cropList(p).map(function(e){return esc(e.crop)+(e.from<'1950'?'':' (ab '+esc(new Date(e.from+'T12:00').toLocaleDateString('de-LU'))+')')}).join(' → ')+'</dd>':'')+'<dt>Fläche</dt><dd><b>'+fmtArea(p.m2)+'</b></dd>'+(ds.length?'<dt>Schäden gesamt</dt><dd><b>'+EUR.format(tot)+'</b></dd>':'')+(p.note?'<dt>Notiz</dt><dd>'+esc(p.note)+'</dd>':'')+'</dl>'+
+  openSheet('<h2>'+esc(p.name)+'</h2><dl class="kv"><dt>Art</dt><dd>'+esc(PKIND[p.kind]||'')+'</dd>'+(curCrop(p)?'<dt>Kultur</dt><dd><i style="display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;background:'+parColor(p)+'"></i>'+esc(curCrop(p))+'</dd>':(cropList(p).length?'<dt>Kultur</dt><dd>derzeit leer</dd>':''))+((cropList(p).length>1||cropList(p).some(function(e){return e.to}))?'<dt>Verlauf</dt><dd>'+cropList(p).map(function(e){return esc(e.crop)+' ('+esc(cropSpan(e))+')'}).join(' → ')+'</dd>':'')+'<dt>Fläche</dt><dd><b>'+fmtArea(p.m2)+'</b></dd>'+(ds.length?'<dt>Schäden gesamt</dt><dd><b>'+EUR.format(tot)+'</b></dd>':'')+(p.note?'<dt>Notiz</dt><dd>'+esc(p.note)+'</dd>':'')+'</dl>'+
     (ylist.length>1?'<div class="field"><span class="lbl">Vergleich nach Jahren</span>'+yearBarsHtml(ylist.map(function(y,i){var prev=i?yrs[ylist[i-1]]:null,dl=prev?Math.round((yrs[y]-prev)/prev*100):null;return {label:y,v:yrs[y],sub:dl==null?'':(dl>0?'+':'')+dl+' % zum Vorjahr'}}),maxv)+'</div>':'')+
-    '<div class="field"><span class="lbl">Wildschäden</span>'+(ds.length?'<div class="rows">'+ds.map(function(d){return '<button class="row" type="button" data-did="'+esc(d.id)+'"><span class="mk sq" style="background:var(--kill)">€</span><span class="rt"><b>'+EUR.format(dmgTotal(d))+'</b><small>'+esc(new Date(d.date+'T12:00').toLocaleDateString('de-LU'))+' · '+fmtAr(d.ar)+' × '+EUR.format(d.price)+'/ar'+(d.cause?' · '+esc(d.cause):'')+(cropAt(p,d.date)?' · '+esc(cropAt(p,d.date)):'')+'</small></span></button>'}).join('')+'</div>':'<p class="hint">Noch kein Schaden eingetragen.</p>')+'</div>'+
+    '<div class="field"><span class="lbl">Wildschäden</span>'+(ds.length?'<div class="rows">'+ds.map(function(d){return '<button class="row" type="button" data-did="'+esc(d.id)+'"><span class="mk sq" style="background:var(--kill)">€</span><span class="rt"><b>'+EUR.format(dmgTotal(d))+'</b><small>festgestellt '+esc(new Date(d.date+'T12:00').toLocaleDateString('de-LU'))+' · '+fmtAr(d.ar)+' × '+EUR.format(d.price)+'/ar'+(d.cause?' · '+esc(d.cause):'')+(cropAt(p,d.date)?' · '+esc(cropAt(p,d.date)):'')+'</small></span></button>'}).join('')+'</div>':'<p class="hint">Noch kein Schaden eingetragen.</p>')+'</div>'+
     '<div class="btnrow"><button class="btn primary" id="pa-dmg" type="button">+ Schaden eintragen</button><button class="btn" id="pa-map" type="button">Auf Karte</button></div>'+
     '<div class="btnrow"><button class="btn" id="pa-edit" type="button">Bearbeiten</button><button class="btn danger" id="pa-del" type="button">Löschen</button><button class="btn" id="pa-close" type="button">Schließen</button></div>');
   $('#pa-close').onclick=closeSheet;
@@ -1488,7 +1493,7 @@ function damageForm(pid,dm){
   var d=dm?clone(dm):{id:uid('w'),parcelId:pid||ps[0].id,date:toLocalInput().slice(0,10),cause:'Schwarzwild',ar:null,price:lastPrice(pid||ps[0].id),note:''};
   openSheet('<h2>'+(dm?'Schaden bearbeiten':'Wildschaden eintragen')+'</h2>'+
     '<label class="field"><span class="lbl">Fläche</span><select id="dm-par">'+ps.map(function(p){return '<option value="'+esc(p.id)+'"'+(p.id===d.parcelId?' selected':'')+'>'+esc(p.name)+' ('+fmtAr(p.m2/100)+')</option>'}).join('')+'</select></label>'+
-    '<div class="grid2"><label class="field"><span class="lbl">Datum</span><input type="date" id="dm-date" value="'+esc(d.date)+'"></label>'+
+    '<div class="grid2"><label class="field"><span class="lbl">Festgestellt am</span><input type="date" id="dm-date" value="'+esc(d.date)+'"></label>'+
     '<label class="field"><span class="lbl">Verursacher</span><select id="dm-cause">'+opts(CAUSES,d.cause)+'</select></label></div>'+
     '<div class="grid2"><label class="field"><span class="lbl">Geschädigte Fläche (ar)</span><input type="text" inputmode="decimal" id="dm-ar" value="'+(d.ar==null?'':String(d.ar).replace('.',','))+'" placeholder="z. B. 12,5"></label>'+
     '<label class="field"><span class="lbl">Preis pro ar (€)</span><input type="text" inputmode="decimal" id="dm-price" value="'+(d.price==null?'':String(d.price).replace('.',','))+'" placeholder="z. B. 8,50"></label></div>'+
@@ -1506,7 +1511,7 @@ function damageForm(pid,dm){
     var ar=numIn($('#dm-ar').value),pr=numIn($('#dm-price').value);
     if(ar==null||ar<=0){toast('Bitte die geschädigte Fläche in ar eingeben.');return}
     if(pr==null||pr<0){toast('Bitte den Preis pro ar eingeben.');return}
-    if(!$('#dm-date').value){toast('Bitte ein Datum angeben.');return}
+    if(!$('#dm-date').value){toast('Bitte angeben, wann der Schaden festgestellt wurde.');return}
     var o={id:d.id,parcelId:$('#dm-par').value,date:$('#dm-date').value,cause:$('#dm-cause').value,ar:ar,price:pr,note:$('#dm-note').value.trim()};
     var arr=damages().slice(),i=arr.findIndex(function(x){return x.id===o.id});if(i>-1)arr[i]=o;else arr.push(o);
     saveDmg(arr).then(function(){toast('Schaden gespeichert · '+EUR.format(dmgTotal(o)));showParcel(o.parcelId);if(S.tab==='stats')renderStats()},function(){});
@@ -1539,7 +1544,7 @@ function damageCardHtml(Y){
   return h+'<div class="btnrow"><button class="btn" id="dmNew" type="button">+ Schaden eintragen</button><button class="btn" id="dmCsv" type="button">Als CSV</button></div></div>';
 }
 function dmgCsv(){
-  var rows=[['Datum','Jahr','Fläche','Art','Kultur','Größe der Fläche (ar)','Verursacher','Geschädigt (ar)','Preis pro ar (EUR)','Gesamt (EUR)','Notiz']];
+  var rows=[['Festgestellt am','Jahr','Fläche','Art','Kultur','Größe der Fläche (ar)','Verursacher','Geschädigt (ar)','Preis pro ar (EUR)','Gesamt (EUR)','Notiz']];
   damages().slice().sort(function(a,b){return String(a.date).localeCompare(String(b.date))}).forEach(function(d){var p=parcelById(d.parcelId)||{};
     rows.push([d.date,dmgYear(d),p.name||'',PKIND[p.kind]||'',(p.id?cropAt(p,d.date):'')||'',p.m2?(p.m2/100).toFixed(2).replace('.',','):'',d.cause||'',String(d.ar).replace('.',','),Number(d.price).toFixed(2).replace('.',','),dmgTotal(d).toFixed(2).replace('.',','),d.note||'']);});
   return '﻿'+rows.map(function(r){return r.map(function(c){c=String(c);return /[;"\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c}).join(';')}).join('\r\n');
