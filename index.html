@@ -1406,19 +1406,64 @@ function inPolyLL(lat,lon,pts){var c=false,n=pts.length,i,j;for(i=0,j=n-1;i<n;j=
 function parBox(p){var b=[1e9,1e9,-1e9,-1e9];p.pts.forEach(function(q){b[0]=Math.min(b[0],q[1]);b[1]=Math.min(b[1],q[0]);b[2]=Math.max(b[2],q[1]);b[3]=Math.max(b[3],q[0])});return b}
 function parTotal(id,year){return damages().filter(function(d){return d.parcelId===id&&(year==null||dmgYear(d)===year)}).reduce(function(s,d){return s+dmgTotal(d)},0)}
 
+
+/* ----- Katasterparzelle aus dem Geoportail (INSPIRE-Dienst) holen ----- */
+var CADBASE='https://wms.inspire.geoportail.lu/geoserver/cp/';
+function cadUrls(lat,lon){
+  var d=0.00002,b1=[lon-d,lat-d,lon+d,lat+d].join(','),b2=[lat-d,lon-d,lat+d,lon+d].join(',');
+  return [
+    CADBASE+'ows?service=WFS&version=1.0.0&request=GetFeature&typeName=CP.CadastralParcel&outputFormat=application/json&srsName=EPSG:4326&maxFeatures=5&bbox='+b1+',EPSG:4326',
+    CADBASE+'ows?service=WFS&version=2.0.0&request=GetFeature&typeNames=CP.CadastralParcel&outputFormat=application/json&srsName=urn:ogc:def:crs:EPSG::4326&count=5&bbox='+b2+',urn:ogc:def:crs:EPSG::4326',
+    CADBASE+'wms?service=WMS&version=1.1.1&request=GetFeatureInfo&layers=CP.CadastralParcel&query_layers=CP.CadastralParcel&styles=&srs=EPSG:4326&bbox='+b1+'&width=101&height=101&x=50&y=50&info_format=application/json&feature_count=5'
+  ];
+}
+function cadRings(g){return !g?[]:g.type==='Polygon'?[g.coordinates[0]]:g.type==='MultiPolygon'?g.coordinates.map(function(p){return p[0]}):[]}
+function cadPick(js,lat,lon){
+  var fs=(js&&js.features)||[],best=null;
+  fs.forEach(function(f){cadRings(f.geometry).forEach(function(r){
+    if(!r||r.length<4)return;
+    var pts=r.map(function(c){return [c[1],c[0]]});                       /* GeoJSON: lon,lat */
+    if(!(pts[0][0]>49&&pts[0][0]<50.3)&&(r[0][0]>49&&r[0][0]<50.3))pts=r.map(function(c){return [c[0],c[1]]}); /* vertauschte Achsen */
+    if(!(pts[0][0]>49&&pts[0][0]<50.3&&pts[0][1]>5.6&&pts[0][1]<6.6))return;
+    if(pts.length>1&&pts[0][0]===pts[pts.length-1][0]&&pts[0][1]===pts[pts.length-1][1])pts.pop();
+    var hit=inPolyLL(lat,lon,pts);
+    if(!best||(hit&&!best.hit)||(hit===best.hit&&polyArea(pts)>polyArea(best.pts)))best={pts:pts,hit:hit,ref:(f.properties&&(f.properties.label||f.properties.nationalCadastralReference||f.properties.inspireId||f.id))||''};
+  })});
+  return best;
+}
+function cadFetch(lat,lon){
+  var urls=cadUrls(lat,lon),errs=[],i=0;
+  function next(){
+    if(i>=urls.length)return Promise.reject(new Error(errs.join(' · ')));
+    var u=urls[i++],ctl=window.AbortController?new AbortController():null,t=setTimeout(function(){ctl&&ctl.abort()},12000);
+    return fetch(u,ctl?{signal:ctl.signal}:{}).then(function(r){clearTimeout(t);if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})
+      .then(function(js){var b=cadPick(js,lat,lon);if(!b)throw new Error('keine Parzelle an dieser Stelle');return b})
+      .catch(function(e){clearTimeout(t);errs.push(e&&e.message||'Fehler');return next()});
+  }
+  return next();
+}
+
 /* ----- zeichnen: Punkte mit dem Fadenkreuz setzen ----- */
 function nearFirst(pts){var q=toScr(pts[0][0],pts[0][1]);return Math.hypot(q.x-W/2,q.y-H/2)<26}
 function polyDraw(title,done,initial){
   var pts=initial?initial.slice():[];
   switchTab('map');
   var ob=$('#pOk'),nb=$('#pNo'),row=ob.parentNode,t0=ob.textContent,t1=nb.textContent;
-  var undo=document.createElement('button'),cancel=document.createElement('button');
-  undo.type=cancel.type='button';undo.className=cancel.className='btn sm';undo.textContent='Zurück';cancel.textContent='Abbrechen';
-  row.appendChild(undo);row.appendChild(cancel);
+  var undo=document.createElement('button'),cancel=document.createElement('button'),cad=document.createElement('button');
+  undo.type=cancel.type=cad.type='button';undo.className=cancel.className=cad.className='btn sm';cad.textContent='Kataster';undo.textContent='Zurück';cancel.textContent='Abbrechen';
+  row.appendChild(undo);row.appendChild(cad);row.appendChild(cancel);
   function upd(){$('#placeTitle').textContent=title+' · '+pts.length+(pts.length===1?' Punkt':' Punkte')+(pts.length>2?' · '+fmtArea(polyArea(pts)):'');S.parDraw={pts:pts};dirty=true}
-  function cleanup(){ob.textContent=t0;nb.textContent=t1;undo.remove();cancel.remove();S.parDraw=null}
+  function cleanup(){ob.textContent=t0;nb.textContent=t1;undo.remove();cad.remove();cancel.remove();S.parDraw=null}
   ob.textContent='Punkt setzen';nb.textContent='Fertig';upd();
-  undo.onclick=function(){pts.pop();upd()};
+  undo.onclick=function(){if(S.cadRef){pts.length=0;S.cadRef=''}else pts.pop();upd()};
+  cad.onclick=function(){
+    cad.disabled=true;cad.textContent='Lade …';
+    cadFetch(+S.view.lat,+S.view.lon).then(function(r){
+      pts.length=0;r.pts.forEach(function(q){pts.push([+q[0].toFixed(6),+q[1].toFixed(6)])});S.cadRef=r.ref?String(r.ref):'Katasterparzelle';upd();fitBox(parBox({pts:pts}));
+      toast(r.hit?'Parzelle übernommen. Mit „Fertig“ bestätigen.':'Nächste Parzelle übernommen. Prüfe, ob es die richtige ist.')
+    },function(e){toast('Kataster nicht verfügbar ('+(e&&e.message||'Fehler')+'). Bitte von Hand einzeichnen.')})
+    .then(function(){cad.disabled=false;cad.textContent='Kataster'});
+  };
   cancel.onclick=function(){cleanup();endPlace()};
   S.placing={
     ok:function(){if(pts.length>2&&nearFirst(pts)){cleanup();endPlace();done(pts);return}pts.push([+S.view.lat.toFixed(6),+S.view.lon.toFixed(6)]);upd()},
@@ -1430,7 +1475,7 @@ function parcelNew(){
   closeSheet();
   if(S.tab!=='map')switchTab('map');
   toast('Karte verschieben, bis das Fadenkreuz auf einer Ecke der Fläche liegt, dann „Punkt setzen“.');
-  polyDraw('Neue Fläche',function(pts){parcelForm({id:uid('f'),name:'',kind:'feld',crop:'',note:'',pts:pts,m2:polyArea(pts)},false)});
+  S.cadRef='';polyDraw('Neue Fläche',function(pts){var ref=S.cadRef;S.cadRef='';parcelForm({id:uid('f'),name:'',kind:'feld',crop:'',note:ref?'Kataster: '+ref:'',pts:pts,m2:polyArea(pts)},false)});
 }
 function parcelForm(d,edit){
   if(!d.crops)d.crops=cropList(d);d.crop='';d.edIdx=null;var today=toLocalInput().slice(0,10);
