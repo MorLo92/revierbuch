@@ -484,7 +484,7 @@ function draw(){
   its.forEach(function(it){
     var o=it.o,s=toScr(o.lat,o.lon);if(s.x<-30||s.x>W+30||s.y<-30||s.y>H+30)return;
     var sel=S.sel&&S.sel.id===o.id;
-    if(it.k==='fac'&&o.type==='text'){ctx.beginPath();ctx.arc(s.x,s.y,sel?6:4,0,7);ctx.fillStyle=pal.ink;ctx.fill();ctx.font='600 15px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='left';ctx.textBaseline='middle';halo(o.name,s.x+9,s.y,pal.ink)}else if(it.k==='fac'){var gcol=o.group&&grpColor(o.group);badgeTxt=gcol?'#fff':null;badge(s.x,s.y,gcol||pal[o.type]||pal.sonst,FAC[o.type]?FAC[o.type].glyph:'·',sel);if(v.z>=15.2&&o.name){ctx.font='500 12px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';halo(o.name,s.x,s.y+17)}}
+    if(it.k==='fac'&&o.type==='text'){ctx.beginPath();ctx.arc(s.x,s.y,sel?6:4,0,7);ctx.fillStyle=pal.ink;ctx.fill();ctx.font='600 15px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='left';ctx.textBaseline='middle';halo(o.name,s.x+9,s.y,pal.ink)}else if(it.k==='fac'){var gcol=o.group&&grpColor(o.group);badgeTxt=gcol?'#fff':null;badge(s.x,s.y,gcol||pal[o.type]||pal.sonst,kGlyph(o),sel);if(resNow()[o.id])resDot(s.x,s.y);if(v.z>=15.2&&o.name){ctx.font='500 12px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';halo(o.name,s.x,s.y+17)}}
     else if(it.k==='sight')diamond(s.x,s.y,o.count||1,sel);
     else killMark(s.x,s.y,sel);
   });
@@ -775,7 +775,7 @@ function allEntries0(){var a=[];
   D.kills.slice().sort(function(x,y){return new Date(y.ts)-new Date(x.ts)}).forEach(function(o){a.push({k:'kill',coll:'kills',o:o})});
   return a}
 function entLabel(e){var o=e.o;if(e.k==='fac')return o.name||FAC[o.type].label;if(e.k==='sight')return (o.count||1)+'× '+o.species+' · '+fmtDate(o.ts);return o.species+' · '+fmtDate(o.ts)}
-function entMk(e){var o=e.o;if(e.k==='fac')return '<span class="mk" style="background:'+(grpColor(o.group)||'var('+FAC[o.type].c+')')+'">'+FAC[o.type].glyph+'</span>';if(e.k==='sight')return '<span class="mk sq" style="background:var(--sicht)">'+(o.count||1)+'</span>';return '<span class="mk sq" style="background:var(--kill)">✕</span>'}
+function entMk(e){var o=e.o;if(e.k==='fac')return '<span class="mk" style="background:'+(grpColor(o.group)||'var('+FAC[o.type].c+')')+'">'+kGlyph(o)+'</span>';if(e.k==='sight')return '<span class="mk sq" style="background:var(--sicht)">'+(o.count||1)+'</span>';return '<span class="mk sq" style="background:var(--kill)">✕</span>'}
 function groupNames(){var m={};allEntries().forEach(function(e){if(e.o.group)m[e.o.group]=1});return Object.keys(m).sort(nat)}
 function groupListHtml(){
   var m={};allEntries().forEach(function(e){if(e.o.group)(m[e.o.group]=m[e.o.group]||[]).push(e)});var names=Object.keys(m).sort(nat);
@@ -821,8 +821,9 @@ function editGroup(name){
 function extraHtml(kind,o){var h='';
   if(o.group)h+='<div class="field"><span class="lbl">Gruppe</span><button type="button" class="btn sm" id="d-grp">'+esc(o.group)+' · alle anzeigen</button></div>';
   if(o.photos&&o.photos.length)h+='<div class="field"><span class="lbl">Fotos</span>'+phStrip(o.photos,false)+'</div>';
+  if(kind==='fac'&&!o.demo&&(o.type==='kanzel'||o.type==='bock'))h+=seatResHtml(o);
   return h}
-function bindExtra(kind,o){var g=$('#d-grp');if(g)g.onclick=function(){showGroup(o.group)};
+function bindExtra(kind,o){bindSeatRes(kind,o);var g=$('#d-grp');if(g)g.onclick=function(){showGroup(o.group)};
   var ids=o.photos||[],root=$('#sheetBody');fillPh(root);$$('[data-ph]',root).forEach(function(b){b.onclick=function(){phView(ids,ids.indexOf(b.dataset.ph))}})}
 function extraFormHtml(d){
   return '<label class="field"><span class="lbl">Gruppe (optional)</span><input type="text" data-f="group" list="grpList" value="'+esc(d.group||'')+'" placeholder="z. B. Linie 1" autocomplete="off"><datalist id="grpList">'+groupNames().map(function(g){return '<option value="'+esc(g)+'">'}).join('')+'</datalist></label>'+
@@ -839,6 +840,52 @@ function bindExtraForm(){
 }
 function phCleanup(){var f=S.form;if(f&&!f.keep&&!f.saved&&f.d&&f.d._new)f.d._new.forEach(Ph.del)}
 function phSaved(d){(d._orig||[]).filter(function(id){return d.photos.indexOf(id)<0}).forEach(Ph.del)}
+/* ---------- Kanzel-Bauart und Ansitz-Reservierungen ---------- */
+var SUBK={closed:'Geschlossen',mobile:'Mobil',open:'Offen'};
+function kGlyph(o){if(o.type==='kanzel'&&o.sub)return {closed:'K',mobile:'Km',open:'Ko'}[o.sub];return FAC[o.type]?FAC[o.type].glyph:'·'}
+function reservs(){return D.settings.reservations||[]}
+function saveRes(a){return guard(Store.setting({reservations:a}))}
+function resStart(r){return new Date(r.date+'T'+(r.from||'00:00'))}
+function resEnd(r){var s=resStart(r);if(!r.to)return new Date(r.date+'T23:59');var e=new Date(r.date+'T'+r.to);if(e<=s)e.setDate(e.getDate()+1);return e}
+function resUpcoming(){var n=new Date();return reservs().filter(function(r){return resEnd(r)>=n}).sort(function(a,b){return resStart(a)-resStart(b)})}
+function resNow(){return memo('ra'+new Date().toISOString().slice(0,13),function(){var m={},n=new Date(),eod=new Date();eod.setHours(23,59,59,999);reservs().forEach(function(r){if(resEnd(r)>n&&resStart(r)<=eod)m[r.seatId]=true});return m})}
+function resDot(x,y){ctx.beginPath();ctx.arc(x+11,y-11,6.5,0,7);ctx.fillStyle=pal.surface;ctx.fill();ctx.beginPath();ctx.arc(x+11,y-11,4.5,0,7);ctx.fillStyle='#E08A00';ctx.fill()}
+function seatsList(){return D.markers.filter(function(m){return m.type==='kanzel'||m.type==='bock'}).sort(function(a,b){return nat(a.name||'',b.name||'')})}
+function seatName(id){var m=postMarker(id);return m?(m.name||FAC[m.type].label):'Gelöschter Stand'}
+function fmtRes(r){return resStart(r).toLocaleDateString('de-LU',{weekday:'short',day:'2-digit',month:'2-digit'})+' · '+(r.from||'')+(r.to?'–'+r.to:'')}
+function resRowsHtml(list,showSeat){return '<div class="rows">'+list.map(function(r){return '<button class="row" type="button" data-rid="'+esc(r.id)+'"><span class="mk sq" style="background:#E08A00">R</span><span class="rt"><b>'+(showSeat?esc(seatName(r.seatId))+' · ':'')+esc(fmtRes(r))+'</b><small>'+(r.who?esc(r.who):'ohne Namen')+(r.note?' · '+esc(r.note):'')+'</small></span></button>'}).join('')+'</div>'}
+function resSectionHtml(){var up=resUpcoming();return '<h2 class="sec">Ansitz-Reservierungen</h2><div class="toolbar"><button class="btn" id="rNew" type="button">+ Ansitz reservieren</button></div>'+(up.length?resRowsHtml(up,true):'<div class="empty">Keine anstehenden Reservierungen.</div>')}
+function seatResHtml(o){var up=resUpcoming().filter(function(r){return r.seatId===o.id});return '<div class="field"><span class="lbl">Ansitz-Reservierungen</span>'+(up.length?resRowsHtml(up.slice(0,4),false):'<p class="hint">Keine anstehenden Reservierungen.</p>')+'<button type="button" class="btn sm" id="d-res">Reservieren</button></div>'}
+function bindResRows(root){$$('[data-rid]',root).forEach(function(b){b.onclick=function(){var r=reservs().filter(function(x){return x.id===b.dataset.rid})[0];if(r)resForm(r.seatId,r)}})}
+function bindSeatRes(kind,o){var b=$('#d-res');if(b)b.onclick=function(){resForm(o.id,null)};bindResRows($('#sheetBody'))}
+function resForm(seatId,r){
+  var seats=seatsList();if(!seats.length){toast('Lege zuerst eine Kanzel an.');return}
+  var d=r?clone(r):{id:uid('r'),seatId:seatId||seats[0].id,date:toLocalInput().slice(0,10),from:'16:00',to:'22:00',who:'',note:''},names={},confirmed=false;
+  reservs().forEach(function(x){if(x.who)names[x.who]=1});
+  var pre=[['Morgen','05:00','09:00'],['Abend','16:00','22:00'],['Nacht','21:00','05:00'],['Ganztags','00:00','23:59']];
+  openSheet('<h2>'+(r?'Reservierung bearbeiten':'Ansitz reservieren')+'</h2>'+
+    '<label class="field"><span class="lbl">Kanzel / Stand</span><select id="rs-seat">'+seats.map(function(m){return '<option value="'+esc(m.id)+'"'+(m.id===d.seatId?' selected':'')+'>'+esc(m.name||FAC[m.type].label)+(m.sub?' ('+SUBK[m.sub]+')':'')+'</option>'}).join('')+(postMarker(d.seatId)?'':'<option value="'+esc(d.seatId)+'" selected>Gelöschter Stand</option>')+'</select></label>'+
+    '<label class="field"><span class="lbl">Datum</span><input type="date" id="rs-date" value="'+esc(d.date)+'"></label>'+
+    '<div class="field"><span class="lbl">Zeitraum</span><div class="btnrow">'+pre.map(function(p,i){return '<button type="button" class="btn sm" data-pi="'+i+'">'+p[0]+'</button>'}).join('')+'</div></div>'+
+    '<div class="grid2"><label class="field"><span class="lbl">Von</span><input type="time" id="rs-from" value="'+esc(d.from||'')+'"></label><label class="field"><span class="lbl">Bis</span><input type="time" id="rs-to" value="'+esc(d.to||'')+'"></label></div>'+
+    '<label class="field"><span class="lbl">Wer sitzt an</span><input type="text" id="rs-who" value="'+esc(d.who||'')+'" list="rsDl" autocomplete="off"><datalist id="rsDl">'+Object.keys(names).map(function(n){return '<option value="'+esc(n)+'">'}).join('')+'</datalist></label>'+
+    '<label class="field"><span class="lbl">Notiz</span><input type="text" id="rs-note" value="'+esc(d.note||'')+'" autocomplete="off"></label>'+
+    '<div class="warnbox" id="rs-warn" hidden></div>'+
+    '<div class="btnrow"><button class="btn primary" id="rs-save" type="button" style="flex:2">Speichern</button><button class="btn" id="rs-cancel" type="button" style="flex:1">Abbrechen</button></div>'+(r?'<button class="btn danger" id="rs-del" type="button">Reservierung löschen</button>':''));
+  $('#rs-cancel').onclick=closeSheet;
+  $$('#sheetBody [data-pi]').forEach(function(b){b.onclick=function(){var p=pre[+b.dataset.pi];$('#rs-from').value=p[1];$('#rs-to').value=p[2];confirmed=false;$('#rs-warn').hidden=true}});
+  $$('#sheetBody select,#sheetBody input').forEach(function(x){x.addEventListener('input',function(){confirmed=false;$('#rs-warn').hidden=true})});
+  $('#rs-save').onclick=function(){
+    var o={id:d.id,seatId:$('#rs-seat').value,date:$('#rs-date').value,from:$('#rs-from').value,to:$('#rs-to').value,who:$('#rs-who').value.trim(),note:$('#rs-note').value.trim()};
+    if(!o.date||!o.from){toast('Bitte Datum und Beginn angeben.');return}
+    var s=resStart(o),e=resEnd(o),cf=reservs().filter(function(x){return x.id!==o.id&&x.seatId===o.seatId&&resStart(x)<e&&resEnd(x)>s});
+    if(cf.length&&!confirmed){confirmed=true;var w=$('#rs-warn');w.hidden=false;w.textContent='Überschneidung: '+cf.map(function(x){return (x.who||'ohne Namen')+', '+fmtRes(x)}).join(' / ')+'. Tippe nochmal auf Speichern, um trotzdem zu reservieren.';return}
+    var arr=reservs().slice(),i=arr.findIndex(function(x){return x.id===o.id});if(i>-1)arr[i]=o;else arr.push(o);
+    saveRes(arr).then(function(){closeSheet();toast('Reserviert');if(S.tab==='hunt')renderHunt()},function(){});
+  };
+  var del=$('#rs-del');if(del)del.onclick=function(){if(del.dataset.s!=='1'){del.dataset.s='1';del.textContent='Wirklich löschen?';return}
+    saveRes(reservs().filter(function(x){return x.id!==d.id})).then(function(){closeSheet();toast('Gelöscht');if(S.tab==='hunt')renderHunt()},function(){})};
+}
 /* ---------- Drückjagd: Posten, Schützen, Schussmeldungen, Nachsuche ---------- */
 ICON.hunt='<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>';
 var RES={unk:'Unklar',fl:'Flüchtig / krank',tot:'Tot am Anschuss',miss:'Fehlschuss'};
@@ -880,6 +927,7 @@ function renderHunt(){
   if(!h){
     $('#hNew').onclick=function(){huntForm(null)};
     $$('[data-h]',root).forEach(function(b){b.onclick=function(){S.hid=b.dataset.h;renderHunt();window.scrollTo(0,0)}});
+    $('#rNew').onclick=function(){resForm(null,null)};bindResRows(root);
   }else{
     $('#hBack').onclick=function(){S.hid=null;renderHunt()};
     $('#hShot').onclick=function(){shotForm(h,null,null)};
@@ -900,6 +948,7 @@ function huntListHtml(){
   if(no.length)html+='<div class="warnbox"><b>Offene Nachsuchen ('+no.length+')</b></div>'+nachRowsHtml(no);
   if(!hs.length)html+='<div class="empty">Noch keine Drückjagd. Lege zuerst unter Eintragen → Einrichtung die Posten an (Art „Drückjagdposten“, optional mit Gruppe wie „Linie 1“). Dann erstellst du hier die Jagd, wählst die Posten und trägst die Schützen ein.</div>';
   else html+='<div class="rows">'+hs.map(function(h){var ns=(h.shots||[]).length,o=(h.shots||[]).filter(nachOpen).length;return '<button class="row" type="button" data-h="'+esc(h.id)+'"><span class="mk sq" style="background:var(--accent)">'+(h.posts||[]).length+'</span><span class="rt"><b>'+esc(h.name)+'</b><small>'+esc(fmtDay(h.date))+(h.time?' · '+esc(h.time):'')+' · '+ns+' Schüsse'+(o?' · '+o+' Nachsuche offen':'')+'</small></span></button>'}).join('')+'</div>';
+  html+=resSectionHtml();
   return html;
 }
 function huntDetailHtml(h){
@@ -1352,6 +1401,7 @@ function openForm(kind,d,isEdit){
   var title={marker:'Einrichtung',sight:'Wildsichtung',kill:'Abschuss'}[kind],body='';
   if(kind==='marker'){
     body='<div class="field"><span class="lbl">Art</span><div class="types" data-f="type" data-chips>'+Object.keys(FAC).map(function(k){return '<button type="button" class="type" data-v="'+k+'" aria-pressed="'+(d.type===k)+'"><i style="background:var('+FAC[k].c+')">'+FAC[k].glyph+'</i>'+esc(FAC[k].label)+'</button>'}).join('')+'</div></div>'+
+    '<div class="field" id="f-subf"'+(d.type==='kanzel'?'':' hidden')+'><span class="lbl">Bauart der Kanzel</span>'+chips('sub',SUBK,d.sub||'',['closed','mobile','open'])+'</div>'+
     '<label class="field"><span class="lbl">Name</span><input type="text" data-f="name" value="'+esc(d.name)+'" placeholder="Name bzw. Text, z. B. Posten 1" autocomplete="off"></label>'+posRow(d)+
     '<label class="field"><span class="lbl">Notiz</span><textarea rows="2" data-f="note">'+esc(d.note)+'</textarea></label>';
   }else if(kind==='sight'){
@@ -1398,6 +1448,7 @@ function changed(key){
   var f=S.form,d=f.d;
   if(key==='kanzelId'&&!d.posManual){var k=findFac(d.kanzelId);if(k){d.lat=k.lat;d.lon=k.lon;updPos()}}
   if(key==='tag')checkTag();
+  if(key==='type'){var sf=$('#f-subf');if(sf)sf.hidden=d.type!=='kanzel'}
 }
 function updPos(){
   var f=S.form;if(!f||!$('#f-pos'))return;var d=f.d;$('#f-pos').textContent=posText(d);
@@ -1430,7 +1481,7 @@ function saveForm(){
     if(f.kind==='sight'){coll='sightings';o={id:d.id,species:d.species,count:d.count||1,sex:d.sex,ts:t.toISOString(),lat:d.lat,lon:d.lon,kanzelId:d.kanzelId||'',note:d.note||''}}
     else{coll='kills';o={id:d.id,species:d.species,sex:d.sex,age:d.age,weight:d.weight==null||isNaN(d.weight)?null:d.weight,ts:t.toISOString(),lat:d.lat,lon:d.lon,kanzelId:d.kanzelId||'',tag:(d.tag||'').trim(),note:d.note||''}}
   }
-  o.photos=(d.photos||[]).slice();o.group=(d.group||'').trim();
+  o.photos=(d.photos||[]).slice();o.group=(d.group||'').trim();if(f.kind==='marker')o.sub=d.type==='kanzel'?(d.sub||''):'';
   var b=$('#f-save');b.disabled=true;
   guard(Store.put(coll,o)).then(function(){f.saved=true;phSaved(d);hookNewPost(o,d);closeSheet();toast('Gespeichert');if(S.tab==='map'){S.sel={k:f.kind==='marker'?'fac':f.kind==='sight'?'sight':'kill',id:o.id};dirty=true}},function(){b.disabled=false});
 }
@@ -1442,7 +1493,7 @@ function showDetail(kind,o){
   if(kind==='fac'){
     var nk=G('kills').filter(function(k){return k.kanzelId===o.id}).length,ns=G('sightings').filter(function(k){return k.kanzelId===o.id}).length;
     title=o.name||FAC[o.type].label;
-    rows='<dt>Art</dt><dd>'+esc(FAC[o.type].label)+'</dd><dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(SEATS.indexOf(o.type)>-1?'<dt>Abschüsse</dt><dd>'+nk+'</dd><dt>Sichtungen</dt><dd>'+ns+'</dd>':'')+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
+    rows='<dt>Art</dt><dd>'+esc(FAC[o.type].label)+(o.sub?' ('+esc(SUBK[o.sub].toLowerCase())+')':'')+'</dd><dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(SEATS.indexOf(o.type)>-1?'<dt>Abschüsse</dt><dd>'+nk+'</dd><dt>Sichtungen</dt><dd>'+ns+'</dd>':'')+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
   }else if(kind==='sight'){
     title=(o.count||1)+'× '+o.species;
     rows='<dt>Zeitpunkt</dt><dd>'+fmtDate(o.ts)+'</dd><dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd>'+(o.kanzelId?'<dt>Von</dt><dd>'+esc(facName(o.kanzelId))+'</dd>':'')+'<dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
