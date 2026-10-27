@@ -1,0 +1,923 @@
+<title>Revierbuch</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one-screen field app. Slim header, four views (Karte, Einträge, Statistik, Daten) and a bottom tab bar.
+   The map bleeds edge to edge; every other surface keeps the side gutter. Palette is forest signage: green-tinted
+   neutrals, one forest-green accent, one marker colour per facility type, red reserved for harvests. */
+:root{
+  --bg:#EDEFE8; --surface:#F8F9F4; --ink:#19231D; --ink-2:#55615A; --line:#CBD1C5;
+  --accent:#2D5A43; --accent-ink:#FFFFFF; --map:#E3E8DC; --grid:#D3DACB; --on-mark:#FFFFFF;
+  --kanzel:#2D5A43; --bock:#2F5F86; --huette:#7A5A34; --futter:#B07A1E; --kirrung:#A4502F;
+  --salz:#5B6B73; --acker:#6F7A25; --sonst:#6B746E; --sicht:#6A4C93; --kill:#B3261E;
+  --warn:#7A4E00; --warn-bg:#F4E5BF; --shadow:0 6px 24px rgba(20,30,24,.18);
+  --font-display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --font-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101612; --surface:#18211B; --ink:#E4EADF; --ink-2:#9BA89F; --line:#2E3B32;
+  --accent:#7FC29A; --accent-ink:#0E1A12; --map:#0C120F; --grid:#18231C; --on-mark:#0E1A12;
+  --kanzel:#7FC29A; --bock:#7FB3DB; --huette:#D2AE82; --futter:#E0AE55; --kirrung:#E58F6C;
+  --salz:#9DB0BA; --acker:#BCC864; --sonst:#9AA59E; --sicht:#BDA3E6; --kill:#F2837B;
+  --warn:#F0CF86; --warn-bg:#3A2F12; --shadow:0 6px 24px rgba(0,0,0,.5); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101612; --surface:#18211B; --ink:#E4EADF; --ink-2:#9BA89F; --line:#2E3B32;
+  --accent:#7FC29A; --accent-ink:#0E1A12; --map:#0C120F; --grid:#18231C; --on-mark:#0E1A12;
+  --kanzel:#7FC29A; --bock:#7FB3DB; --huette:#D2AE82; --futter:#E0AE55; --kirrung:#E58F6C;
+  --salz:#9DB0BA; --acker:#BCC864; --sonst:#9AA59E; --sicht:#BDA3E6; --kill:#F2837B;
+  --warn:#F0CF86; --warn-bg:#3A2F12; --shadow:0 6px 24px rgba(0,0,0,.5); color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.45 var(--font-body);-webkit-text-size-adjust:100%;overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.gx{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+#app{height:100%;display:flex;flex-direction:column;min-height:0}
+.top{display:flex;align-items:center;gap:12px;padding-block:8px;background:var(--surface);border-bottom:1px solid var(--line);min-height:52px}
+.brand{min-width:0;flex:1}
+.brand h1{margin:0;font:700 22px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase}
+.brand small{display:block;color:var(--ink-2);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.status{display:flex;gap:6px;flex-shrink:0}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;background:var(--bg);color:var(--ink-2);min-height:28px}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--ink-2)}
+.pill.ok i{background:var(--accent)} .pill.busy i{background:var(--futter)} .pill.bad i{background:var(--kill)}
+button.pill{cursor:pointer}
+
+.views{flex:1;min-height:0;position:relative}
+.view{position:absolute;inset:0;overflow:auto;-webkit-overflow-scrolling:touch}
+#viewMap{overflow:hidden;background:var(--map)}
+#map{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+.pad{padding-block:16px 28px;max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-top:1px solid var(--line);padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
+.tabs button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px 7px;min-height:56px;color:var(--ink-2);font:600 12px/1 var(--font-display);letter-spacing:.07em;text-transform:uppercase;border-top:3px solid transparent}
+.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tabs button[aria-current="page"]{color:var(--accent);border-top-color:var(--accent)}
+
+/* map overlays */
+.layers{position:absolute;top:10px;left:0;right:0;display:flex;gap:6px;overflow-x:auto;padding-block:2px;scrollbar-width:none}
+.layers::-webkit-scrollbar{display:none}
+.chip{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:13px;min-height:34px;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.chip i{width:10px;height:10px;border-radius:3px;background:var(--c,var(--ink-2))}
+.chip[aria-pressed="false"]{color:var(--ink-2);background:var(--bg)} .chip[aria-pressed="false"] i{opacity:.35}
+.demo{position:absolute;top:54px;left:0;right:0;display:flex;align-items:center;gap:10px}
+.demo div{flex:1;background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:8px 12px;font-size:13px;display:flex;gap:10px;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.demo button{border:0;background:none;color:inherit;font-weight:700;text-decoration:underline;padding:4px;min-height:32px}
+.maptools{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:16px;display:flex;flex-direction:column;gap:8px}
+.rb{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;box-shadow:var(--shadow);padding:0}
+.rb svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round}
+.rb.on svg{stroke:var(--accent)}
+.fab{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;border:0;border-radius:999px;background:var(--accent);color:var(--accent-ink);padding:0 22px 0 16px;height:50px;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow);font:700 17px/1 var(--font-display);letter-spacing:.08em;text-transform:uppercase}
+.fab svg{width:22px;height:22px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round}
+.scale{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:78px;font:500 11px/1 var(--font-mono);color:var(--ink);pointer-events:none}
+.scale b{display:block;height:6px;border:2px solid var(--ink);border-top:0;margin-top:3px}
+.place{position:absolute;top:0;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--line);padding-block:10px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.place p{margin:0;font-size:14px}
+.place code{font:500 13px var(--font-mono);color:var(--ink-2)}
+
+/* buttons, fields */
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:0 16px;min-height:46px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.danger{color:var(--kill);border-color:currentColor}
+.btn.sm{min-height:38px;padding:0 12px;font-size:14px}
+.btn[disabled]{opacity:.45;cursor:default}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.lbl{font:600 13px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+input[type=text],input[type=number],input[type=search],input[type=datetime-local],select,textarea{width:100%;min-height:46px;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px;font-size:16px;min-width:0}
+textarea{resize:vertical}
+input.mono{font-family:var(--font-mono);letter-spacing:.04em}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;min-width:84px;border:1px solid var(--line);background:var(--bg);border-radius:10px;min-height:44px;padding:0 10px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+.types{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.type{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:6px 10px;min-height:46px;text-align:left;font-size:14px}
+.type i,.mk{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:var(--on-mark);font:700 13px/1 var(--font-display);font-style:normal}
+.type[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);font-weight:700}
+.posrow{display:flex;flex-direction:column;gap:8px;border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
+.posrow code{font:500 14px var(--font-mono)}
+.hint{font-size:13px;color:var(--ink-2);margin:0}
+.warnbox{background:var(--warn-bg);color:var(--warn);border-radius:8px;padding:8px 10px;font-size:13px}
+
+/* sheet */
+#ov{position:fixed;inset:0;background:rgba(10,16,12,.5);z-index:20}
+#sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;max-height:90%;overflow:auto;background:var(--surface);border-radius:18px 18px 0 0;box-shadow:var(--shadow);padding-top:8px;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));animation:up .22s ease-out}
+#sheet:focus{outline:0}
+@keyframes up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
+.grab{width:44px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 10px}
+.sbody{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.sbody h2{margin:0;font:700 24px/1.1 var(--font-display);letter-spacing:.05em;text-transform:uppercase}
+.choice{display:flex;align-items:center;gap:14px;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:12px 14px;min-height:64px;text-align:left;width:100%}
+.choice b{display:block;font-size:16px} .choice small{color:var(--ink-2)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;margin:0}
+.kv dt{color:var(--ink-2)} .kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.kv code{font-family:var(--font-mono)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;max-width:min(92vw,520px);text-align:center;box-shadow:var(--shadow)}
+
+/* lists */
+h2.sec{margin:0;font:700 20px/1 var(--font-display);letter-spacing:.07em;text-transform:uppercase}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.toolbar .btn{flex:1}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;min-height:60px}
+.row .rt{flex:1;min-width:0;display:flex;flex-direction:column}
+.row .rt b{overflow-wrap:anywhere}
+.row small{color:var(--ink-2);font-size:13px}
+.tagc{font:500 12px var(--font-mono);border:1px solid var(--line);border-radius:6px;padding:3px 7px;background:var(--bg);flex:none;max-width:40%;overflow:hidden;text-overflow:ellipsis}
+.mk.sq{border-radius:8px}
+.empty{color:var(--ink-2);text-align:center;padding:28px 12px;border:1px dashed var(--line);border-radius:12px}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:minmax(80px,32%) 1fr auto;gap:10px;align-items:center;font-size:14px}
+.bar .bt{height:14px;border-radius:4px;background:var(--bg);overflow:hidden;border:1px solid var(--line)}
+.bar .bt i{display:block;height:100%;background:var(--accent)}
+.bar .bv{font:500 13px var(--font-mono);text-align:right;white-space:nowrap}
+.bar .bl{overflow-wrap:anywhere}
+.bar small{display:block;color:var(--ink-2);font-size:12px}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;align-items:end;height:150px;padding-top:6px}
+.months div{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;height:100%;font:500 10px var(--font-mono);color:var(--ink-2);min-width:0}
+.months i{display:block;width:100%;background:var(--kill);border-radius:3px 3px 0 0;min-height:2px}
+.months em{font-style:normal;color:var(--ink)}
+.big{font:700 56px/1 var(--font-display);letter-spacing:.02em}
+.lotrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.lotrow span{flex:1;min-width:120px;overflow-wrap:anywhere}
+.pick{max-height:46vh;overflow:auto;display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:10px;padding:6px}
+.pick label{display:flex;gap:10px;align-items:center;padding:8px;border-radius:8px;min-height:44px}
+.pick input{width:20px;height:20px;flex:none;accent-color:var(--accent)}
+a{color:var(--accent)}
+@media (prefers-reduced-motion:reduce){#sheet{animation:none}}
+</style>
+
+<div id="app">
+  <header class="top gx">
+    <div class="brand"><h1>Revierbuch</h1><small id="lotName">Kein Los gewählt</small></div>
+    <div class="status"><span class="pill" id="stStore"><i></i><span>Lade …</span></span><button class="pill" id="stGps" type="button" aria-label="Standort"><i></i><span>GPS aus</span></button></div>
+  </header>
+  <div class="views">
+    <section class="view" id="viewMap">
+      <canvas id="map" aria-label="Revierkarte"></canvas>
+      <div class="layers gx" id="layers"></div>
+      <div class="demo gx" id="demo" hidden><div><span>Beispieldaten sind sichtbar. Sie verschwinden mit deinem ersten Eintrag.</span><button type="button" id="demoOff">Ausblenden</button></div></div>
+      <div class="scale" id="scale"><span id="scaleL"></span><b id="scaleB"></b></div>
+      <div class="maptools">
+        <button class="rb" id="bFit" type="button" aria-label="Zu meinem Los"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+        <button class="rb" id="bLoc" type="button" aria-label="Mein Standort"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></button>
+        <button class="rb" id="bIn" type="button" aria-label="Hineinzoomen"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+        <button class="rb" id="bOut" type="button" aria-label="Herauszoomen"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+      </div>
+      <button class="fab" id="fab" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Eintragen</button>
+      <div class="place gx" id="place" hidden>
+        <p><b id="placeTitle">Position wählen</b><br><span class="hint">Karte verschieben, bis das Fadenkreuz auf dem Ort liegt.</span></p>
+        <code id="pcoord"></code>
+        <div class="btnrow"><button class="btn primary sm" id="pOk" type="button">Hier setzen</button><button class="btn sm" id="pGps" type="button">Mein Standort</button><button class="btn sm" id="pNo" type="button">Abbrechen</button></div>
+      </div>
+    </section>
+    <section class="view" id="viewLog" hidden><div class="pad gx" id="logBody"></div></section>
+    <section class="view" id="viewStats" hidden><div class="pad gx" id="statsBody"></div></section>
+    <section class="view" id="viewData" hidden><div class="pad gx" id="dataBody"></div></section>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="Bereiche"></nav>
+</div>
+<div id="ov" hidden></div>
+<section id="sheet" class="gx" role="dialog" aria-modal="true" tabindex="-1" hidden><div class="grab"></div><div class="sbody" id="sheetBody"></div></section>
+<div id="toast" role="status" hidden></div>
+<input type="file" id="fileIn" accept=".geojson,.json,.kml,application/json,application/geo+json,application/vnd.google-earth.kml+xml" hidden>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var uid=function(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,6)};
+var clone=function(o){return JSON.parse(JSON.stringify(o))};
+
+/* ---------- constants ---------- */
+var FAC={
+  kanzel:{label:'Kanzel',glyph:'K',c:'--kanzel'},
+  bock:{label:'Ansitzbock / Drückjagdstand',glyph:'B',c:'--bock'},
+  huette:{label:'Jagdunterstand / Hütte',glyph:'H',c:'--huette'},
+  futter:{label:'Futterplatz',glyph:'F',c:'--futter'},
+  kirrung:{label:'Kirrung',glyph:'Ki',c:'--kirrung'},
+  salz:{label:'Salzlecke',glyph:'S',c:'--salz'},
+  acker:{label:'Wildacker / Äsungsfläche',glyph:'W',c:'--acker'},
+  sonst:{label:'Sonstiges',glyph:'·',c:'--sonst'}
+};
+var SEATS=['kanzel','bock'];
+var SPECIES=['Rehwild','Rotwild','Schwarzwild','Damwild','Muffelwild','Fuchs','Dachs','Marder','Marderhund','Waschbär','Wildgans','Sonstiges'];
+var SEX={m:'männlich',w:'weiblich',u:'unbekannt',g:'gemischt'};
+var AGE={juv:'Jungtier',ueb:'Überläufer / Jährling',ad:'Adult',u:'unbekannt'};
+var MONTHS=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+var ICON={
+  map:'<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/>',
+  list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+  chart:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+  data:'<path d="M12 3c4.4 0 8 1.1 8 2.5S16.4 8 12 8 4 6.9 4 5.5 7.6 3 12 3z"/><path d="M4 5.5v6C4 12.9 7.6 14 12 14s8-1.1 8-2.5v-6M4 11.5v6C4 18.9 7.6 20 12 20s8-1.1 8-2.5v-6"/>'
+};
+var nf=new Intl.NumberFormat('de-LU',{maximumFractionDigits:1});
+function fmtDate(iso){var d=new Date(iso);return isNaN(d)?'':d.toLocaleString('de-LU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+function toLocalInput(iso){var d=iso?new Date(iso):new Date();var p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes())}
+function posText(o){return o&&o.lat!=null?o.lat.toFixed(5)+'° N, '+o.lon.toFixed(5)+'° E':'noch keine Position'}
+function normTag(t){return String(t||'').replace(/\s+/g,'').toUpperCase()}
+
+/* ---------- state ---------- */
+var D={markers:[],sightings:[],kills:[],lots:[],settings:{}};
+var S={tab:'map',layers:{lots:true,all:true,fac:true,sight:true,kill:true},view:{lat:49.9755,lon:5.933,z:14.2},sel:null,placing:null,gps:null,gpsState:'off',watch:null,logFilter:'all',logQ:'',statYear:'all',ready:false,mode:'local',form:null,hadSavedView:false,fitted:false};
+var dl=null;
+
+/* ---------- demo data (never written to the store) ---------- */
+var demoCache=null;
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function makeDemo(){
+  var r=mulberry(11),c={lat:49.9755,lon:5.933},dLat=0.0072,dLon=0.0112;
+  var ring=[[-1,-.7],[-.2,-1],[.7,-.85],[1,-.1],[.8,.8],[-.1,1],[-.9,.65],[-1.05,0]].map(function(p){return [c.lon+p[0]*dLon,c.lat+p[1]*dLat]});
+  ring.push(ring[0].slice());
+  var lot={id:'ex-lot',name:'Beispiel-Jagdlos',polys:[[ring]],demo:true};prepLot(lot,lot.polys);
+  var spec=[['kanzel','Eichberg',-.45,.25],['kanzel','Lichtung Ost',.5,.1],['kanzel','Bachtal',-.1,-.5],['bock','Drückjagdbock 1',.25,.55],['bock','Drückjagdbock 2',-.6,-.3],['futter','Futterplatz Nord',.05,.7],['kirrung','Kirrung Fichtenschlag',.55,-.45],['salz','Salzlecke Quellbach',-.3,-.65],['acker','Wildacker Hang',-.7,.4],['huette','Jagdunterstand',.0,.05]];
+  var markers=spec.map(function(s,i){return {id:'ex-m'+i,type:s[0],name:s[1],lat:c.lat+s[3]*dLat,lon:c.lon+s[2]*dLon,note:'Beispieldaten',demo:true}});
+  var seats=markers.filter(function(m){return SEATS.indexOf(m.type)>-1});
+  var wr={Rehwild:[12,24],Schwarzwild:[35,90],Rotwild:[60,110],Fuchs:[4,8],Damwild:[40,70]};
+  var pool=['Rehwild','Rehwild','Rehwild','Rehwild','Schwarzwild','Schwarzwild','Schwarzwild','Rotwild','Fuchs','Fuchs','Damwild'];
+  var kills=[],sights=[],i;
+  function when(){var y=r()<.35?2025:2026,m=y===2025?3+Math.floor(r()*9):3+Math.floor(r()*7);var d=1+Math.floor(r()*27);if(y===2026&&m===9&&d>20)d=20;return new Date(y,m,d,4+Math.floor(r()*16),Math.floor(r()*60)).toISOString()}
+  for(i=0;i<24;i++){var sp=pool[Math.floor(r()*pool.length)],st=seats[Math.floor(r()*seats.length)],w=wr[sp];
+    kills.push({id:'ex-k'+i,species:sp,sex:r()<.5?'m':'w',age:['juv','ueb','ad'][Math.floor(r()*3)],weight:Math.round((w[0]+r()*(w[1]-w[0]))*10)/10,ts:when(),lat:st.lat+(r()-.5)*.0008,lon:st.lon+(r()-.5)*.001,kanzelId:st.id,tag:i%3?'DEMO-'+String(1001+i):'',note:'Beispieldaten',demo:true})}
+  for(i=0;i<16;i++){var sp2=pool[Math.floor(r()*pool.length)],st2=seats[Math.floor(r()*seats.length)];
+    sights.push({id:'ex-s'+i,species:sp2,count:1+Math.floor(r()*4),sex:['m','w','g','u'][Math.floor(r()*4)],ts:when(),lat:st2.lat+(r()-.5)*.0012,lon:st2.lon+(r()-.5)*.0016,kanzelId:st2.id,note:'Beispieldaten',demo:true})}
+  return {markers:markers,sightings:sights,kills:kills,lots:[]};
+}
+function useDemo(){return S.ready&&!D.settings.hideExamples&&!D.markers.length&&!D.sightings.length&&!D.kills.length&&!D.lots.length&&!(D.settings.myLots&&D.settings.myLots.length)}
+function G(n){if(useDemo()){demoCache=demoCache||makeDemo();return demoCache[n]}return D[n]}
+function findFac(id){return G('markers').filter(function(m){return m.id===id})[0]}
+
+/* ---------- geometry helpers ---------- */
+function bboxOf(polys){var a=180,b=90,c=-180,d=-90;polys.forEach(function(p){p[0].forEach(function(q){if(q[0]<a)a=q[0];if(q[0]>c)c=q[0];if(q[1]<b)b=q[1];if(q[1]>d)d=q[1]})});return [a,b,c,d]}
+function inRing(x,y,ring){var ins=false;for(var i=0,j=ring.length-1;i<ring.length;j=i++){var xi=ring[i][0],yi=ring[i][1],xj=ring[j][0],yj=ring[j][1];if(((yi>y)!==(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))ins=!ins}return ins}
+function inPoly(x,y,poly){if(!inRing(x,y,poly[0]))return false;for(var i=1;i<poly.length;i++)if(inRing(x,y,poly[i]))return false;return true}
+var TS=256;
+function mx(lon,z){return (lon+180)/360*TS*Math.pow(2,z)}
+function my(lat,z){var s=Math.sin(lat*Math.PI/180);return (0.5-Math.log((1+s)/(1-s))/(4*Math.PI))*TS*Math.pow(2,z)}
+function lonOf(x,z){return x/(TS*Math.pow(2,z))*360-180}
+function latOf(y,z){var n=Math.PI-2*Math.PI*y/(TS*Math.pow(2,z));return 180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n)))}
+/* lots: world-pixel copies at zoom 0 make drawing 600+ lots cheap */
+var BASE=[],baseState='idle',migTried=false;
+function worldRing(r){var a=new Float64Array(r.length*2);for(var i=0;i<r.length;i++){a[2*i]=mx(r[i][0],0);a[2*i+1]=my(r[i][1],0)}return a}
+function prepLot(l,polys){var bb=bboxOf(polys);l.bb=bb;l.W=polys.map(function(pl){return pl.map(worldRing)});l.bw=[mx(bb[0],0),my(bb[3],0),mx(bb[2],0),my(bb[1],0)];return l}
+function prepCustom(l){return prepLot(l,l.polys)}
+function plain(l){return {id:l.id,name:l.name,ha:l.ha||null,polys:l.polys}}
+function lotsAll(){return BASE.concat(useDemo()?G('lots'):D.lots)}
+function isMine(l){return l.no!=null?(D.settings.myLots||[]).indexOf(l.no)>-1:true}
+function inRingW(x,y,a){var ins=false,n=a.length/2;for(var i=0,j=n-1;i<n;j=i++){var xi=a[2*i],yi=a[2*i+1],xj=a[2*j],yj=a[2*j+1];if(((yi>y)!==(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))ins=!ins}return ins}
+function inPolyW(x,y,poly){if(!inRingW(x,y,poly[0]))return false;for(var i=1;i<poly.length;i++)if(inRingW(x,y,poly[i]))return false;return true}
+function loadBase(){
+  baseState='loading';
+  fetch('lots-lu.geojson').then(function(r){if(!r.ok)throw new Error('http');return r.json()}).then(function(j){
+    BASE=j.features.map(function(f){var p=f.properties||{},g=f.geometry,polys=g.type==='Polygon'?[g.coordinates]:g.coordinates;return prepLot({no:p.NoLot,name:'Los '+p.NoLot,ha:p.Flaeche_ha||null},polys)});
+    baseState='ok';
+    if(S.ready&&!S.hadSavedView&&!S.fitted){fitMine();S.fitted=true}
+    renderAll();
+  }).catch(function(){baseState='fail';toast('Die Grenzen aller Lose konnten nicht geladen werden.')});
+}
+function fitMine(force){
+  var ls=lotsAll().filter(isMine),b=null;
+  if(!ls.length){if(useDemo()&&!force)return;b=[5.73,49.44,6.54,50.19]}
+  else ls.forEach(function(l){b=b?[Math.min(b[0],l.bb[0]),Math.min(b[1],l.bb[1]),Math.max(b[2],l.bb[2]),Math.max(b[3],l.bb[3])]:l.bb.slice()});
+  fitBox(b);
+}
+/* earlier versions stored a chosen lot as an imported document; turn those into plain lot numbers */
+function migrate(){
+  if(migTried||baseState!=='ok'||!S.ready)return;
+  var hit=D.lots.filter(function(l){return /^Los \d+$/.test(l.name)&&BASE.some(function(b){return b.name===l.name})});
+  if(!hit.length)return;
+  migTried=true;
+  var nos=(D.settings.myLots||[]).slice();
+  hit.forEach(function(l){var n=+l.name.slice(4);if(nos.indexOf(n)<0)nos.push(n)});
+  Store.setting({myLots:nos}).then(function(){return hit.reduce(function(p,l){return p.then(function(){return Store.del('lots',l.id)})},Promise.resolve())}).catch(function(){});
+}
+
+
+/* ---------- storage ---------- */
+var LS='revierbuch.v1';
+var Store={
+  base:null,pending:5,first:{},
+  init:function(){
+    var self=this,db=null,user=null,id=null;
+    return Promise.resolve().then(function(){
+      if(window.claude&&window.claude.use){
+        return Promise.all([window.claude.use('db'),window.claude.use('user'),window.claude.use('downloads')]).then(function(r){db=r[0];user=r[1];dl=r[2]})
+      }
+    }).catch(function(){}).then(function(){return db&&user?user.id():null}).catch(function(){return null}).then(function(x){
+      id=x;
+      if(db&&id){S.mode='cloud';self.base=db.doc('data/users/'+id+'/jagd');self.subscribe()}
+      else{S.mode='local';self.loadLocal();markReady()}
+    });
+  },
+  subscribe:function(){
+    var self=this;
+    setTimeout(markReady,6000);
+    ['markers','sightings','kills','lots'].forEach(function(n){
+      self.base.collection(n).onSnapshot(function(snap){
+        D[n]=snap.docs.map(function(d){var o=Object.assign({},d.data());o.id=d.id;return o});
+        if(n==='lots')D.lots.forEach(prepCustom);
+        self.done(n);renderAll();
+      },function(e){self.done(n);toast('Daten konnten nicht geladen werden ('+(e&&e.code||'Fehler')+').')});
+    });
+    self.base.collection('settings').doc('main').onSnapshot(function(s){D.settings=s.exists?Object.assign({},s.data()):{};self.done('settings');renderAll()},function(){self.done('settings')});
+  },
+  done:function(n){if(!this.first[n]){this.first[n]=1;if(--this.pending<=0)markReady()}},
+  loadLocal:function(){try{var j=JSON.parse(localStorage.getItem(LS)||'null');if(j){['markers','sightings','kills','lots'].forEach(function(n){D[n]=j[n]||[]});D.settings=j.settings||{};D.lots.forEach(prepCustom)}}catch(e){}},
+  saveLocal:function(){try{localStorage.setItem(LS,JSON.stringify({markers:D.markers,sightings:D.sightings,kills:D.kills,lots:D.lots.map(plain),settings:D.settings}))}catch(e){toast('Lokaler Speicher ist voll oder gesperrt.')}},
+  put:function(coll,obj,quiet){
+    var o=coll==='lots'?plain(obj):clone(obj);delete o.demo;
+    if(S.mode==='cloud'){var w=clone(o);if(coll==='lots'&&w.polys){w.geo=JSON.stringify(w.polys);delete w.polys}return this.base.collection(coll).doc(w.id).set(w).then(function(){if(!quiet)renderAll()})}
+    var arr=D[coll],i=arr.findIndex(function(x){return x.id===o.id});if(coll==='lots')prepCustom(o);
+    if(i>-1)arr[i]=o;else arr.push(o);this.saveLocal();if(!quiet)renderAll();return Promise.resolve();
+  },
+  del:function(coll,id){
+    if(S.mode==='cloud')return this.base.collection(coll).doc(id).delete().then(renderAll);
+    D[coll]=D[coll].filter(function(x){return x.id!==id});this.saveLocal();renderAll();return Promise.resolve();
+  },
+  setting:function(patch){
+    D.settings=Object.assign({},D.settings,patch);
+    if(S.mode==='cloud')return this.base.collection('settings').doc('main').set(D.settings).then(renderAll);
+    this.saveLocal();renderAll();return Promise.resolve();
+  }
+};
+function markReady(){
+  if(S.ready)return;S.ready=true;
+  if(!S.hadSavedView&&!S.fitted&&baseState==='ok'){fitMine();S.fitted=true}
+  renderAll();
+}
+function guard(p,msg){return p.catch(function(e){toast((msg||'Speichern fehlgeschlagen')+' ('+(e&&e.code||'Fehler')+').');throw e})}
+
+/* ---------- toast & sheet ---------- */
+var toastT=null;
+function toast(msg){var t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true},4200)}
+function openSheet(html){$('#sheetBody').innerHTML=html;$('#ov').hidden=false;$('#sheet').hidden=false;$('#sheet').scrollTop=0;$('#sheet').focus()}
+function closeSheet(){$('#ov').hidden=true;$('#sheet').hidden=true;$('#sheetBody').innerHTML='';S.form=null}
+$('#ov').addEventListener('click',closeSheet);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet()});
+
+/* ---------- map engine ---------- */
+var cv=$('#map'),ctx=cv.getContext('2d'),W=0,H=0,DPR=1,dirty=true,pal={};
+function resize(){var r=cv.getBoundingClientRect();if(!r.width||!r.height)return;DPR=window.devicePixelRatio||1;W=r.width;H=r.height;cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);dirty=true}
+if(window.ResizeObserver)new ResizeObserver(resize).observe(cv);window.addEventListener('resize',resize);
+function toScr(lat,lon){var v=S.view;return {x:W/2+mx(lon,v.z)-mx(v.lon,v.z),y:H/2+my(lat,v.z)-my(v.lat,v.z)}}
+function fromScr(px,py){var v=S.view;return {lon:lonOf(mx(v.lon,v.z)+px-W/2,v.z),lat:latOf(my(v.lat,v.z)+py-H/2,v.z)}}
+function anchor(geo,px,py,z){z=Math.max(8,Math.min(20,z));S.view.z=z;var cx=mx(geo.lon,z)-(px-W/2),cy=my(geo.lat,z)-(py-H/2);S.view.lon=lonOf(cx,z);S.view.lat=Math.max(-84,Math.min(84,latOf(cy,z)));dirty=true;saveView()}
+function zoomBy(dz){anchor({lat:S.view.lat,lon:S.view.lon},W/2,H/2,S.view.z+dz)}
+function centerOn(lat,lon,z){S.view.lat=lat;S.view.lon=lon;if(z)S.view.z=Math.max(8,Math.min(20,z));dirty=true;saveView()}
+function fitBox(b){if(!W||!H){setTimeout(function(){fitBox(b)},200);return}var dx=Math.max(1e-9,mx(b[2],0)-mx(b[0],0)),dy=Math.max(1e-9,my(b[1],0)-my(b[3],0));var z=Math.log(Math.min((W-80)/dx,(H-200)/dy))/Math.LN2;centerOn((b[1]+b[3])/2,(b[0]+b[2])/2,Math.min(17,z))}
+var svT=null;
+function saveView(){clearTimeout(svT);svT=setTimeout(function(){try{localStorage.setItem(LS+'.view',JSON.stringify(S.view))}catch(e){}},500)}
+(function(){try{var v=JSON.parse(localStorage.getItem(LS+'.view')||'null');if(v&&isFinite(v.lat)&&isFinite(v.lon)&&isFinite(v.z)){S.view=v;S.hadSavedView=true}}catch(e){}})();
+
+function items(){
+  var out=[];
+  if(S.layers.fac)G('markers').forEach(function(o){out.push({k:'fac',o:o})});
+  if(S.layers.sight)G('sightings').forEach(function(o){out.push({k:'sight',o:o})});
+  if(S.layers.kill)G('kills').forEach(function(o){out.push({k:'kill',o:o})});
+  return out;
+}
+function palette(){
+  var cs=getComputedStyle(document.documentElement),g=function(n){return cs.getPropertyValue(n).trim()};
+  pal={map:g('--map'),grid:g('--grid'),surface:g('--surface'),ink:g('--ink'),ink2:g('--ink-2'),accent:g('--accent'),line:g('--line'),on:g('--on-mark'),kill:g('--kill'),sicht:g('--sicht')};
+  Object.keys(FAC).forEach(function(k){pal[k]=g(FAC[k].c)});
+}
+function badge(x,y,col,glyph,sel){
+  ctx.beginPath();ctx.arc(x,y,sel?17:14,0,7);ctx.fillStyle=sel?pal.ink:pal.surface;ctx.fill();
+  ctx.beginPath();ctx.arc(x,y,11.5,0,7);ctx.fillStyle=col;ctx.fill();
+  ctx.fillStyle=pal.on;ctx.font='700 12px "Barlow Condensed",Arial Narrow,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(glyph,x,y+.5);
+}
+function diamond(x,y,n,sel){
+  function d(r,f){ctx.beginPath();ctx.moveTo(x,y-r);ctx.lineTo(x+r,y);ctx.lineTo(x,y+r);ctx.lineTo(x-r,y);ctx.closePath();ctx.fillStyle=f;ctx.fill()}
+  d(sel?18:15,sel?pal.ink:pal.surface);d(12,pal.sicht);
+  ctx.fillStyle=pal.on;ctx.font='700 12px "Barlow Condensed",Arial Narrow,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(String(n),x,y+.5);
+}
+function killMark(x,y,sel){
+  ctx.beginPath();ctx.arc(x,y,sel?17:14,0,7);ctx.fillStyle=sel?pal.ink:pal.surface;ctx.fill();
+  ctx.beginPath();ctx.arc(x,y,11.5,0,7);ctx.fillStyle=pal.kill;ctx.fill();
+  ctx.strokeStyle=pal.on;ctx.lineWidth=2.2;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x-4.5,y-4.5);ctx.lineTo(x+4.5,y+4.5);ctx.moveTo(x+4.5,y-4.5);ctx.lineTo(x-4.5,y+4.5);ctx.stroke();
+}
+function halo(txt,x,y,col){ctx.lineWidth=3;ctx.strokeStyle=pal.surface;ctx.lineJoin='round';ctx.strokeText(txt,x,y);ctx.fillStyle=col||pal.ink;ctx.fillText(txt,x,y)}
+var lastScale='';
+function draw(){
+  dirty=false;if(!W||!H)return;palette();
+  var v=S.view,mpp=156543.03392*Math.cos(v.lat*Math.PI/180)/Math.pow(2,v.z);
+  ctx.fillStyle=pal.map;ctx.fillRect(0,0,W,H);
+  /* metric grid anchored to the world, so it moves with the map */
+  var steps=[10,20,50,100,200,500,1000,2000,5000,10000],gs=steps[steps.length-1],i;
+  for(i=0;i<steps.length;i++){if(steps[i]/mpp>=70){gs=steps[i];break}}
+  var cxm=mx(v.lon,v.z)*mpp,cym=my(v.lat,v.z)*mpp;
+  ctx.lineWidth=1;ctx.strokeStyle=pal.grid;ctx.beginPath();
+  for(var gx=Math.floor((cxm-W/2*mpp)/gs)*gs;gx<=cxm+W/2*mpp;gx+=gs){var X=Math.round(W/2+(gx-cxm)/mpp)+.5;ctx.moveTo(X,0);ctx.lineTo(X,H)}
+  for(var gy=Math.floor((cym-H/2*mpp)/gs)*gs;gy<=cym+H/2*mpp;gy+=gs){var Y=Math.round(H/2+(gy-cym)/mpp)+.5;ctx.moveTo(0,Y);ctx.lineTo(W,Y)}
+  ctx.stroke();
+  /* lots */
+  var sc2=Math.pow(2,v.z),c0x=mx(v.lon,0),c0y=my(v.lat,0),vis=[];
+  var sx=function(wx){return W/2+(wx-c0x)*sc2},sy=function(wy){return H/2+(wy-c0y)*sc2};
+  lotsAll().forEach(function(l){
+    var mine=isMine(l);if(mine?!S.layers.lots:!S.layers.all)return;
+    var x0=sx(l.bw[0]),x1=sx(l.bw[2]),y0=sy(l.bw[1]),y1=sy(l.bw[3]);
+    if(x1<-20||x0>W+20||y1<-20||y0>H+20)return;
+    if(!mine&&x1-x0<3)return;
+    vis.push({l:l,mine:mine,x0:x0,x1:x1,y0:y0,y1:y1,sw:x1-x0});
+  });
+  var trace=function(l,sw){var st=sw<30?8:sw<80?4:sw<200?2:1;l.W.forEach(function(poly){poly.forEach(function(a){var n=a.length/2,k;ctx.moveTo(sx(a[0]),sy(a[1]));for(k=st;k<n-1;k+=st)ctx.lineTo(sx(a[2*k]),sy(a[2*k+1]));ctx.lineTo(sx(a[2*n-2]),sy(a[2*n-1]));ctx.closePath()})})};
+  ctx.lineJoin='round';ctx.beginPath();
+  vis.forEach(function(o){if(!o.mine)trace(o.l,o.sw)});
+  ctx.lineWidth=1;ctx.strokeStyle=pal.ink2;ctx.globalAlpha=.6;ctx.stroke();ctx.globalAlpha=1;
+  vis.forEach(function(o){if(!o.mine)return;ctx.beginPath();trace(o.l,o.sw);ctx.globalAlpha=.17;ctx.fillStyle=pal.accent;ctx.fill('evenodd');ctx.globalAlpha=1;ctx.lineWidth=3;ctx.strokeStyle=pal.accent;ctx.stroke()});
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  vis.forEach(function(o){
+    if(o.sw<(o.mine?60:70))return;
+    ctx.font=(o.mine?'700 15px':'600 12px')+' "Barlow Condensed",Arial Narrow,sans-serif';
+    halo(o.mine?o.l.name:String(o.l.no!=null?o.l.no:o.l.name),(o.x0+o.x1)/2,(o.y0+o.y1)/2,o.mine?pal.accent:pal.ink2);
+  });
+  /* markers */
+  var its=items();
+  its.forEach(function(it){
+    var o=it.o,s=toScr(o.lat,o.lon);if(s.x<-30||s.x>W+30||s.y<-30||s.y>H+30)return;
+    var sel=S.sel&&S.sel.id===o.id;
+    if(it.k==='fac'){badge(s.x,s.y,pal[o.type]||pal.sonst,FAC[o.type]?FAC[o.type].glyph:'·',sel);if(v.z>=15.2&&o.name){ctx.font='500 12px "Atkinson Hyperlegible",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';halo(o.name,s.x,s.y+17)}}
+    else if(it.k==='sight')diamond(s.x,s.y,o.count||1,sel);
+    else killMark(s.x,s.y,sel);
+  });
+  /* own position */
+  if(S.gps){var p=toScr(S.gps.lat,S.gps.lon),ar=Math.max(0,Math.min(200,(S.gps.acc||0)/mpp));
+    if(ar>8){ctx.beginPath();ctx.arc(p.x,p.y,ar,0,7);ctx.globalAlpha=.12;ctx.fillStyle=pal.accent;ctx.fill();ctx.globalAlpha=1}
+    ctx.beginPath();ctx.arc(p.x,p.y,9,0,7);ctx.fillStyle='#fff';ctx.fill();ctx.beginPath();ctx.arc(p.x,p.y,6.5,0,7);ctx.fillStyle='#1E6FD9';ctx.fill()}
+  /* crosshair while placing */
+  if(S.placing){var cx=W/2,cy=H/2;ctx.lineCap='round';
+    [[pal.surface,5],[pal.ink,2]].forEach(function(st){ctx.strokeStyle=st[0];ctx.lineWidth=st[1];ctx.beginPath();ctx.arc(cx,cy,14,0,7);ctx.moveTo(cx-26,cy);ctx.lineTo(cx-8,cy);ctx.moveTo(cx+8,cy);ctx.lineTo(cx+26,cy);ctx.moveTo(cx,cy-26);ctx.lineTo(cx,cy-8);ctx.moveTo(cx,cy+8);ctx.lineTo(cx,cy+26);ctx.stroke()});
+    $('#pcoord').textContent=v.lat.toFixed(5)+'° N, '+v.lon.toFixed(5)+'° E'}
+  /* scale bar */
+  var sc=steps[0];steps.forEach(function(s){if(s/mpp<=110)sc=s});
+  var txt=sc>=1000?(sc/1000)+' km':sc+' m',wpx=Math.round(sc/mpp);
+  if(txt+wpx!==lastScale){lastScale=txt+wpx;$('#scaleL').textContent=txt;$('#scaleB').style.width=wpx+'px'}
+}
+function loop(){if(dirty)draw();requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){dirty=true});
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){dirty=true})}catch(e){}
+new MutationObserver(function(){dirty=true}).observe(document.documentElement,{attributes:true});
+
+/* gestures */
+var ptrs=new Map(),gest=null,lastTap={t:0,x:0,y:0};
+function pd(){var a=Array.from(ptrs.values());return Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}
+function pm(){var a=Array.from(ptrs.values());return {x:(a[0].x+a[1].x)/2,y:(a[0].y+a[1].y)/2}}
+cv.addEventListener('pointerdown',function(e){
+  try{cv.setPointerCapture(e.pointerId)}catch(x){}
+  ptrs.set(e.pointerId,{x:e.offsetX,y:e.offsetY});
+  if(ptrs.size===1)gest={sx:e.offsetX,sy:e.offsetY,t:performance.now(),moved:false};
+  else if(ptrs.size===2){gest=gest||{};gest.moved=true;gest.d=pd();gest.mid=pm()}
+});
+cv.addEventListener('pointermove',function(e){
+  var p=ptrs.get(e.pointerId);if(!p)return;
+  var ox=p.x,oy=p.y;p.x=e.offsetX;p.y=e.offsetY;
+  if(ptrs.size===1){
+    if(Math.hypot(p.x-gest.sx,p.y-gest.sy)>6)gest.moved=true;
+    if(gest.moved)anchor(fromScr(ox,oy),p.x,p.y,S.view.z);
+  }else if(ptrs.size===2){
+    var d=pd(),m=pm(),geo=fromScr(gest.mid.x,gest.mid.y);
+    anchor(geo,m.x,m.y,S.view.z+Math.log(d/gest.d)/Math.LN2);gest.d=d;gest.mid=m;
+  }
+});
+function endPtr(e){
+  if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);
+  if(ptrs.size===0&&gest&&!gest.moved&&performance.now()-gest.t<500&&e.type==='pointerup'){
+    var now=Date.now();
+    if(now-lastTap.t<320&&Math.hypot(e.offsetX-lastTap.x,e.offsetY-lastTap.y)<30){anchor(fromScr(e.offsetX,e.offsetY),e.offsetX,e.offsetY,S.view.z+1);lastTap.t=0}
+    else{lastTap={t:now,x:e.offsetX,y:e.offsetY};setTimeout(function(){if(lastTap.t===now)onTap(e.offsetX,e.offsetY)},330)}
+  }
+  if(ptrs.size===1){var r=Array.from(ptrs.values())[0];gest={sx:r.x,sy:r.y,t:performance.now(),moved:true}}
+  if(ptrs.size===0)gest=null;
+}
+cv.addEventListener('pointerup',endPtr);cv.addEventListener('pointercancel',endPtr);
+cv.addEventListener('wheel',function(e){e.preventDefault();anchor(fromScr(e.offsetX,e.offsetY),e.offsetX,e.offsetY,S.view.z-e.deltaY*0.0022)},{passive:false});
+function onTap(px,py){
+  if(S.placing)return;
+  var its=items(),best=null,bd=24;
+  for(var i=its.length-1;i>=0;i--){var s=toScr(its[i].o.lat,its[i].o.lon),d=Math.hypot(s.x-px,s.y-py);if(d<bd){bd=d;best=its[i]}}
+  if(best){S.sel={k:best.k,id:best.o.id};dirty=true;showDetail(best.k,best.o);return}
+  S.sel=null;dirty=true;
+  var wx=(mx(S.view.lon,S.view.z)+px-W/2)/Math.pow(2,S.view.z),wy=(my(S.view.lat,S.view.z)+py-H/2)/Math.pow(2,S.view.z),hit=null;
+  lotsAll().forEach(function(l){
+    var mine=isMine(l);if(mine?!S.layers.lots:!S.layers.all)return;
+    if(wx<l.bw[0]||wx>l.bw[2]||wy<l.bw[1]||wy>l.bw[3])return;
+    for(var k=0;k<l.W.length;k++){if(inPolyW(wx,wy,l.W[k])){if(!hit||(mine&&!isMine(hit)))hit=l;return}}
+  });
+  if(hit)showLot(hit);
+}
+$('#bIn').onclick=function(){zoomBy(1)};$('#bOut').onclick=function(){zoomBy(-1)};$('#bFit').onclick=function(){fitMine(true)};
+
+/* ---------- GPS ---------- */
+function gpsFail(e){
+  if(S.watch!=null){try{navigator.geolocation.clearWatch(S.watch)}catch(x){}S.watch=null}
+  S.gpsState='off';S.gps=null;dirty=true;renderHeader();
+  toast('Der Standort ist in dieser Ansicht nicht abrufbar. Setze die Position über die Karte.');
+}
+function getPos(){
+  return new Promise(function(res,rej){
+    if(S.gps&&Date.now()-S.gps.t<15000)return res(S.gps);
+    if(!navigator.geolocation)return rej(new Error('no geo'));
+    var t=setTimeout(function(){rej(new Error('timeout'))},9000);
+    try{navigator.geolocation.getCurrentPosition(function(p){clearTimeout(t);res({lat:p.coords.latitude,lon:p.coords.longitude,acc:p.coords.accuracy,t:Date.now()})},function(e){clearTimeout(t);rej(e)},{enableHighAccuracy:true,timeout:8000,maximumAge:5000})}catch(e){clearTimeout(t);rej(e)}
+  });
+}
+function startWatch(){
+  if(S.watch!=null||!navigator.geolocation)return;
+  try{S.watch=navigator.geolocation.watchPosition(function(p){S.gps={lat:p.coords.latitude,lon:p.coords.longitude,acc:p.coords.accuracy,t:Date.now()};S.gpsState='on';dirty=true;renderHeader()},function(){gpsFail()},{enableHighAccuracy:true,maximumAge:3000,timeout:20000})}catch(e){gpsFail()}
+}
+function locate(center){
+  S.gpsState='busy';renderHeader();
+  return getPos().then(function(p){S.gps=p;S.gpsState='on';if(center)centerOn(p.lat,p.lon,Math.max(S.view.z,16));startWatch();dirty=true;renderHeader();return p}).catch(function(e){gpsFail(e);throw e});
+}
+$('#bLoc').onclick=function(){locate(true).catch(function(){})};
+$('#stGps').onclick=function(){if(S.gpsState==='on'){gpsOff()}else locate(true).catch(function(){})};
+function gpsOff(){if(S.watch!=null){try{navigator.geolocation.clearWatch(S.watch)}catch(x){}S.watch=null}S.gps=null;S.gpsState='off';dirty=true;renderHeader()}
+
+/* ---------- header, tabs, layer chips ---------- */
+function renderHeader(){
+  var nos=(D.settings.myLots||[]).slice().sort(function(a,b){return a-b}),parts=nos.map(String).concat(D.lots.map(function(l){return l.name.replace(/^Los /,'')}));
+  $('#lotName').textContent=!parts.length?'Kein Los gewählt':parts.length>3?parts.length+' Lose':'Los '+parts.join(', ');
+  var st=$('#stStore');st.className='pill '+(!S.ready?'busy':S.mode==='cloud'?'ok':'bad');
+  st.lastChild.textContent=!S.ready?'Lade …':S.mode==='cloud'?'Gespeichert':'Nur lokal';
+  st.title=S.mode==='cloud'?'Deine Daten liegen privat in deinem Konto.':'Die Daten bleiben nur in diesem Browser.';
+  var g=$('#stGps');g.className='pill '+({on:'ok',busy:'busy',off:''}[S.gpsState]);
+  g.lastChild.textContent={on:'GPS an',busy:'Suche …',off:'GPS aus'}[S.gpsState];
+}
+function renderTabs(){
+  var t=[['map','Karte'],['log','Einträge'],['stats','Statistik'],['data','Daten']];
+  $('#tabs').innerHTML=t.map(function(x){var ic={map:'map',log:'list',stats:'chart',data:'data'}[x[0]];return '<button type="button" data-t="'+x[0]+'"'+(S.tab===x[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICON[ic]+'</svg>'+x[1]+'</button>'}).join('');
+}
+$('#tabs').addEventListener('click',function(e){var b=e.target.closest('button[data-t]');if(b)switchTab(b.dataset.t)});
+function switchTab(t){
+  if(S.placing&&t!=='map')return;
+  S.tab=t;
+  [['map','viewMap'],['log','viewLog'],['stats','viewStats'],['data','viewData']].forEach(function(p){$('#'+p[1]).hidden=p[0]!==t});
+  renderTabs();renderActive();if(t==='map'){setTimeout(function(){resize();dirty=true},0)}
+}
+function renderLayers(){
+  var L=[['lots','Meine Lose','--accent'],['all','Alle Lose','--ink-2'],['fac','Einrichtungen','--kanzel'],['sight','Sichtungen','--sicht'],['kill','Abschüsse','--kill']];
+  $('#layers').innerHTML=L.map(function(l){return '<button type="button" class="chip" data-l="'+l[0]+'" aria-pressed="'+S.layers[l[0]]+'" style="--c:var('+l[2]+')"><i></i>'+l[1]+'</button>'}).join('');
+  $('#layers').hidden=!!S.placing;
+}
+$('#layers').addEventListener('click',function(e){var b=e.target.closest('button[data-l]');if(!b)return;S.layers[b.dataset.l]=!S.layers[b.dataset.l];renderLayers();dirty=true});
+$('#demoOff').onclick=function(){guard(Store.setting({hideExamples:true}))};
+
+function renderAll(){renderHeader();renderLayers();$('#demo').hidden=!useDemo()||!!S.placing;renderActive();dirty=true;migrate()}
+function renderActive(){
+  $('#fab').hidden=!!S.placing;$('#place').hidden=!S.placing;$('.maptools').hidden=false;
+  if(S.tab==='log')renderLog();else if(S.tab==='stats')renderStats();else if(S.tab==='data')renderData();
+}
+
+/* ---------- add flow ---------- */
+function defaultPos(){return S.gps?{lat:S.gps.lat,lon:S.gps.lon}:{lat:S.view.lat,lon:S.view.lon}}
+$('#fab').onclick=function(){
+  openSheet('<h2>Eintragen</h2>'+
+  '<button class="choice" data-n="kill" type="button"><span class="mk sq" style="background:var(--kill)">✕</span><span><b>Abschuss</b><small>Wildart, Ort, Kanzel, Wildmarke</small></span></button>'+
+  '<button class="choice" data-n="sight" type="button"><span class="mk sq" style="background:var(--sicht)">3</span><span><b>Wildsichtung</b><small>Wildart, Anzahl, Uhrzeit</small></span></button>'+
+  '<button class="choice" data-n="marker" type="button"><span class="mk" style="background:var(--kanzel)">K</span><span><b>Einrichtung</b><small>Kanzel, Bock, Futterplatz, Salzlecke, Hütte</small></span></button>');
+  $$('#sheetBody .choice').forEach(function(b){b.onclick=function(){newEntry(b.dataset.n)}});
+};
+function newEntry(kind){
+  var p=defaultPos(),d={id:uid(kind==='kill'?'k':kind==='sight'?'s':'m'),lat:p.lat,lon:p.lon,posManual:false};
+  if(kind==='kill'){Object.assign(d,{species:'Rehwild',sex:'u',age:'u',weight:null,tsl:toLocalInput(),kanzelId:'',tag:'',note:''})}
+  else if(kind==='sight'){Object.assign(d,{species:'Rehwild',count:1,sex:'u',tsl:toLocalInput(),kanzelId:'',note:''})}
+  else{Object.assign(d,{type:'kanzel',name:'',note:''})}
+  openForm(kind,d,false);
+}
+
+/* ---------- forms ---------- */
+function opts(list,sel){return list.map(function(x){return '<option value="'+esc(x)+'"'+(x===sel?' selected':'')+'>'+esc(x)+'</option>'}).join('')}
+function seatOpts(sel){return '<option value="">keine Angabe</option>'+G('markers').filter(function(m){return SEATS.indexOf(m.type)>-1}).map(function(m){return '<option value="'+esc(m.id)+'"'+(m.id===sel?' selected':'')+'>'+esc(m.name||FAC[m.type].label)+'</option>'}).join('')}
+function chips(f,map,val,keys){return '<div class="seg" data-f="'+f+'" data-chips>'+keys.map(function(k){return '<button type="button" data-v="'+k+'" aria-pressed="'+(val===k)+'">'+map[k]+'</button>'}).join('')+'</div>'}
+function posRow(d){return '<div class="field"><span class="lbl">Position</span><div class="posrow"><code id="f-pos">'+posText(d)+'</code><p class="hint" id="f-poshint"></p><div class="btnrow"><button type="button" class="btn sm" id="f-pick">Auf Karte setzen</button><button type="button" class="btn sm" id="f-gps">Mein Standort</button></div></div></div>'}
+function openForm(kind,d,isEdit){
+  S.form={kind:kind,d:d,edit:isEdit};
+  var title={marker:'Einrichtung',sight:'Wildsichtung',kill:'Abschuss'}[kind],body='';
+  if(kind==='marker'){
+    body='<div class="field"><span class="lbl">Art</span><div class="types" data-f="type" data-chips>'+Object.keys(FAC).map(function(k){return '<button type="button" class="type" data-v="'+k+'" aria-pressed="'+(d.type===k)+'"><i style="background:var('+FAC[k].c+')">'+FAC[k].glyph+'</i>'+esc(FAC[k].label)+'</button>'}).join('')+'</div></div>'+
+    '<label class="field"><span class="lbl">Name</span><input type="text" data-f="name" value="'+esc(d.name)+'" placeholder="z. B. Kanzel Eichberg" autocomplete="off"></label>'+posRow(d)+
+    '<label class="field"><span class="lbl">Notiz</span><textarea rows="2" data-f="note">'+esc(d.note)+'</textarea></label>';
+  }else if(kind==='sight'){
+    body='<div class="grid2"><label class="field"><span class="lbl">Wildart</span><select data-f="species">'+opts(SPECIES,d.species)+'</select></label>'+
+    '<label class="field"><span class="lbl">Anzahl</span><input type="number" inputmode="numeric" min="1" step="1" data-f="count" data-t="int" value="'+d.count+'"></label></div>'+
+    '<div class="field"><span class="lbl">Geschlecht</span>'+chips('sex',SEX,d.sex,['m','w','g','u'])+'</div>'+
+    '<div class="grid2"><label class="field"><span class="lbl">Zeitpunkt</span><input type="datetime-local" data-f="tsl" value="'+d.tsl+'"></label>'+
+    '<label class="field"><span class="lbl">Beobachtet von</span><select data-f="kanzelId">'+seatOpts(d.kanzelId)+'</select></label></div>'+posRow(d)+
+    '<label class="field"><span class="lbl">Notiz</span><textarea rows="2" data-f="note">'+esc(d.note)+'</textarea></label>';
+  }else{
+    body='<div class="grid2"><label class="field"><span class="lbl">Wildart</span><select data-f="species">'+opts(SPECIES,d.species)+'</select></label>'+
+    '<label class="field"><span class="lbl">Altersklasse</span><select data-f="age">'+Object.keys(AGE).map(function(k){return '<option value="'+k+'"'+(d.age===k?' selected':'')+'>'+AGE[k]+'</option>'}).join('')+'</select></label></div>'+
+    '<div class="field"><span class="lbl">Geschlecht</span>'+chips('sex',SEX,d.sex,['m','w','u'])+'</div>'+
+    '<div class="grid2"><label class="field"><span class="lbl">Gewicht aufgebrochen (kg)</span><input type="number" inputmode="decimal" min="0" step="0.1" data-f="weight" data-t="num" value="'+(d.weight==null?'':d.weight)+'"></label>'+
+    '<label class="field"><span class="lbl">Datum und Uhrzeit</span><input type="datetime-local" data-f="tsl" value="'+d.tsl+'"></label></div>'+
+    '<label class="field"><span class="lbl">Kanzel / Stand</span><select data-f="kanzelId">'+seatOpts(d.kanzelId)+'</select></label>'+posRow(d)+
+    '<label class="field"><span class="lbl">Wildmarke (optional)</span><input type="text" class="mono" data-f="tag" value="'+esc(d.tag)+'" placeholder="Nationale Nummer" autocomplete="off" autocapitalize="characters"></label><div id="f-tagwarn" class="warnbox" hidden></div>'+
+    '<label class="field"><span class="lbl">Notiz</span><textarea rows="2" data-f="note">'+esc(d.note)+'</textarea></label>';
+  }
+  openSheet('<h2>'+(isEdit?title+' bearbeiten':'Neu: '+title)+'</h2>'+body+
+    '<div class="btnrow"><button class="btn primary" id="f-save" type="button" style="flex:2">Speichern</button><button class="btn" id="f-cancel" type="button" style="flex:1">Abbrechen</button></div>'+
+    (isEdit?'<button class="btn danger" id="f-del" type="button">Löschen</button>':''));
+  bindForm();updPos();if(kind==='kill')checkTag();
+}
+function bindForm(){
+  var f=S.form,d=f.d,root=$('#sheetBody');
+  $$('[data-f]',root).forEach(function(n){
+    var key=n.dataset.f;
+    if(n.hasAttribute('data-chips')){n.addEventListener('click',function(e){var b=e.target.closest('button[data-v]');if(!b)return;d[key]=b.dataset.v;$$('button[data-v]',n).forEach(function(x){x.setAttribute('aria-pressed',x===b)});changed(key)})}
+    else{var h=function(){var v=n.value;if(n.dataset.t==='num')v=v===''?null:parseFloat(v.replace(',','.'));else if(n.dataset.t==='int')v=Math.max(1,parseInt(v,10)||1);d[key]=v;changed(key)};n.addEventListener('input',h);n.addEventListener('change',h)}
+  });
+  $('#f-cancel').onclick=closeSheet;
+  $('#f-save').onclick=saveForm;
+  var pk=$('#f-pick');if(pk)pk.onclick=function(){pickOnMap(f.kind,d,f.edit)};
+  var gp=$('#f-gps');if(gp)gp.onclick=function(){gp.disabled=true;locate(false).then(function(p){d.lat=p.lat;d.lon=p.lon;d.posManual=true;updPos()}).catch(function(){}).then(function(){gp.disabled=false})};
+  var del=$('#f-del');if(del)del.onclick=function(){
+    if(del.dataset.s!=='1'){del.dataset.s='1';del.textContent='Wirklich löschen?';return}
+    var coll={marker:'markers',sight:'sightings',kill:'kills'}[f.kind];
+    guard(Store.del(coll,d.id),'Löschen fehlgeschlagen').then(function(){closeSheet();toast('Gelöscht')},function(){});
+  };
+}
+function changed(key){
+  var f=S.form,d=f.d;
+  if(key==='kanzelId'&&!d.posManual){var k=findFac(d.kanzelId);if(k){d.lat=k.lat;d.lon=k.lon;updPos()}}
+  if(key==='tag')checkTag();
+}
+function updPos(){
+  var f=S.form;if(!f||!$('#f-pos'))return;var d=f.d;$('#f-pos').textContent=posText(d);
+  var h='';if(f.kind!=='marker'){if(d.kanzelId&&!d.posManual)h='Position der gewählten Kanzel übernommen.';else if(!d.posManual&&!f.edit)h=S.gps?'Aktueller Standort.':'Kartenmitte. Mit „Auf Karte setzen“ genauer festlegen.'}
+  $('#f-poshint').textContent=h;
+}
+function checkTag(){
+  var f=S.form;if(!f||f.kind!=='kill')return;var w=$('#f-tagwarn'),t=normTag(f.d.tag);
+  var dup=t&&D.kills.concat(useDemo()?G('kills'):[]).some(function(k){return k.id!==f.d.id&&normTag(k.tag)===t});
+  w.hidden=!dup;if(dup)w.textContent='Diese Wildmarke ist bereits bei einem anderen Abschuss eingetragen.';
+}
+function pickOnMap(kind,d,isEdit){
+  closeSheet();switchTab('map');
+  if(d.lat!=null&&d.posManual)centerOn(d.lat,d.lon);else if(d.lat!=null)centerOn(d.lat,d.lon);
+  $('#placeTitle').textContent='Position für '+({marker:'Einrichtung',sight:'Sichtung',kill:'Abschuss'}[kind]);
+  S.placing={ok:function(){d.lat=S.view.lat;d.lon=S.view.lon;d.posManual=true;endPlace();openForm(kind,d,isEdit)},no:function(){endPlace();openForm(kind,d,isEdit)}};
+  renderAll();
+}
+function endPlace(){S.placing=null;renderAll()}
+$('#pOk').onclick=function(){if(S.placing)S.placing.ok()};
+$('#pNo').onclick=function(){if(S.placing)S.placing.no()};
+$('#pGps').onclick=function(){locate(true).catch(function(){})};
+
+function saveForm(){
+  var f=S.form,d=clone(f.d),coll,o;
+  if(d.lat==null){toast('Bitte zuerst eine Position festlegen.');return}
+  if(f.kind==='marker'){coll='markers';o={id:d.id,type:d.type,name:(d.name||'').trim()||FAC[d.type].label,lat:d.lat,lon:d.lon,note:d.note||''}}
+  else{
+    var t=new Date(d.tsl);if(isNaN(t)){toast('Bitte Datum und Uhrzeit angeben.');return}
+    if(f.kind==='sight'){coll='sightings';o={id:d.id,species:d.species,count:d.count||1,sex:d.sex,ts:t.toISOString(),lat:d.lat,lon:d.lon,kanzelId:d.kanzelId||'',note:d.note||''}}
+    else{coll='kills';o={id:d.id,species:d.species,sex:d.sex,age:d.age,weight:d.weight==null||isNaN(d.weight)?null:d.weight,ts:t.toISOString(),lat:d.lat,lon:d.lon,kanzelId:d.kanzelId||'',tag:(d.tag||'').trim(),note:d.note||''}}
+  }
+  var b=$('#f-save');b.disabled=true;
+  guard(Store.put(coll,o)).then(function(){closeSheet();toast('Gespeichert');if(S.tab==='map'){S.sel={k:f.kind==='marker'?'fac':f.kind==='sight'?'sight':'kill',id:o.id};dirty=true}},function(){b.disabled=false});
+}
+
+/* ---------- detail sheets ---------- */
+function facName(id){var k=findFac(id);return k?(k.name||FAC[k.type].label):''}
+function showDetail(kind,o){
+  var rows='',title,demo=!!o.demo;
+  if(kind==='fac'){
+    var nk=G('kills').filter(function(k){return k.kanzelId===o.id}).length,ns=G('sightings').filter(function(k){return k.kanzelId===o.id}).length;
+    title=o.name||FAC[o.type].label;
+    rows='<dt>Art</dt><dd>'+esc(FAC[o.type].label)+'</dd><dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(SEATS.indexOf(o.type)>-1?'<dt>Abschüsse</dt><dd>'+nk+'</dd><dt>Sichtungen</dt><dd>'+ns+'</dd>':'')+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
+  }else if(kind==='sight'){
+    title=(o.count||1)+'× '+o.species;
+    rows='<dt>Zeitpunkt</dt><dd>'+fmtDate(o.ts)+'</dd><dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd>'+(o.kanzelId?'<dt>Von</dt><dd>'+esc(facName(o.kanzelId))+'</dd>':'')+'<dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
+  }else{
+    title=o.species;
+    rows='<dt>Datum</dt><dd>'+fmtDate(o.ts)+'</dd><dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd><dt>Alter</dt><dd>'+AGE[o.age]+'</dd>'+(o.weight!=null?'<dt>Gewicht</dt><dd>'+nf.format(o.weight)+' kg</dd>':'')+(o.kanzelId?'<dt>Kanzel</dt><dd>'+esc(facName(o.kanzelId))+'</dd>':'')+(o.tag?'<dt>Wildmarke</dt><dd><code>'+esc(o.tag)+'</code></dd>':'')+'<dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
+  }
+  openSheet('<h2>'+esc(title)+'</h2>'+(demo?'<div class="warnbox">Beispieldaten. Trage einen eigenen Eintrag ein, dann verschwinden sie.</div>':'')+'<dl class="kv">'+rows+'</dl>'+
+    '<div class="btnrow"><button class="btn" id="d-map" type="button">Auf Karte zeigen</button>'+(demo?'':'<button class="btn primary" id="d-edit" type="button">Bearbeiten</button>')+'<button class="btn" id="d-close" type="button">Schließen</button></div>');
+  $('#d-close').onclick=closeSheet;
+  $('#d-map').onclick=function(){closeSheet();S.sel={k:kind,id:o.id};switchTab('map');centerOn(o.lat,o.lon,Math.max(S.view.z,16))};
+  var e=$('#d-edit');if(e)e.onclick=function(){var c=clone(o);c.posManual=true;if(kind!=='fac'){c.tsl=toLocalInput(c.ts)}openForm(kind==='fac'?'marker':kind,c,true)};
+}
+function showLot(l){
+  var mine=isMine(l),custom=l.no==null;
+  openSheet('<h2>'+esc(l.name)+'</h2><p class="hint">Jagdlos'+(l.ha?' · '+nf.format(l.ha)+' ha':'')+(mine&&!custom?' · dein Los':'')+(custom?' · eigene Grenze':'')+'</p>'+
+    '<div class="btnrow">'+(custom?(l.demo?'':'<button class="btn danger" id="l-del" type="button">Entfernen</button>'):'<button class="btn'+(mine?'':' primary')+'" id="l-my" type="button">'+(mine?'Aus meinen Losen entfernen':'Als mein Los markieren')+'</button>')+'<button class="btn" id="l-fit" type="button">Anzeigen</button><button class="btn" id="d-close" type="button">Schließen</button></div>');
+  $('#d-close').onclick=closeSheet;$('#l-fit').onclick=function(){closeSheet();fitBox(l.bb)};
+  var b=$('#l-my');if(b)b.onclick=function(){
+    var arr=(D.settings.myLots||[]).slice(),i=arr.indexOf(l.no);if(i>-1)arr.splice(i,1);else arr.push(l.no);
+    guard(Store.setting({myLots:arr})).then(function(){closeSheet();toast(i>-1?'Los entfernt':'Als dein Los markiert')},function(){});
+  };
+  var d=$('#l-del');if(d)d.onclick=function(){if(d.dataset.s!=='1'){d.dataset.s='1';d.textContent='Wirklich entfernen?';return}guard(Store.del('lots',l.id),'Löschen fehlgeschlagen').then(closeSheet,function(){})};
+}
+
+/* ---------- log tab ---------- */
+function renderLog(){
+  var q=S.logQ.trim().toLowerCase(),f=S.logFilter,list=[];
+  if(f!=='sight')G('kills').forEach(function(o){list.push({k:'kill',o:o})});
+  if(f!=='kill')G('sightings').forEach(function(o){list.push({k:'sight',o:o})});
+  list=list.filter(function(it){if(!q)return true;var o=it.o;return [o.species,o.tag,o.note,facName(o.kanzelId),SEX[o.sex]].join(' ').toLowerCase().indexOf(q)>-1});
+  list.sort(function(a,b){return new Date(b.o.ts)-new Date(a.o.ts)});
+  var html='<div class="toolbar"><button class="btn primary" data-n="kill" type="button">+ Abschuss</button><button class="btn" data-n="sight" type="button">+ Sichtung</button></div>'+
+  '<div class="seg" data-flt>'+[['all','Alle'],['kill','Abschüsse'],['sight','Sichtungen']].map(function(x){return '<button type="button" data-v="'+x[0]+'" aria-pressed="'+(f===x[0])+'">'+x[1]+'</button>'}).join('')+'</div>'+
+  '<input type="search" id="logQ" placeholder="Suchen: Wildart, Wildmarke, Kanzel" value="'+esc(S.logQ)+'" autocomplete="off">';
+  if(useDemo())html+='<div class="warnbox">Das sind Beispieldaten. Sie verschwinden mit deinem ersten Eintrag.</div>';
+  if(!list.length)html+='<div class="empty">Keine Einträge gefunden.</div>';
+  else html+='<div class="rows">'+list.map(function(it){
+    var o=it.o,mk=it.k==='kill'?'<span class="mk sq" style="background:var(--kill)">✕</span>':'<span class="mk sq" style="background:var(--sicht)">'+(o.count||1)+'</span>';
+    var t=it.k==='kill'?esc(o.species)+' · '+SEX[o.sex]+(o.weight!=null?' · '+nf.format(o.weight)+' kg':''):(o.count||1)+'× '+esc(o.species)+' · '+SEX[o.sex];
+    var m=fmtDate(o.ts)+(o.kanzelId?' · '+esc(facName(o.kanzelId)):'');
+    return '<button class="row" type="button" data-k="'+it.k+'" data-id="'+esc(o.id)+'">'+mk+'<span class="rt"><b>'+t+'</b><small>'+m+'</small></span>'+(o.tag?'<span class="tagc">'+esc(o.tag)+'</span>':'')+'</button>'}).join('')+'</div>';
+  var keep=document.activeElement&&document.activeElement.id==='logQ';
+  $('#logBody').innerHTML=html;
+  if(keep){var i=$('#logQ');i.focus();i.setSelectionRange(i.value.length,i.value.length)}
+  $$('#logBody [data-n]').forEach(function(b){b.onclick=function(){newEntry(b.dataset.n)}});
+  $$('#logBody [data-flt] button').forEach(function(b){b.onclick=function(){S.logFilter=b.dataset.v;renderLog()}});
+  $('#logQ').oninput=function(e){S.logQ=e.target.value;renderLog()};
+  $$('#logBody .row').forEach(function(b){b.onclick=function(){var arr=b.dataset.k==='kill'?G('kills'):G('sightings');var o=arr.filter(function(x){return x.id===b.dataset.id})[0];if(o)showDetail(b.dataset.k,o)}});
+}
+
+/* ---------- stats tab ---------- */
+function renderStats(){
+  var kills=G('kills'),sights=G('sightings'),yr=function(x){return new Date(x.ts).getFullYear()};
+  var years=Array.from(new Set(kills.concat(sights).map(yr))).sort(function(a,b){return b-a});
+  if(S.statYear!=='all'&&years.indexOf(+S.statYear)<0)S.statYear='all';
+  var Y=S.statYear,ks=kills.filter(function(k){return Y==='all'||yr(k)===+Y}),ss=sights.filter(function(k){return Y==='all'||yr(k)===+Y});
+  function group(arr,fn){var m=new Map();arr.forEach(function(x){var k=fn(x),e=m.get(k)||{n:0,w:0,wn:0};e.n++;if(x.weight!=null){e.w+=x.weight;e.wn++}m.set(k,e)});return Array.from(m).sort(function(a,b){return b[1].n-a[1].n})}
+  function bars(rows,fmt){var mx=Math.max.apply(null,rows.map(function(r){return r[1].n}));return '<div class="bars">'+rows.map(function(r){return '<div class="bar"><span class="bl">'+esc(r[0])+(fmt?'<small>'+fmt(r)+'</small>':'')+'</span><span class="bt"><i style="width:'+Math.round(r[1].n/mx*100)+'%"></i></span><span class="bv">'+r[1].n+'</span></div>'}).join('')+'</div>'}
+  var html='<div class="field"><span class="lbl">Zeitraum</span><select id="statYear"><option value="all">Alle Jahre</option>'+years.map(function(y){return '<option value="'+y+'"'+(String(Y)===String(y)?' selected':'')+'>'+y+'</option>'}).join('')+'</select></div>';
+  if(useDemo())html+='<div class="warnbox">Das sind Beispieldaten. Sie verschwinden mit deinem ersten Eintrag.</div>';
+  if(!ks.length){html+='<div class="empty">Für diesen Zeitraum gibt es noch keine Abschüsse. Trage sie unter „Einträge“ ein, dann erscheint hier die Auswertung.</div>'}
+  else{
+    var bySp=group(ks,function(k){return k.species}),byK=group(ks,function(k){return k.kanzelId?facName(k.kanzelId)||'Gelöschte Kanzel':'Ohne Kanzel'});
+    var mc=new Array(12).fill(0);ks.forEach(function(k){mc[new Date(k.ts).getMonth()]++});var mm=Math.max.apply(null,mc);
+    var sightByK={};ss.forEach(function(s){var n=s.kanzelId?facName(s.kanzelId):'Ohne Kanzel';sightByK[n]=(sightByK[n]||0)+(s.count||1)});
+    html+='<div class="card"><span class="lbl">Abschüsse gesamt</span><div class="big">'+ks.length+'</div></div>'+
+    '<div class="card"><h2 class="sec">Nach Wildart</h2>'+bars(bySp,function(r){return r[1].wn?'Ø '+nf.format(r[1].w/r[1].wn)+' kg aufgebrochen':''})+'</div>'+
+    '<div class="card"><h2 class="sec">Nach Kanzel</h2>'+bars(byK,function(r){return (sightByK[r[0]]||0)+' Wild gesehen'})+'</div>'+
+    '<div class="card"><h2 class="sec">Nach Monat</h2><div class="months">'+mc.map(function(n,i){return '<div><em>'+(n||'')+'</em><i style="height:'+Math.round(n/mm*100)+'px"></i>'+MONTHS[i]+'</div>'}).join('')+'</div></div>';
+    var cnt=new Map();ss.forEach(function(s){cnt.set(s.species,(cnt.get(s.species)||0)+(s.count||1))});
+    var rows=Array.from(cnt).sort(function(a,b){return b[1]-a[1]}).map(function(r){return [r[0],{n:r[1]}]});
+    if(rows.length)html+='<div class="card"><h2 class="sec">Gesehenes Wild</h2>'+bars(rows)+'</div>';
+  }
+  html+='<p class="hint">Der Vergleich mit dem Abschussplan kommt in Version 2.</p>';
+  $('#statsBody').innerHTML=html;
+  $('#statYear').onchange=function(e){S.statYear=e.target.value;renderStats()};
+}
+
+/* ---------- data tab ---------- */
+function renderData(){
+  var lots=D.lots,html='';
+  var mineNos=(D.settings.myLots||[]).slice().sort(function(a,b){return a-b});
+  html+='<div class="card"><h2 class="sec">Jagdlose</h2>'+
+  '<p class="hint">Alle Lose von Luxemburg (gültig ab 1. April 2021) sind auf der Karte sichtbar. Tippe dort auf ein Los, um es als dein Los zu markieren, oder gib die Nummer ein.</p>'+
+  '<div class="btnrow"><input type="number" inputmode="numeric" id="addNo" placeholder="Losnummer" min="1" style="flex:1;min-width:120px"><button class="btn primary" id="addLot" type="button">Hinzufügen</button></div>'+
+  (mineNos.length?'<div class="rows">'+mineNos.map(function(n){var b=BASE.filter(function(x){return x.no===n})[0];return '<div class="lotrow"><span><b>Los '+n+'</b>'+(b&&b.ha?' · '+nf.format(b.ha)+' ha':'')+'</span><button class="btn sm" data-fit="'+n+'" type="button">Anzeigen</button><button class="btn sm danger" data-rm="'+n+'" type="button">Entfernen</button></div>'}).join('')+'</div>':'<p class="hint">Noch kein Los markiert.</p>')+
+  (lots.length?'<div class="rows">'+lots.map(function(l){return '<div class="lotrow"><span><b>'+esc(l.name)+'</b> · eigene Grenze</span><button class="btn sm" data-cfit="'+esc(l.id)+'" type="button">Anzeigen</button><button class="btn sm danger" data-cdel="'+esc(l.id)+'" type="button">Löschen</button></div>'}).join('')+'</div>':'')+
+  '<div class="btnrow"><button class="btn" id="impLots" type="button">Eigene Grenzen einlesen</button></div>'+
+  '<p class="hint">Quelle: <a href="https://data.public.lu/en/datasets/hunting-units/" target="_blank" rel="noopener">Lots de chasse, Administration de la nature et des forêts</a> (freie Lizenz). Für die App in WGS 84 umgerechnet und auf etwa einen Meter vereinfacht.</p></div>';
+  html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+
+  '<p class="hint">'+(S.mode==='cloud'?'Deine Einträge liegen privat in deinem Konto und sind auf allen deinen Geräten verfügbar.':'Deine Einträge bleiben nur in diesem Browser. Erstelle regelmäßig eine Sicherung.')+'</p>'+
+  '<div class="btnrow"><button class="btn" id="expCsv" type="button"'+(dl?'':' disabled')+'>Abschüsse als CSV</button><button class="btn" id="expJson" type="button"'+(dl?'':' disabled')+'>Sicherung (JSON)</button><button class="btn" id="impJson" type="button">Sicherung einlesen</button></div>'+
+  (dl?'':'<p class="hint">Der Export ist in dieser Ansicht nicht verfügbar.</p>')+'</div>';
+  html+='<div class="card"><h2 class="sec">Beispieldaten</h2><p class="hint">Solange noch nichts eingetragen ist, zeigt die App Beispieldaten.</p><div class="btnrow"><button class="btn" id="exTog" type="button">'+(D.settings.hideExamples?'Beispieldaten wieder einblenden':'Beispieldaten ausblenden')+'</button></div></div>';
+  html+='<div class="card"><h2 class="sec">Geplant für Version 2</h2><p class="hint">Drückjagd organisieren, Abschussplan vergleichen, Wege aufzeichnen, Basiskarte offline. In dieser Ansicht gibt es keine Hintergrundkarte und keinen dauerhaften GPS-Zugriff. Dafür braucht es die eigenständige App.</p></div>';
+  $('#dataBody').innerHTML=html;
+  $('#impLots').onclick=function(){fileMode='lots';$('#fileIn').click()};
+  $('#impJson').onclick=function(){fileMode='backup';$('#fileIn').click()};
+  $('#exTog').onclick=function(){guard(Store.setting({hideExamples:!D.settings.hideExamples}))};
+  var c=$('#expCsv');if(c)c.onclick=exportCsv;var j=$('#expJson');if(j)j.onclick=exportJson;
+  var add=$('#addLot');if(add)add.onclick=function(){
+    var n=parseInt($('#addNo').value,10);
+    if(!BASE.length){toast('Die Lose sind noch nicht geladen.');return}
+    var l=BASE.filter(function(x){return x.no===n})[0];if(!l){toast('Ein Los mit dieser Nummer gibt es nicht.');return}
+    var arr=(D.settings.myLots||[]).slice();if(arr.indexOf(n)<0)arr.push(n);
+    guard(Store.setting({myLots:arr})).then(function(){toast('Los '+n+' hinzugefügt');switchTab('map');fitBox(l.bb)},function(){});
+  };
+  $$('#dataBody [data-fit]').forEach(function(b){b.onclick=function(){var n=+b.dataset.fit,l=BASE.filter(function(x){return x.no===n})[0];if(l){switchTab('map');fitBox(l.bb)}}});
+  $$('#dataBody [data-rm]').forEach(function(b){b.onclick=function(){var n=+b.dataset.rm;guard(Store.setting({myLots:(D.settings.myLots||[]).filter(function(x){return x!==n})}))}});
+  $$('#dataBody [data-cfit]').forEach(function(b){b.onclick=function(){var l=D.lots.filter(function(x){return x.id===b.dataset.cfit})[0];if(l){switchTab('map');fitBox(l.bb)}}});
+  $$('#dataBody [data-cdel]').forEach(function(b){b.onclick=function(){if(b.dataset.s!=='1'){b.dataset.s='1';b.textContent='Sicher?';return}guard(Store.del('lots',b.dataset.cdel),'Löschen fehlgeschlagen')}});
+}
+function today(){return toLocalInput().slice(0,10)}
+function exportJson(){
+  var data=JSON.stringify({app:'revierbuch',version:1,exported:new Date().toISOString(),markers:D.markers,sightings:D.sightings,kills:D.kills,lots:D.lots.map(plain),settings:D.settings},null,1);
+  dl.save({filename:'revierbuch-sicherung-'+today()+'.json',data:data}).then(function(){toast('Sicherung gespeichert')}).catch(function(e){if(!e||e.code!=='declined')toast('Speichern nicht möglich ('+(e&&e.code||'Fehler')+').')});
+}
+function exportCsv(){
+  var q=function(v){v=String(v==null?'':v);return /[";\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+  var rows=[['Datum','Uhrzeit','Wildart','Geschlecht','Altersklasse','Gewicht kg','Wildmarke','Kanzel','Breite','Länge','Notiz']];
+  D.kills.slice().sort(function(a,b){return new Date(a.ts)-new Date(b.ts)}).forEach(function(k){var d=new Date(k.ts);rows.push([d.toLocaleDateString('de-LU'),d.toLocaleTimeString('de-LU',{hour:'2-digit',minute:'2-digit'}),k.species,SEX[k.sex],AGE[k.age],k.weight==null?'':String(k.weight).replace('.',','),k.tag,facName(k.kanzelId),k.lat.toFixed(6),k.lon.toFixed(6),k.note])});
+  if(rows.length===1){toast('Es gibt noch keine eigenen Abschüsse zum Exportieren.');return}
+  dl.save({filename:'abschuesse-'+today()+'.csv',data:'﻿'+rows.map(function(r){return r.map(q).join(';')}).join('\r\n')}).then(function(){toast('CSV gespeichert')}).catch(function(e){if(!e||e.code!=='declined')toast('Speichern nicht möglich ('+(e&&e.code||'Fehler')+').')});
+}
+
+/* ---------- import ---------- */
+var fileMode='lots';
+$('#fileIn').addEventListener('change',function(e){
+  var f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
+  var r=new FileReader();r.onload=function(){try{handleFile(f.name,String(r.result))}catch(err){toast(err.message||'Datei konnte nicht gelesen werden.')}};r.onerror=function(){toast('Datei konnte nicht gelesen werden.')};r.readAsText(f);
+});
+function handleFile(name,text){
+  var t=text.replace(/^﻿/,'').trim(),feats;
+  if(/\.kml$/i.test(name)||t.charAt(0)==='<'){feats=parseKml(t)}
+  else{
+    var j=JSON.parse(t);
+    if(j&&(j.app==='revierbuch'||(j.kills&&j.markers)))return importBackup(j);
+    feats=parseGeoJson(j);
+  }
+  if(!feats.length)throw new Error('Keine Flächen (Polygone) in der Datei gefunden.');
+  pickLots(feats);
+}
+function lotName(p,i){
+  p=p||{};var keys=['name','Name','NAME','lot','LOT','Lot','nom','NOM','bezeichnung','BEZEICHNUNG','lot_name','LOT_NAME','lot_nom','LOT_NOM','numero','NUMERO','nr','NR','id','ID'];
+  var nl=['NoLot','NOLOT','nolot','No_Lot','NO_LOT','Lot_No','LotNr'];
+  for(var n=0;n<nl.length;n++){if(p[nl[n]]!=null&&String(p[nl[n]]).trim()!=='')return 'Los '+String(p[nl[n]]).trim()}
+  for(var k=0;k<keys.length;k++){if(p[keys[k]]!=null&&String(p[keys[k]]).trim()!=='')return String(p[keys[k]]).trim()}
+  var any=Object.keys(p).filter(function(k){return typeof p[k]==='string'&&p[k].trim()&&p[k].length<60&&!/label|valable/i.test(k)})[0];
+  return any?String(p[any]).trim():'Los '+(i+1);
+}
+function parseGeoJson(j){
+  var feats=[];
+  if(j.type==='FeatureCollection')feats=j.features||[];else if(j.type==='Feature')feats=[j];else if(j.coordinates)feats=[{type:'Feature',properties:{},geometry:j}];
+  var crs=(j.crs&&j.crs.properties&&j.crs.properties.name)||'',out=[],mode=null;
+  feats.forEach(function(ft,i){
+    var g=ft.geometry;if(!g)return;var polys=g.type==='Polygon'?[g.coordinates]:g.type==='MultiPolygon'?g.coordinates:[];
+    if(!polys.length)return;
+    if(!mode){var s=polys[0][0][0];mode=/3857|900913/.test(crs)?'merc':(Math.abs(s[0])<=180&&Math.abs(s[1])<=90)?'wgs':(Math.abs(s[0])<2.1e7&&s[0]>4e5&&s[0]<9e5&&s[1]>6.1e6&&s[1]<6.6e6)?'merc':'bad'}
+    if(mode==='bad')throw new Error('Das Koordinatensystem passt nicht. Exportiere die Datei in QGIS als GeoJSON mit EPSG:4326 (WGS 84).');
+    out.push({name:lotName(ft.properties,i),ha:(ft.properties&&ft.properties.Flaeche_ha)||null,polys:polys.map(function(pl){return pl.map(function(ring){return ring.map(function(p){return mode==='merc'?[p[0]/6378137*180/Math.PI,(2*Math.atan(Math.exp(p[1]/6378137))-Math.PI/2)*180/Math.PI]:[p[0],p[1]]})})})});
+  });
+  return out;
+}
+function parseKml(t){
+  var doc=new DOMParser().parseFromString(t,'text/xml'),out=[];
+  $$('Placemark',doc).forEach(function(pm,i){
+    var nm=pm.getElementsByTagName('name')[0],polys=[];
+    Array.prototype.forEach.call(pm.getElementsByTagName('Polygon'),function(pg){
+      var rings=[];Array.prototype.forEach.call(pg.getElementsByTagName('coordinates'),function(c){
+        var ring=c.textContent.trim().split(/\s+/).map(function(s){var a=s.split(',').map(parseFloat);return [a[0],a[1]]}).filter(function(a){return isFinite(a[0])&&isFinite(a[1])});
+        if(ring.length>3)rings.push(ring)});
+      if(rings.length)polys.push(rings);
+    });
+    if(polys.length)out.push({name:nm&&nm.textContent.trim()||'Los '+(i+1),polys:polys});
+  });
+  return out;
+}
+function cleanRing(r){var o=[],last=null;r.forEach(function(p){var q=[Math.round(p[0]*1e5)/1e5,Math.round(p[1]*1e5)/1e5];if(!last||last[0]!==q[0]||last[1]!==q[1]){o.push(q);last=q}});if(o.length&&(o[0][0]!==o[o.length-1][0]||o[0][1]!==o[o.length-1][1]))o.push(o[0].slice());return o}
+function thin(polys){return polys.map(function(pl){return pl.map(function(r){if(r.length<12)return r;var o=r.filter(function(p,i){return i===0||i===r.length-1||i%2===0});return o})})}
+function pickLots(feats){
+  feats.sort(function(a,b){return a.name.localeCompare(b.name,'de',{numeric:true})});
+  var pre=feats.length<=5;
+  var html='<h2>Lose auswählen</h2><p class="hint">'+feats.length+' Flächen in der Datei. Wähle dein Los und bei Bedarf die Nachbarlose.</p>'+
+    (feats.length>5?'<input type="search" id="pkQ" placeholder="Nach Name oder Nummer suchen" autocomplete="off">':'')+'<div class="pick" id="pkList"></div><div class="btnrow"><button class="btn primary" id="pkOk" type="button" style="flex:2">Importieren</button><button class="btn" id="pkNo" type="button" style="flex:1">Abbrechen</button></div>';
+  openSheet(html);
+  var chosen={};if(pre)feats.forEach(function(f,i){chosen[i]=true});
+  function list(){
+    var q=($('#pkQ')?$('#pkQ').value:'').trim().toLowerCase(),n=0,h='';
+    feats.forEach(function(f,i){if(n>=150)return;if(q&&f.name.toLowerCase().indexOf(q)<0)return;n++;h+='<label><input type="checkbox" data-i="'+i+'"'+(chosen[i]?' checked':'')+'><span>'+esc(f.name)+(f.ha?' · '+nf.format(f.ha)+' ha':'')+'</span></label>'});
+    $('#pkList').innerHTML=h||'<p class="hint" style="padding:8px">Nichts gefunden.</p>';
+    $$('#pkList input').forEach(function(c){c.onchange=function(){chosen[c.dataset.i]=c.checked;cnt()}});cnt();
+  }
+  function cnt(){var n=Object.keys(chosen).filter(function(k){return chosen[k]}).length;$('#pkOk').textContent='Importieren ('+n+')';$('#pkOk').disabled=!n}
+  if($('#pkQ'))$('#pkQ').oninput=list;list();
+  $('#pkNo').onclick=closeSheet;
+  $('#pkOk').onclick=function(){
+    var sel=feats.filter(function(f,i){return chosen[i]});if(!sel.length)return;
+    $('#pkOk').disabled=true;$('#pkOk').textContent='Speichere …';
+    var made=[],seq=Promise.resolve();
+    sel.forEach(function(f){seq=seq.then(function(){
+      var polys=f.polys.map(function(pl){return pl.map(cleanRing).filter(function(r){return r.length>3})}).filter(function(pl){return pl.length});
+      var lot={id:uid('l'),name:f.name,ha:f.ha||null,polys:polys},tries=0;
+      while(JSON.stringify(lot).length>240000&&tries++<6)lot.polys=thin(lot.polys);
+      made.push(lot);return Store.put('lots',lot,true);
+    })});
+    seq.then(function(){
+      return null;
+    }).then(function(){
+      closeSheet();toast(made.length+' '+(made.length===1?'Los':'Lose')+' importiert');renderAll();
+      var b=[180,90,-180,-90];made.forEach(function(l){var x=bboxOf(l.polys);b=[Math.min(b[0],x[0]),Math.min(b[1],x[1]),Math.max(b[2],x[2]),Math.max(b[3],x[3])]});
+      switchTab('map');fitBox(b);
+    }).catch(function(e){toast('Import fehlgeschlagen ('+(e&&e.code||'Fehler')+').');renderAll()});
+  };
+}
+function importBackup(j){
+  var n=0,seq=Promise.resolve();
+  ['markers','sightings','kills','lots'].forEach(function(c){(j[c]||[]).forEach(function(o){if(o&&o.id){seq=seq.then(function(){n++;return Store.put(c,o,true)})}})});
+  seq.then(function(){return j.settings?Store.setting(j.settings):null}).then(function(){renderAll();toast(n+' Einträge eingelesen')}).catch(function(e){toast('Einlesen fehlgeschlagen ('+(e&&e.code||'Fehler')+').')});
+}
+
+/* ---------- boot ---------- */
+renderTabs();renderHeader();renderLayers();resize();loadBase();
+Store.init().catch(function(){S.mode='local';Store.loadLocal();markReady()});
+})();
+</script>
