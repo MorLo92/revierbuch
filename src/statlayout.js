@@ -1,27 +1,36 @@
 /* ---------- Statistik anpassen: Karten verschieben und ein-/ausblenden ---------- */
-var STAT_CARDS=[['total','Abschüsse gesamt'],['sp','Nach Wildart'],['kz','Nach Kanzel'],['mo','Nach Monat'],['seen','Gesehenes Wild'],['jz','Jagdzeiten heute'],['crop','Fläche nach Kultur'],['lotplan','Abschussplan 2024/2027 (meine Lose)'],['dmg','Wildschaden'],['plan','Abschussplan (eigene Zahlen)']];
-function statCid(el){
+var STAT_CARDS=[['kill','Abschüsse (gesamt, Wildart, Kanzel, Monat)'],['seen','Gesehenes Wild'],['jz','Jagdzeiten heute'],['crop','Fläche nach Kultur'],['lotplan','Abschussplan 2024/2027 (meine Lose)'],['dmg','Wildschaden'],['plan','Abschussplan (eigene Zahlen)']];
+var STAT_GRP={total:'kill',sp:'kill',kz:'kill',mo:'kill'};
+function statCid(el){var r=statCid0(el);return STAT_GRP[r]||r}
+function statCid0(el){
   var t=((el.querySelector('h2.sec')||el.querySelector('.lbl')||{}).textContent||'').trim();
   if(t.indexOf('Abschüsse gesamt')===0)return 'total';if(t.indexOf('Nach Wildart')===0)return 'sp';if(t.indexOf('Nach Kanzel')===0)return 'kz';if(t.indexOf('Nach Monat')===0)return 'mo';if(t.indexOf('Gesehenes Wild')===0)return 'seen';
   if(t.indexOf('Jagdzeiten')===0)return 'jz';if(t.indexOf('Fläche nach Kultur')===0)return 'crop';if(t.indexOf('Abschussplan')===0)return t.indexOf('meine Lose')>-1?'lotplan':'plan';if(t.indexOf('Wildschaden')===0)return 'dmg';
   return '';
 }
+function statHid(){
+  var raw=D.settings.statHidden||[],out=[];
+  raw.forEach(function(id){if(!STAT_GRP[id]&&out.indexOf(id)<0)out.push(id)});
+  if(raw.indexOf('kill')>-1||['total','sp','kz','mo'].every(function(x){return raw.indexOf(x)>-1}))out.push('kill');
+  return out;
+}
 function statOrder(){
-  var known=STAT_CARDS.map(function(c){return c[0]}),sv=(D.settings.statOrder||[]).filter(function(id){return known.indexOf(id)>-1});
+  var known=STAT_CARDS.map(function(c){return c[0]}),sv=(D.settings.statOrder||[]).map(function(id){return STAT_GRP[id]||id}).filter(function(id,i,a){return known.indexOf(id)>-1&&a.indexOf(id)===i});
   return sv.concat(known.filter(function(id){return sv.indexOf(id)<0}));
 }
 function statLayout(){
   var box=$('#statsBody');if(!box)return;
-  var hid=D.settings.statHidden||[],ord=statOrder(),cards=$$('#statsBody > .card');
+  var hid=statHid(),ord=statOrder(),cards=$$('#statsBody > .card');
   cards.forEach(function(c){c.dataset.cid=statCid(c)});
   ord.forEach(function(id){cards.filter(function(c){return c.dataset.cid===id}).forEach(function(c){if(hid.indexOf(id)>-1)c.remove();else box.appendChild(c)})});
-  var row=document.createElement('div');row.className='btnrow';row.style.margin='0 0 12px';
-  row.innerHTML='<button class="btn sm" id="stLay" type="button">Anordnen und auswählen'+(hid.length?' ('+hid.length+' ausgeblendet)':'')+'</button>';
-  var first=box.querySelector('.field');if(first&&first.nextSibling)box.insertBefore(row,first.nextSibling);else box.insertBefore(row,box.firstChild);
-  $('#stLay').onclick=function(){statLayoutSheet()};
+  var old=$('#stLay');if(old)old.remove();
+  var bt=document.createElement('button');bt.id='stLay';bt.type='button';bt.setAttribute('aria-label','Statistik anpassen');bt.title='Anordnen und auswählen';
+  bt.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>'+(hid.length?'<b style="position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;border-radius:9px;background:var(--kill,#b04a48);color:#fff;font-size:10px;line-height:17px;text-align:center">'+hid.length+'</b>':'');
+  bt.style.cssText='position:fixed;right:14px;bottom:calc(72px + env(safe-area-inset-bottom,0px));width:42px;height:42px;border-radius:50%;border:1px solid var(--line,#0003);background:var(--surface);color:var(--ink);box-shadow:0 2px 8px #0003;display:flex;align-items:center;justify-content:center;padding:0;z-index:5';
+  box.appendChild(bt);bt.onclick=function(){statLayoutSheet()};
 }
 function statLayoutSheet(){
-  var ord=statOrder(),hid=(D.settings.statHidden||[]).slice(),names={};STAT_CARDS.forEach(function(c){names[c[0]]=c[1]});
+  var ord=statOrder(),hid=statHid(),names={};STAT_CARDS.forEach(function(c){names[c[0]]=c[1]});
   openSheet('<h2>Statistik anpassen</h2><p class="hint" style="margin-bottom:10px">Mit den Pfeilen verschiebst du die Karten, mit dem Haken blendest du sie ein oder aus.</p><div class="rows" id="sl-rows"></div>'+
     '<div class="btnrow" style="margin-top:12px"><button class="btn primary" id="sl-save" type="button" style="flex:2">Fertig</button><button class="btn" id="sl-reset" type="button" style="flex:1">Zurücksetzen</button></div>');
   function paint(){
