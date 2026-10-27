@@ -1680,17 +1680,17 @@ function planCatOf(k){
   return -1;
 }
 function lotPlanData(kills){
-  var nos=(D.settings.myLots||[]).slice().sort(function(a,b){return a-b}),lots=[],tot={soll:PLAN_CATS.map(function(){return 0}),max:[0,0,0],ist:PLAN_CATS.map(function(){return 0})},ha=0,unk=0;
+  var nos=(D.settings.myLots||[]).slice().sort(function(a,b){return a-b}),lots=[],tot={adj:PLAN_CATS.map(function(){return 0}),soll:PLAN_CATS.map(function(){return 0}),max:[0,0,0],ist:PLAN_CATS.map(function(){return 0})},ha=0,unk=0;
   nos.forEach(function(n){
     var r=PLAN_LU[n-1],b=BASE.filter(function(x){return x.no===n})[0];if(!r)return;
-    lots.push({no:n,revier:r[0],ccr:r[1],ha:b&&b.ha||0,b:b,soll:r.slice(2,11),max:r.slice(11,14),ist:PLAN_CATS.map(function(){return 0})});
+    var ad=(D.settings.planAdj||{})[n]||[];lots.push({no:n,revier:r[0],ccr:r[1],ha:b&&b.ha||0,b:b,soll:r.slice(2,11),max:r.slice(11,14),adj:PLAN_CATS.map(function(_,i){return ad[i]||0}),ist:PLAN_CATS.map(function(_,i){return ad[i]||0})});
   });
   kills.forEach(function(k){
     var d=String(k.ts).slice(0,10);if(d<PLAN_PER.from||d>PLAN_PER.to||k.lat==null||k.lon==null)return;
     var wx=mx(k.lon,0),wy=my(k.lat,0),hit=lots.filter(function(l){var b=l.b;return b&&wx>=b.bw[0]&&wx<=b.bw[2]&&wy>=b.bw[1]&&wy<=b.bw[3]&&b.W.some(function(p){return inPolyW(wx,wy,p)})})[0];
     if(!hit)return;var c=planCatOf(k);if(c<0){unk++;return}hit.ist[c]++;
   });
-  lots.forEach(function(l){ha+=l.ha;l.soll.forEach(function(v,i){tot.soll[i]+=v;tot.ist[i]+=l.ist[i]});l.max.forEach(function(v,i){tot.max[i]+=v})});
+  lots.forEach(function(l){ha+=l.ha;l.soll.forEach(function(v,i){tot.soll[i]+=v;tot.ist[i]+=l.ist[i];tot.adj[i]+=l.adj[i]});l.max.forEach(function(v,i){tot.max[i]+=v})});
   return {lots:lots,tot:tot,ha:ha,unk:unk};
 }
 function lotPlanCardHtml(kills){
@@ -1698,18 +1698,35 @@ function lotPlanCardHtml(kills){
   if(!nos.length)return h+'<p class="hint">Wähle unter „Daten“ deine Jagdlose aus, dann erscheint hier der amtliche Plan de tir '+PLAN_PER.label+' dafür.</p></div>';
   var P=lotPlanData(kills),t=P.tot;
   h+='<p class="hint" style="margin:0 0 10px">'+P.lots.length+(P.lots.length===1?' Los':' Lose')+' · '+nf.format(Math.round(P.ha*10)/10)+' ha · Zeitraum '+new Date(PLAN_PER.from+'T12:00').toLocaleDateString('de-LU')+' bis '+new Date(PLAN_PER.to+'T12:00').toLocaleDateString('de-LU')+'</p>';
-  var rows=PLAN_CATS.map(function(c,i){return {c:c,i:i,s:t.soll[i],n:t.ist[i],mx:i>=6?t.max[i-6]:null}}).filter(function(r){return r.s>0||r.n>0});
+  var rows=PLAN_CATS.map(function(c,i){return {c:c,i:i,s:t.soll[i],n:t.ist[i],a:t.adj[i],mx:i>=6?t.max[i-6]:null}}).filter(function(r){return r.s>0||r.n>0});
+  var hasAdj=t.adj.some(function(v){return v>0});
   if(!rows.length)h+='<p class="hint">Für deine Lose ist kein Plan eingetragen.</p>';
   else h+='<div class="bars">'+rows.map(function(r){
     var over=r.mx!=null&&r.n>r.mx,pct=r.s?Math.min(100,Math.round(r.n/r.s*100)):(r.n?100:0),st=over?'Höchstzahl überschritten (+'+(r.n-r.mx)+')':r.n>=r.s&&r.s>0?'Minimum erfüllt':'noch '+(r.s-r.n)+' bis Minimum';
-    return '<div class="bar"><span class="bl">'+esc(r.c)+'<small>'+st+(r.mx!=null?' · Max '+r.mx:'')+'</small></span><span class="bt"><i style="width:'+pct+'%'+(over?';background:var(--kill)':'')+'"></i></span><span class="bv" style="min-width:64px;text-align:right">'+r.n+' / '+r.s+'</span></div>'}).join('')+'</div>';
-  h+='<details style="margin-top:12px"><summary class="lbl" style="cursor:pointer">Plan je Los</summary><div class="rows" style="margin-top:8px">'+P.lots.map(function(l){
+    return '<div class="bar"><span class="bl">'+esc(r.c)+'<small>'+st+(r.mx!=null?' · Max '+r.mx:'')+(r.a?' · davon '+r.a+' manuell':'')+'</small></span><span class="bt"><i style="width:'+pct+'%'+(over?';background:var(--kill)':'')+'"></i></span><span class="bv" style="min-width:64px;text-align:right">'+r.n+' / '+r.s+'</span></div>'}).join('')+'</div>';
+  h+='<div class="btnrow" style="margin-top:10px"><button class="btn" id="lpAdj" type="button">Bisherige Abschüsse eintragen</button></div><details style="margin-top:12px"><summary class="lbl" style="cursor:pointer">Plan je Los</summary><div class="rows" style="margin-top:8px">'+P.lots.map(function(l){
     var parts=l.soll.map(function(s,i){return s>0||l.ist[i]>0?PLAN_SHORT[i]+' '+l.ist[i]+'/'+s+(i>=6&&l.max[i-6]<99?' (max '+l.max[i-6]+')':''):''}).filter(Boolean);
     return '<div class="lotrow" style="display:block"><span><b>Los '+l.no+'</b> · '+esc(l.revier)+(l.ha?' · '+nf.format(l.ha)+' ha':'')+'</span><br><small class="hint">'+(parts.join(' · ')||'kein Plan')+'</small></div>'}).join('')+'</div></details>';
-  h+='<p class="hint" style="margin-top:10px">Quelle: Arrêté ministériel du 20 mars 2024 (Mémorial B n° 1267). Gezählt werden deine erfassten Abschüsse, die in der Zeit '+PLAN_PER.label+' innerhalb deiner Lose liegen (nach Position). Die Plansummen gelten für den ganzen Zeitraum.'+(P.unk?' '+P.unk+' Abschüsse ohne passendes Geschlecht/Alter konnten nicht zugeordnet werden.':'')+'</p></div>';
+  h+='<p class="hint" style="margin-top:10px">Quelle: Arrêté ministériel du 20 mars 2024 (Mémorial B n° 1267). Gezählt werden deine erfassten Abschüsse, die in der Zeit '+PLAN_PER.label+' innerhalb deiner Lose liegen (nach Position). Die Plansummen gelten für den ganzen Zeitraum. Abschüsse, die du vor der App-Nutzung erlegt hast, trägst du über „Bisherige Abschüsse eintragen“ nach.'+(P.unk?' '+P.unk+' Abschüsse ohne passendes Geschlecht/Alter konnten nicht zugeordnet werden.':'')+'</p></div>';
   return h;
 }
 var PLAN_SHORT=['Reh','Sau','Dam m','Dam w','Muff m','Muff w','Hirsch','Kuh','Kalb'];
+
+function bindLotPlan(kills){var b=$('#lpAdj');if(b)b.onclick=function(){lotAdjSheet()}}
+function lotAdjSheet(sel){
+  var nos=(D.settings.myLots||[]).slice().sort(function(a,b){return a-b}).filter(function(n){return PLAN_LU[n-1]});if(!nos.length)return;
+  var all=JSON.parse(JSON.stringify(D.settings.planAdj||{})),cur=sel&&nos.indexOf(sel)>-1?sel:nos[0];
+  openSheet('<h2>Bisherige Abschüsse</h2><p class="hint">Trage ein, wie viele Stücke du in diesem Planzeitraum schon vor der App-Nutzung erlegt hast. Sie werden zu den erfassten Abschüssen addiert.</p>'+
+    '<label class="field"><span class="lbl">Los</span><select id="la-lot">'+nos.map(function(n){return '<option value="'+n+'">Los '+n+' · '+esc(PLAN_LU[n-1][0])+'</option>'}).join('')+'</select></label><div id="la-rows"></div>'+
+    '<div class="btnrow"><button class="btn primary" id="la-save" type="button" style="flex:2">Speichern</button><button class="btn" id="la-cancel" type="button" style="flex:1">Abbrechen</button></div>');
+  function grab(){var v=$$('#la-rows [data-c]').map(function(i){return Math.max(0,parseInt(i.value,10)||0)});if(v.some(function(x){return x>0}))all[cur]=v;else delete all[cur]}
+  function paint(){var r=PLAN_LU[cur-1],ad=all[cur]||[];$('#la-lot').value=cur;
+    $('#la-rows').innerHTML='<div class="grid2">'+PLAN_CATS.map(function(c,i){var s=r[2+i];return '<label class="field"><span class="lbl">'+esc(c)+(s?' (Plan '+s+')':'')+'</span><input type="number" inputmode="numeric" min="0" step="1" data-c="'+i+'" value="'+(ad[i]||'')+'" placeholder="0"></label>'}).join('')+'</div>'}
+  paint();
+  $('#la-lot').onchange=function(e){grab();cur=+e.target.value;paint()};
+  $('#la-cancel').onclick=closeSheet;
+  $('#la-save').onclick=function(){grab();guard(Store.setting({planAdj:all})).then(function(){closeSheet();toast('Gespeichert');if(S.tab==='stats')renderStats()},function(){})};
+}
 function loop(){if(dirty)draw();requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){dirty=true});
@@ -2050,7 +2067,7 @@ function renderStats(){
   html+=cropSumHtml(Y==='all'?null:+Y,true)+lotPlanCardHtml(kills)+damageCardHtml(Y)+planCardHtml(Y,kills);
   $('#statsBody').innerHTML=html;
   $('#statYear').onchange=function(e){S.statYear=e.target.value;renderStats()};
-  bindPlan(Y);bindDamage();
+  bindPlan(Y);bindDamage();bindLotPlan();
 }
 
 /* ---------- data tab ---------- */
