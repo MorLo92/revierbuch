@@ -11,8 +11,9 @@ function statCid0(el){
 var START_CARDS=[['quick','Schnellaktionen'],['jz','Jagdzeiten heute'],['res','Anstehende Ansitze'],['hunt','Nächste Drückjagd'],['plan','Abschussplan meiner Lose'],['kills','Meine Abschüsse'],['dmg','Wildschaden'],['crop','Fläche nach Kultur']];
 var CARD_CFG={
   stats:{box:'#statsBody',sel:'#statsBody > .card',cards:STAT_CARDS,ok:'statOrder',hk:'statHidden',cid:statCid,grp:STAT_GRP,title:'Statistik anpassen',after:function(){renderStats()}},
-  start:{box:'#startBody',sel:'#startBody > .wid',cards:START_CARDS,ok:'startOrder',hk:'startHidden',cid:function(el){return el.dataset.cid},grp:{},title:'Start anpassen',after:function(){renderStart()}}
+  start:{box:'#startBody',sel:'#startBody > .wid',cards:function(){return START_CARDS.concat(dashWidgets().map(function(w){return ['c_'+w.id,w.title||(w.type==='text'?'Textblock':metricTitle(w.m))]}))},ok:'startOrder',hk:'startHidden',cid:function(el){return el.dataset.cid},grp:{},title:'Start anpassen',after:function(){renderStart()}}
 };
+function cardsOf(c){return typeof c.cards==='function'?c.cards():c.cards}
 function cfgHid(c){
   var raw=D.settings[c.hk]||[],out=[];
   raw.forEach(function(id){if(!c.grp[id]&&out.indexOf(id)<0)out.push(id)});
@@ -20,7 +21,7 @@ function cfgHid(c){
   return out;
 }
 function cfgOrder(c){
-  var known=c.cards.map(function(x){return x[0]}),sv=(D.settings[c.ok]||[]).map(function(id){return c.grp[id]||id}).filter(function(id,i,a){return known.indexOf(id)>-1&&a.indexOf(id)===i});
+  var known=cardsOf(c).map(function(x){return x[0]}),sv=(D.settings[c.ok]||[]).map(function(id){return c.grp[id]||id}).filter(function(id,i,a){return known.indexOf(id)>-1&&a.indexOf(id)===i});
   return sv.concat(known.filter(function(id){return sv.indexOf(id)<0}));
 }
 function cardLayout(c){
@@ -36,7 +37,7 @@ function cardLayout(c){
 }
 function statLayout(){cardLayout(CARD_CFG.stats)}
 function cardLayoutSheet(c){
-  var ord=cfgOrder(c),hid=cfgHid(c),names={};c.cards.forEach(function(x){names[x[0]]=x[1]});
+  var ord=cfgOrder(c),hid=cfgHid(c),names={};cardsOf(c).forEach(function(x){names[x[0]]=x[1]});
   openSheet('<h2>'+esc(c.title)+'</h2><p class="hint" style="margin-bottom:10px">Halte den Griff <b>⋮⋮</b> gedrückt und ziehe die Karte an die gewünschte Stelle. Mit dem Haken blendest du eine Karte ein oder aus.</p><div class="rows" id="sl-rows" style="touch-action:pan-y"></div>'+
     '<div class="btnrow" style="margin-top:12px"><button class="btn primary" id="sl-save" type="button" style="flex:2">Fertig</button><button class="btn" id="sl-reset" type="button" style="flex:1">Zurücksetzen</button></div>');
   function paint(){
@@ -63,6 +64,6 @@ function cardLayoutSheet(c){
     });
   }
   paint();
-  $('#sl-reset').onclick=function(){ord=c.cards.map(function(x){return x[0]});hid=[];paint()};
+  $('#sl-reset').onclick=function(){ord=cardsOf(c).map(function(x){return x[0]});hid=[];paint()};
   $('#sl-save').onclick=function(){var o={};o[c.ok]=ord;o[c.hk]=hid;guard(Store.setting(o)).then(function(){closeSheet();c.after()},function(){})};
 }
