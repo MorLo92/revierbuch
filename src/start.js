@@ -109,14 +109,14 @@ function saveCustom(d,edit){var a=dashWidgets().slice(),i=a.findIndex(function(x
 function renderStart(){
   var box=$('#startBody');if(!box)return;
   var kills=G('kills'),d=new Date(),parts=[
-    ['quick',startQuickHtml()],['jz',jzCardHtml()],['res',startResHtml()],['hunt',startHuntHtml()],['plan',lotPlanCardHtml(kills)],['kills',startKillsHtml(kills)],['dmg',damageCardHtml('all')],['crop',cropSumHtml(null,true)||'']
+    ['quick',startQuickHtml()],['recent',recentCardHtml()],['jz',jzCardHtml()],['res',startResHtml()],['hunt',startHuntHtml()],['plan',lotPlanCardHtml(kills)],['kills',startKillsHtml(kills)],['dmg',damageCardHtml('all')],['crop',cropSumHtml(null,true)||'']
   ].concat(dashWidgets().map(function(w){return ['c_'+w.id,customHtml(w)]}));
   box.innerHTML='<p class="hint" style="margin:0 0 12px">'+esc(d.toLocaleDateString('de-LU',{weekday:'long',day:'numeric',month:'long',year:'numeric'}))+'</p>'+
     parts.map(function(p){return p[1]?'<div class="wid" data-cid="'+p[0]+'" style="margin-bottom:12px">'+p[1]+'</div>':''}).join('')+
     '<div class="btnrow" id="stAdd" style="margin:4px 0 80px"><button class="btn" id="addTxt" type="button">+ Textblock</button><button class="btn" id="addMet" type="button">+ Kennzahl</button></div>';
   $$('#startBody .wid > .card').forEach(function(c){c.style.marginBottom='0'});
   cardLayout(CARD_CFG.start);box.appendChild($('#stAdd'));
-  jzBind();bindLotPlan();bindDamage();bindResRows(box);
+  jzBind();bindLotPlan();bindDamage();recentBind();bindResRows(box);
   $('#addTxt').onclick=function(){textForm(null)};$('#addMet').onclick=function(){metricForm(null)};
   $$('#startBody [data-cw]').forEach(function(b){b.onclick=function(){var w=dashWidgets().filter(function(x){return x.id===b.dataset.cw})[0];if(w)(w.type==='text'?textForm:metricForm)(w)}});
   $$('#startBody [data-q]').forEach(function(b){b.onclick=function(){var k=b.dataset.q;

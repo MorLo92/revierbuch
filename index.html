@@ -1849,24 +1849,26 @@ function jzPickSheet(back){
   $('#jp-save').onclick=function(){guard(Store.setting({jzSel:sel})).then(function(){closeSheet();if(S.tab==='stats')renderStats();if(back)jzSheet()},function(){})};
 }
 /* ---------- Karten anordnen und ausblenden (Statistik und Start) ---------- */
-var STAT_CARDS=[['kill','Abschüsse (gesamt, Wildart, Kanzel, Monat)'],['seen','Gesehenes Wild'],['jz','Jagdzeiten heute'],['crop','Fläche nach Kultur'],['lotplan','Abschussplan 2024/2027 (meine Lose)'],['dmg','Wildschaden'],['plan','Abschussplan (eigene Zahlen)']];
+var STAT_CARDS=[['kill','Abschüsse (gesamt, Wildart, Kanzel, Monat)'],['recent','Letzte Einträge'],['seen','Gesehenes Wild'],['jz','Jagdzeiten heute'],['crop','Fläche nach Kultur'],['lotplan','Abschussplan 2024/2027 (meine Lose)'],['dmg','Wildschaden'],['plan','Abschussplan (eigene Zahlen)']];
 var STAT_GRP={total:'kill',sp:'kill',kz:'kill',mo:'kill'};
 function statCid(el){var r=statCid0(el);return STAT_GRP[r]||r}
 function statCid0(el){
   var t=((el.querySelector('h2.sec')||el.querySelector('.lbl')||{}).textContent||'').trim();
-  if(t.indexOf('Abschüsse gesamt')===0)return 'total';if(t.indexOf('Nach Wildart')===0)return 'sp';if(t.indexOf('Nach Kanzel')===0)return 'kz';if(t.indexOf('Nach Monat')===0)return 'mo';if(t.indexOf('Gesehenes Wild')===0)return 'seen';
+  if(t.indexOf('Abschüsse gesamt')===0)return 'total';if(t.indexOf('Nach Wildart')===0)return 'sp';if(t.indexOf('Nach Kanzel')===0)return 'kz';if(t.indexOf('Nach Monat')===0)return 'mo';if(t.indexOf('Gesehenes Wild')===0)return 'seen';if(t.indexOf('Letzte Einträge')===0)return 'recent';
   if(t.indexOf('Jagdzeiten')===0)return 'jz';if(t.indexOf('Fläche nach Kultur')===0)return 'crop';if(t.indexOf('Abschussplan')===0)return t.indexOf('meine Lose')>-1?'lotplan':'plan';if(t.indexOf('Wildschaden')===0)return 'dmg';
   return '';
 }
-var START_CARDS=[['quick','Schnellaktionen'],['jz','Jagdzeiten heute'],['res','Anstehende Ansitze'],['hunt','Nächste Drückjagd'],['plan','Abschussplan meiner Lose'],['kills','Meine Abschüsse'],['dmg','Wildschaden'],['crop','Fläche nach Kultur']];
+var START_CARDS=[['quick','Schnellaktionen'],['recent','Letzte Einträge'],['jz','Jagdzeiten heute'],['res','Anstehende Ansitze'],['hunt','Nächste Drückjagd'],['plan','Abschussplan meiner Lose'],['kills','Meine Abschüsse'],['dmg','Wildschaden'],['crop','Fläche nach Kultur']];
 var CARD_CFG={
   stats:{box:'#statsBody',sel:'#statsBody > .card',cards:STAT_CARDS,ok:'statOrder',hk:'statHidden',cid:statCid,grp:STAT_GRP,title:'Statistik anpassen',after:function(){renderStats()}},
+  tabs:{cards:function(){return TAB_ALL},ok:'tabOrder',hk:'tabHidden',grp:{},fixed:['map'],title:'Tabs anpassen',after:function(){renderTabs()}},
   start:{box:'#startBody',sel:'#startBody > .wid',cards:function(){return START_CARDS.concat(dashWidgets().map(function(w){return ['c_'+w.id,w.title||(w.type==='text'?'Textblock':metricTitle(w.m))]}))},ok:'startOrder',hk:'startHidden',cid:function(el){return el.dataset.cid},grp:{},title:'Start anpassen',after:function(){renderStart()}}
 };
 function cardsOf(c){return typeof c.cards==='function'?c.cards():c.cards}
 function cfgHid(c){
   var raw=D.settings[c.hk]||[],out=[];
   raw.forEach(function(id){if(!c.grp[id]&&out.indexOf(id)<0)out.push(id)});
+  out=out.filter(function(id){return (c.fixed||[]).indexOf(id)<0});
   if(c===CARD_CFG.stats&&(raw.indexOf('kill')>-1||['total','sp','kz','mo'].every(function(x){return raw.indexOf(x)>-1})))out.push('kill');
   return out;
 }
@@ -1888,10 +1890,10 @@ function cardLayout(c){
 function statLayout(){cardLayout(CARD_CFG.stats)}
 function cardLayoutSheet(c){
   var ord=cfgOrder(c),hid=cfgHid(c),names={};cardsOf(c).forEach(function(x){names[x[0]]=x[1]});
-  openSheet('<h2>'+esc(c.title)+'</h2><p class="hint" style="margin-bottom:10px">Halte den Griff <b>⋮⋮</b> gedrückt und ziehe die Karte an die gewünschte Stelle. Mit dem Haken blendest du eine Karte ein oder aus.</p><div class="rows" id="sl-rows" style="touch-action:pan-y"></div>'+
+  openSheet('<h2>'+esc(c.title)+'</h2><p class="hint" style="margin-bottom:10px">Halte den Griff <b>⋮⋮</b> gedrückt und ziehe die Karte an die gewünschte Stelle. Mit dem Haken blendest du einen Eintrag ein oder aus.'+((c.fixed||[]).length?' Die Karte lässt sich nicht ausblenden.':'')+'</p><div class="rows" id="sl-rows" style="touch-action:pan-y"></div>'+
     '<div class="btnrow" style="margin-top:12px"><button class="btn primary" id="sl-save" type="button" style="flex:2">Fertig</button><button class="btn" id="sl-reset" type="button" style="flex:1">Zurücksetzen</button></div>');
   function paint(){
-    $('#sl-rows').innerHTML=ord.map(function(id){var on=hid.indexOf(id)<0;return '<div class="row" data-id="'+id+'" style="cursor:default;align-items:center;gap:8px;background:var(--surface)"><span data-h aria-label="Verschieben" style="touch-action:none;cursor:grab;flex:none;width:34px;height:40px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--ink-2);letter-spacing:-3px;user-select:none">⋮⋮</span><label style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><input type="checkbox" data-sh="'+id+'"'+(on?' checked':'')+' style="width:22px;height:22px;flex:none"><span class="rt"><b style="font-weight:'+(on?600:400)+';'+(on?'':'opacity:.55')+'">'+esc(names[id])+'</b></span></label></div>'}).join('');
+    $('#sl-rows').innerHTML=ord.map(function(id){var fx=(c.fixed||[]).indexOf(id)>-1,on=fx||hid.indexOf(id)<0;return '<div class="row" data-id="'+id+'" style="cursor:default;align-items:center;gap:8px;background:var(--surface)"><span data-h aria-label="Verschieben" style="touch-action:none;cursor:grab;flex:none;width:34px;height:40px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--ink-2);letter-spacing:-3px;user-select:none">⋮⋮</span><label style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><input type="checkbox" data-sh="'+id+'"'+(on?' checked':'')+(fx?' disabled':'')+' style="width:22px;height:22px;flex:none"><span class="rt"><b style="font-weight:'+(on?600:400)+';'+(on?'':'opacity:.55')+'">'+esc(names[id])+'</b></span></label></div>'}).join('');
     $$('#sl-rows [data-sh]').forEach(function(x){x.onchange=function(){var k=hid.indexOf(x.dataset.sh);if(x.checked&&k>-1)hid.splice(k,1);else if(!x.checked&&k<0)hid.push(x.dataset.sh);paint()}});
     $$('#sl-rows [data-h]').forEach(function(h){
       h.addEventListener('pointerdown',function(e){
@@ -1915,7 +1917,7 @@ function cardLayoutSheet(c){
   }
   paint();
   $('#sl-reset').onclick=function(){ord=cardsOf(c).map(function(x){return x[0]});hid=[];paint()};
-  $('#sl-save').onclick=function(){var o={};o[c.ok]=ord;o[c.hk]=hid;guard(Store.setting(o)).then(function(){closeSheet();c.after()},function(){})};
+  $('#sl-save').onclick=function(){var o={};o[c.ok]=ord;o[c.hk]=hid.filter(function(id){return (c.fixed||[]).indexOf(id)<0});guard(Store.setting(o)).then(function(){closeSheet();c.after()},function(){})};
 }
 /* ---------- Start: eigenes Dashboard ---------- */
 ICON.start='<path d="M3 11l9-8 9 8"/><path d="M5 9.5V20h5v-6h4v6h5V9.5"/>';
@@ -2028,14 +2030,14 @@ function saveCustom(d,edit){var a=dashWidgets().slice(),i=a.findIndex(function(x
 function renderStart(){
   var box=$('#startBody');if(!box)return;
   var kills=G('kills'),d=new Date(),parts=[
-    ['quick',startQuickHtml()],['jz',jzCardHtml()],['res',startResHtml()],['hunt',startHuntHtml()],['plan',lotPlanCardHtml(kills)],['kills',startKillsHtml(kills)],['dmg',damageCardHtml('all')],['crop',cropSumHtml(null,true)||'']
+    ['quick',startQuickHtml()],['recent',recentCardHtml()],['jz',jzCardHtml()],['res',startResHtml()],['hunt',startHuntHtml()],['plan',lotPlanCardHtml(kills)],['kills',startKillsHtml(kills)],['dmg',damageCardHtml('all')],['crop',cropSumHtml(null,true)||'']
   ].concat(dashWidgets().map(function(w){return ['c_'+w.id,customHtml(w)]}));
   box.innerHTML='<p class="hint" style="margin:0 0 12px">'+esc(d.toLocaleDateString('de-LU',{weekday:'long',day:'numeric',month:'long',year:'numeric'}))+'</p>'+
     parts.map(function(p){return p[1]?'<div class="wid" data-cid="'+p[0]+'" style="margin-bottom:12px">'+p[1]+'</div>':''}).join('')+
     '<div class="btnrow" id="stAdd" style="margin:4px 0 80px"><button class="btn" id="addTxt" type="button">+ Textblock</button><button class="btn" id="addMet" type="button">+ Kennzahl</button></div>';
   $$('#startBody .wid > .card').forEach(function(c){c.style.marginBottom='0'});
   cardLayout(CARD_CFG.start);box.appendChild($('#stAdd'));
-  jzBind();bindLotPlan();bindDamage();bindResRows(box);
+  jzBind();bindLotPlan();bindDamage();recentBind();bindResRows(box);
   $('#addTxt').onclick=function(){textForm(null)};$('#addMet').onclick=function(){metricForm(null)};
   $$('#startBody [data-cw]').forEach(function(b){b.onclick=function(){var w=dashWidgets().filter(function(x){return x.id===b.dataset.cw})[0];if(w)(w.type==='text'?textForm:metricForm)(w)}});
   $$('#startBody [data-q]').forEach(function(b){b.onclick=function(){var k=b.dataset.q;
@@ -2043,6 +2045,76 @@ function renderStart(){
   $$('#startBody [data-sh]').forEach(function(b){b.onclick=function(){switchTab('hunt')}});
 }
 function pickParcelFor0(){if(!parcels().length)parcelNew();else pickParcelFor()}
+/* ---------- Kachel: Letzte Einträge ---------- */
+function recentCfg(){var c=D.settings.recentCfg||{};return {types:c.types||'all',n:c.n||5}}
+function recentCardHtml(){
+  var c=recentCfg(),list=[];
+  if(c.types!=='sight')G('kills').forEach(function(o){list.push({k:'kill',o:o})});
+  if(c.types!=='kill')G('sightings').forEach(function(o){list.push({k:'sight',o:o})});
+  list.sort(function(a,b){return new Date(b.o.ts)-new Date(a.o.ts)});list=list.slice(0,c.n);
+  var rows=list.length?'<div class="rows">'+list.map(function(it){
+    var o=it.o,mk=it.k==='kill'?'<span class="mk sq" style="background:var(--kill)">✕</span>':'<span class="mk sq" style="background:var(--sicht)">'+(o.count||1)+'</span>';
+    var t=it.k==='kill'?esc(o.species)+' · '+SEX[o.sex]+(o.weight!=null?' · '+nf.format(o.weight)+' kg':''):(o.count||1)+'× '+esc(o.species)+' · '+SEX[o.sex];
+    var m=fmtDate(o.ts)+(o.kanzelId?' · '+esc(facName(o.kanzelId)):'')+(o.group?' · '+esc(o.group):'');
+    return '<button class="row" type="button" data-k="'+it.k+'" data-id="'+esc(o.id)+'">'+mk+'<span class="rt"><b>'+t+'</b><small>'+m+'</small></span>'+(o.tag?'<span class="tagc">'+esc(o.tag)+'</span>':'')+'</button>'}).join('')+'</div>':'<div class="empty">Noch keine Einträge.</div>';
+  return '<div class="card" id="rcCard"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><h2 class="sec" style="margin:0;flex:1">Letzte Einträge</h2><button type="button" class="btn sm" id="rcCfg">Anpassen</button></div>'+rows+
+    '<div class="btnrow" style="margin-top:10px"><button class="btn" id="rcAll" type="button">Alle Einträge</button></div></div>';
+}
+function recentBind(){
+  $$('#rcCard .row[data-k]').forEach(function(b){b.onclick=function(){var arr=b.dataset.k==='kill'?G('kills'):G('sightings');var o=arr.filter(function(x){return x.id===b.dataset.id})[0];if(o)showDetail(b.dataset.k,o)}});
+  var a=$('#rcAll');if(a)a.onclick=function(){switchTab('log')};
+  var g=$('#rcCfg');if(g)g.onclick=recentSheet;
+}
+function recentSheet(){
+  var c=recentCfg();
+  openSheet('<h2>Letzte Einträge</h2><label class="field"><span class="lbl">Welche Einträge</span><select id="rc-t"><option value="all"'+(c.types==='all'?' selected':'')+'>Abschüsse und Sichtungen</option><option value="kill"'+(c.types==='kill'?' selected':'')+'>Nur Abschüsse</option><option value="sight"'+(c.types==='sight'?' selected':'')+'>Nur Sichtungen</option></select></label>'+
+    '<label class="field"><span class="lbl">Anzahl</span><select id="rc-n">'+[3,5,10,20].map(function(n){return '<option value="'+n+'"'+(c.n===n?' selected':'')+'>'+n+'</option>'}).join('')+'</select></label>'+
+    '<div class="btnrow"><button class="btn primary" id="rc-save" type="button" style="flex:2">Speichern</button><button class="btn" id="rc-cancel" type="button" style="flex:1">Abbrechen</button></div>');
+  $('#rc-cancel').onclick=closeSheet;
+  $('#rc-save').onclick=function(){guard(Store.setting({recentCfg:{types:$('#rc-t').value,n:+$('#rc-n').value}})).then(function(){closeSheet();renderActive()},function(){})};
+}
+/* ---------- Tabs: verschieben (lang drücken) und ausblenden ---------- */
+var TAB_ALL=[['start','Start'],['map','Karte'],['log','Einträge'],['hunt','Jagd'],['stats','Statistik'],['data','Daten']];
+function tabList(){
+  var ord=cfgOrder(CARD_CFG.tabs),hid=cfgHid(CARD_CFG.tabs),nm={};TAB_ALL.forEach(function(x){nm[x[0]]=x[1]});
+  return ord.filter(function(id){return hid.indexOf(id)<0}).map(function(id){return [id,nm[id]]});
+}
+var tabSupT=0;
+function tabSup(){if(Date.now()<tabSupT){tabSupT=0;return true}return false}
+(function(){
+  var bar=$('#tabs');if(!bar)return;
+  bar.style.touchAction='none';bar.style.webkitTouchCallout='none';bar.style.userSelect='none';
+  bar.addEventListener('contextmenu',function(e){e.preventDefault()});
+  bar.addEventListener('pointerdown',function(e){
+    var b=e.target.closest('button[data-t]');if(!b||e.button>0)return;
+    var sx=e.clientX,sy=e.clientY,pid=e.pointerId,live=false,tm=setTimeout(begin,500);
+    function stopPre(){clearTimeout(tm);bar.removeEventListener('pointermove',pre);bar.removeEventListener('pointerup',stopPre);bar.removeEventListener('pointercancel',stopPre)}
+    function pre(ev){if(Math.hypot(ev.clientX-sx,ev.clientY-sy)>10)stopPre()}
+    bar.addEventListener('pointermove',pre);bar.addEventListener('pointerup',stopPre);bar.addEventListener('pointercancel',stopPre);
+    function begin(){
+      stopPre();live=true;try{navigator.vibrate&&navigator.vibrate(20)}catch(_){}
+      try{bar.setPointerCapture(pid)}catch(_){}
+      var tabs=$$('#tabs button'),from=tabs.indexOf(b),to=from,w=tabs.length>1?tabs[1].getBoundingClientRect().left-tabs[0].getBoundingClientRect().left:b.offsetWidth;
+      b.style.zIndex='3';b.style.transition='none';b.style.boxShadow='0 4px 14px #0004';b.style.background='var(--surface)';b.style.borderRadius='10px';
+      tabs.forEach(function(x){if(x!==b)x.style.transition='transform .12s'});
+      function mv(ev){
+        var dx=ev.clientX-sx;b.style.transform='translateX('+dx+'px) scale(1.08)';
+        to=Math.max(0,Math.min(tabs.length-1,from+Math.round(dx/w)));
+        tabs.forEach(function(x,i){if(x===b)return;var s=0;if(from<to&&i>from&&i<=to)s=-w;else if(to<from&&i>=to&&i<from)s=w;x.style.transform=s?'translateX('+s+'px)':''});
+      }
+      function up(){
+        bar.removeEventListener('pointermove',mv);bar.removeEventListener('pointerup',up);bar.removeEventListener('pointercancel',up);
+        tabSupT=Date.now()+450;
+        if(to!==from){
+          var vis=tabs.map(function(x){return x.dataset.t});vis.splice(to,0,vis.splice(from,1)[0]);
+          var full=cfgOrder(CARD_CFG.tabs),k=0,nf2=full.map(function(id){return vis.indexOf(id)>-1?vis[k++]:id});
+          guard(Store.setting({tabOrder:nf2})).then(renderTabs,renderTabs);
+        }else{renderTabs();setTimeout(function(){cardLayoutSheet(CARD_CFG.tabs)},350)}
+      }
+      bar.addEventListener('pointermove',mv);bar.addEventListener('pointerup',up);bar.addEventListener('pointercancel',up);
+    }
+  });
+})();
 function loop(){if(dirty)draw();requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){dirty=true});
@@ -2152,10 +2224,10 @@ function renderHeader(){
   g.lastChild.textContent={on:'GPS an',busy:'Suche …',off:'GPS aus'}[S.gpsState];
 }
 function renderTabs(){
-  var t=[['start','Start'],['map','Karte'],['log','Einträge'],['hunt','Jagd'],['stats','Statistik'],['data','Daten']];
+  var t=tabList();
   $('#tabs').innerHTML=t.map(function(x){var ic={start:'start',map:'map',log:'list',hunt:'hunt',stats:'chart',data:'data'}[x[0]];return '<button type="button" data-t="'+x[0]+'"'+(S.tab===x[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICON[ic]+'</svg>'+x[1]+'</button>'}).join('');
 }
-$('#tabs').addEventListener('click',function(e){var b=e.target.closest('button[data-t]');if(b)switchTab(b.dataset.t)});
+$('#tabs').addEventListener('click',function(e){var b=e.target.closest('button[data-t]');if(b&&!tabSup())switchTab(b.dataset.t)});
 function switchTab(t){
   if(S.placing&&t!=='map')return;
   S.tab=t;
@@ -2170,7 +2242,7 @@ function renderLayers(){
 $('#layers').addEventListener('click',function(e){if(e.target.closest('#baseChip')){cycleBase();return}if(e.target.closest('#recChip')){trkStopSheet();return}if(e.target.closest('#grpChip')){S.grp=null;renderAll();return}if(e.target.closest('#huntChip')){S.hunt=null;renderAll();return}var b=e.target.closest('button[data-l]');if(!b)return;S.layers[b.dataset.l]=!S.layers[b.dataset.l];renderLayers();dirty=true});
 $('#demoOff').onclick=function(){guard(Store.setting({hideExamples:true}))};
 
-function renderAll(){renderHeader();renderLayers();$('#demo').hidden=!useDemo()||!!S.placing||!!S.guide;renderActive();dirty=true;migrate()}
+function renderAll(){renderTabs();renderHeader();renderLayers();$('#demo').hidden=!useDemo()||!!S.placing||!!S.guide;renderActive();dirty=true;migrate()}
 function renderActive(){
   $('#fab').hidden=!!S.placing;$('#place').hidden=!S.placing;$('.maptools').hidden=false;
   if(S.tab==='start')renderStart();else if(S.tab==='log')renderLog();else if(S.tab==='stats')renderStats();else if(S.tab==='hunt')renderHunt();else if(S.tab==='data')renderData();
@@ -2381,10 +2453,10 @@ function renderStats(){
     var rows=Array.from(cnt).sort(function(a,b){return b[1]-a[1]}).map(function(r){return [r[0],{n:r[1]}]});
     if(rows.length)html+='<div class="card"><h2 class="sec">Gesehenes Wild</h2>'+bars(rows)+'</div>';
   }
-  html+=jzCardHtml()+cropSumHtml(Y==='all'?null:+Y,true)+lotPlanCardHtml(kills)+damageCardHtml(Y)+planCardHtml(Y,kills);
+  html+=recentCardHtml()+jzCardHtml()+cropSumHtml(Y==='all'?null:+Y,true)+lotPlanCardHtml(kills)+damageCardHtml(Y)+planCardHtml(Y,kills);
   $('#statsBody').innerHTML=html;statLayout();
   $('#statYear').onchange=function(e){S.statYear=e.target.value;renderStats()};
-  bindPlan(Y);bindDamage();bindLotPlan();jzBind();
+  bindPlan(Y);bindDamage();bindLotPlan();jzBind();recentBind();
 }
 
 /* ---------- data tab ---------- */
