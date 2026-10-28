@@ -662,6 +662,8 @@ sub("bindDamage();bindLotPlan();jzBind();", "bindDamage();bindLotPlan();jzBind()
 
 sub("function renderAll(){renderHeader();", "function renderAll(){renderTabs();renderHeader();")
 
+sub("var t=tabList();", "var t=tabList();$('#tabs').style.gridTemplateColumns='repeat('+t.length+',1fr)';")
+
 # ---------- split into document ----------
 i = src.index('<div id="app">')
 head_part, body_part = src[:i], src[i:]
@@ -706,7 +708,7 @@ json.dump({
 
 # ---------- service worker ----------
 open(OUT + '/sw.js', 'w', encoding='utf8').write(r'''/* Revierbuch service worker: app shell offline, map tiles cached as they are viewed */
-const VERSION = 'v31';
+const VERSION = 'v32';
 const SHELL = 'shell-' + VERSION, TILES = 'tiles-v1', FONTS = 'fonts-v1';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'lots-lu.geojson', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 const MAX_TILES = 6000;
