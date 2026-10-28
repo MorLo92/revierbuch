@@ -553,7 +553,7 @@ sub(".gbtn{display:flex;gap:6px;flex-wrap:wrap;width:100%}",
     ".pick{display:flex;align-items:center;gap:10px;cursor:pointer}.pick input{width:22px;height:22px;flex:none}")
 
 # ---------- Drückjagd-Planung ----------
-sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + 'function loop(){')
+sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + open('start.js',encoding='utf8').read() + 'function loop(){')
 sub(".tabs{display:grid;grid-template-columns:repeat(4,1fr);", ".tabs{display:grid;grid-template-columns:repeat(5,1fr);")
 sub(".pick input{width:22px;height:22px;flex:none}", ".pick input{width:22px;height:22px;flex:none}\n.tabs button{letter-spacing:.03em!important;padding-inline:2px!important}")
 sub('<section class="view" id="viewStats" hidden>', '<section class="view" id="viewHunt" hidden><div class="pad gx" id="huntBody"></div></section>\n    <section class="view" id="viewStats" hidden>')
@@ -644,9 +644,16 @@ sub("bindForm();updPos();if(kind==='kill')checkTag();", "bindForm();updPos();if(
 sub("function changed(key){\n  var f=S.form,d=f.d;", "function changed(key){\n  var f=S.form,d=f.d;\n  if(f.kind==='kill'&&(key==='species'||key==='sex'||key==='age'||key==='tsl'))seasonCheck();")
 sub("'<div class=\"field\"><span class=\"lbl\">Geschlecht</span>'+chips('sex',SEX,d.sex,['m','w','u'])+'</div>'+", "'<div class=\"field\"><span class=\"lbl\">Geschlecht</span>'+chips('sex',SEX,d.sex,['m','w','u'])+'</div>'+'<div id=\"f-season\" class=\"warnbox\" hidden></div>'+")
 sub("html+=cropSumHtml(Y==='all'?null:+Y,true)+lotPlanCardHtml(kills)", "html+=jzCardHtml()+cropSumHtml(Y==='all'?null:+Y,true)+lotPlanCardHtml(kills)")
-sub("bindLotPlan();", "bindLotPlan();jzBind();")
+sub("bindDamage();bindLotPlan();", "bindDamage();bindLotPlan();jzBind();")
 
 sub("  $('#statsBody').innerHTML=html;\n  $('#statYear')", "  $('#statsBody').innerHTML=html;statLayout();\n  $('#statYear')")
+
+sub("var t=[['map','Karte'],['log','Einträge'],['hunt','Jagd'],['stats','Statistik'],['data','Daten']];", "var t=[['start','Start'],['map','Karte'],['log','Einträge'],['hunt','Jagd'],['stats','Statistik'],['data','Daten']];")
+sub("{map:'map',log:'list',hunt:'hunt',stats:'chart',data:'data'}", "{start:'start',map:'map',log:'list',hunt:'hunt',stats:'chart',data:'data'}")
+sub("[['map','viewMap'],['log','viewLog'],['hunt','viewHunt'],['stats','viewStats'],['data','viewData']].forEach(function(p){$('#'+p[1]).hidden=p[0]!==t});", "[['start','viewStart'],['map','viewMap'],['log','viewLog'],['hunt','viewHunt'],['stats','viewStats'],['data','viewData']].forEach(function(p){$('#'+p[1]).hidden=p[0]!==t});if(t!=='start')$('#startBody').innerHTML='';if(t!=='stats')$('#statsBody').innerHTML='';")
+sub("if(S.tab==='log')renderLog();else if(S.tab==='stats')renderStats();", "if(S.tab==='start')renderStart();else if(S.tab==='log')renderLog();else if(S.tab==='stats')renderStats();")
+sub('<section class="view" id="viewLog" hidden>', '<section class="view" id="viewStart" hidden><div class="pad gx" id="startBody"></div></section>\n    <section class="view" id="viewLog" hidden>')
+sub(".tabs{display:grid;grid-template-columns:repeat(5,1fr);", ".tabs{display:grid;grid-template-columns:repeat(6,1fr);")
 
 # ---------- split into document ----------
 i = src.index('<div id="app">')
@@ -692,7 +699,7 @@ json.dump({
 
 # ---------- service worker ----------
 open(OUT + '/sw.js', 'w', encoding='utf8').write(r'''/* Revierbuch service worker: app shell offline, map tiles cached as they are viewed */
-const VERSION = 'v28';
+const VERSION = 'v29';
 const SHELL = 'shell-' + VERSION, TILES = 'tiles-v1', FONTS = 'fonts-v1';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'lots-lu.geojson', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 const MAX_TILES = 6000;

@@ -66,7 +66,7 @@ button.pill{cursor:pointer}
 #map{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
 .pad{padding-block:16px 28px;max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 
-.tabs{display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--line);padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
+.tabs{display:grid;grid-template-columns:repeat(6,1fr);background:var(--surface);border-top:1px solid var(--line);padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
 .tabs button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px 7px;min-height:56px;color:var(--ink-2);font:600 12px/1 var(--font-display);letter-spacing:.07em;text-transform:uppercase;border-top:3px solid transparent}
 .tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .tabs button[aria-current="page"]{color:var(--accent);border-top-color:var(--accent)}
@@ -214,6 +214,7 @@ a.btn{text-decoration:none;color:var(--ink)}
         <div class="btnrow"><button class="btn primary sm" id="pOk" type="button">Hier setzen</button><button class="btn sm" id="pGps" type="button">Mein Standort</button><button class="btn sm" id="pNo" type="button">Abbrechen</button></div>
       </div>
     </section>
+    <section class="view" id="viewStart" hidden><div class="pad gx" id="startBody"></div></section>
     <section class="view" id="viewLog" hidden><div class="pad gx" id="logBody"></div></section>
     <section class="view" id="viewHunt" hidden><div class="pad gx" id="huntBody"></div></section>
     <section class="view" id="viewStats" hidden><div class="pad gx" id="statsBody"></div></section>
@@ -1847,7 +1848,7 @@ function jzPickSheet(back){
   $('#jp-cancel').onclick=function(){closeSheet();if(back)jzSheet()};
   $('#jp-save').onclick=function(){guard(Store.setting({jzSel:sel})).then(function(){closeSheet();if(S.tab==='stats')renderStats();if(back)jzSheet()},function(){})};
 }
-/* ---------- Statistik anpassen: Karten verschieben und ein-/ausblenden ---------- */
+/* ---------- Karten anordnen und ausblenden (Statistik und Start) ---------- */
 var STAT_CARDS=[['kill','Abschüsse (gesamt, Wildart, Kanzel, Monat)'],['seen','Gesehenes Wild'],['jz','Jagdzeiten heute'],['crop','Fläche nach Kultur'],['lotplan','Abschussplan 2024/2027 (meine Lose)'],['dmg','Wildschaden'],['plan','Abschussplan (eigene Zahlen)']];
 var STAT_GRP={total:'kill',sp:'kill',kz:'kill',mo:'kill'};
 function statCid(el){var r=statCid0(el);return STAT_GRP[r]||r}
@@ -1857,34 +1858,40 @@ function statCid0(el){
   if(t.indexOf('Jagdzeiten')===0)return 'jz';if(t.indexOf('Fläche nach Kultur')===0)return 'crop';if(t.indexOf('Abschussplan')===0)return t.indexOf('meine Lose')>-1?'lotplan':'plan';if(t.indexOf('Wildschaden')===0)return 'dmg';
   return '';
 }
-function statHid(){
-  var raw=D.settings.statHidden||[],out=[];
-  raw.forEach(function(id){if(!STAT_GRP[id]&&out.indexOf(id)<0)out.push(id)});
-  if(raw.indexOf('kill')>-1||['total','sp','kz','mo'].every(function(x){return raw.indexOf(x)>-1}))out.push('kill');
+var START_CARDS=[['quick','Schnellaktionen'],['jz','Jagdzeiten heute'],['res','Anstehende Ansitze'],['hunt','Nächste Drückjagd'],['plan','Abschussplan meiner Lose'],['kills','Meine Abschüsse'],['dmg','Wildschaden'],['crop','Fläche nach Kultur']];
+var CARD_CFG={
+  stats:{box:'#statsBody',sel:'#statsBody > .card',cards:STAT_CARDS,ok:'statOrder',hk:'statHidden',cid:statCid,grp:STAT_GRP,title:'Statistik anpassen',after:function(){renderStats()}},
+  start:{box:'#startBody',sel:'#startBody > .wid',cards:START_CARDS,ok:'startOrder',hk:'startHidden',cid:function(el){return el.dataset.cid},grp:{},title:'Start anpassen',after:function(){renderStart()}}
+};
+function cfgHid(c){
+  var raw=D.settings[c.hk]||[],out=[];
+  raw.forEach(function(id){if(!c.grp[id]&&out.indexOf(id)<0)out.push(id)});
+  if(c===CARD_CFG.stats&&(raw.indexOf('kill')>-1||['total','sp','kz','mo'].every(function(x){return raw.indexOf(x)>-1})))out.push('kill');
   return out;
 }
-function statOrder(){
-  var known=STAT_CARDS.map(function(c){return c[0]}),sv=(D.settings.statOrder||[]).map(function(id){return STAT_GRP[id]||id}).filter(function(id,i,a){return known.indexOf(id)>-1&&a.indexOf(id)===i});
+function cfgOrder(c){
+  var known=c.cards.map(function(x){return x[0]}),sv=(D.settings[c.ok]||[]).map(function(id){return c.grp[id]||id}).filter(function(id,i,a){return known.indexOf(id)>-1&&a.indexOf(id)===i});
   return sv.concat(known.filter(function(id){return sv.indexOf(id)<0}));
 }
-function statLayout(){
-  var box=$('#statsBody');if(!box)return;
-  var hid=statHid(),ord=statOrder(),cards=$$('#statsBody > .card');
-  cards.forEach(function(c){c.dataset.cid=statCid(c)});
-  ord.forEach(function(id){cards.filter(function(c){return c.dataset.cid===id}).forEach(function(c){if(hid.indexOf(id)>-1)c.remove();else box.appendChild(c)})});
+function cardLayout(c){
+  var box=$(c.box);if(!box)return;
+  var hid=cfgHid(c),ord=cfgOrder(c),cards=$$(c.sel);
+  cards.forEach(function(e){e.dataset.cid=c.cid(e)});
+  ord.forEach(function(id){cards.filter(function(e){return e.dataset.cid===id}).forEach(function(e){if(hid.indexOf(id)>-1)e.remove();else box.appendChild(e)})});
   var old=$('#stLay');if(old)old.remove();
-  var bt=document.createElement('button');bt.id='stLay';bt.type='button';bt.setAttribute('aria-label','Statistik anpassen');bt.title='Anordnen und auswählen';
+  var bt=document.createElement('button');bt.id='stLay';bt.type='button';bt.setAttribute('aria-label',c.title);bt.title=c.title;
   bt.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>';
   bt.style.cssText='position:fixed;right:14px;bottom:calc(72px + env(safe-area-inset-bottom,0px));width:42px;height:42px;border-radius:50%;border:1px solid var(--line,#0003);background:var(--surface);color:var(--ink);box-shadow:0 2px 8px #0003;display:flex;align-items:center;justify-content:center;padding:0;z-index:5';
-  box.appendChild(bt);bt.onclick=function(){statLayoutSheet()};
+  box.appendChild(bt);bt.onclick=function(){cardLayoutSheet(c)};
 }
-function statLayoutSheet(){
-  var ord=statOrder(),hid=statHid(),names={};STAT_CARDS.forEach(function(c){names[c[0]]=c[1]});
-  openSheet('<h2>Statistik anpassen</h2><p class="hint" style="margin-bottom:10px">Halte den Griff <b>⋮⋮</b> gedrückt und ziehe die Karte an die gewünschte Stelle. Mit dem Haken blendest du eine Karte ein oder aus.</p><div class="rows" id="sl-rows" style="touch-action:pan-y"></div>'+
+function statLayout(){cardLayout(CARD_CFG.stats)}
+function cardLayoutSheet(c){
+  var ord=cfgOrder(c),hid=cfgHid(c),names={};c.cards.forEach(function(x){names[x[0]]=x[1]});
+  openSheet('<h2>'+esc(c.title)+'</h2><p class="hint" style="margin-bottom:10px">Halte den Griff <b>⋮⋮</b> gedrückt und ziehe die Karte an die gewünschte Stelle. Mit dem Haken blendest du eine Karte ein oder aus.</p><div class="rows" id="sl-rows" style="touch-action:pan-y"></div>'+
     '<div class="btnrow" style="margin-top:12px"><button class="btn primary" id="sl-save" type="button" style="flex:2">Fertig</button><button class="btn" id="sl-reset" type="button" style="flex:1">Zurücksetzen</button></div>');
   function paint(){
     $('#sl-rows').innerHTML=ord.map(function(id){var on=hid.indexOf(id)<0;return '<div class="row" data-id="'+id+'" style="cursor:default;align-items:center;gap:8px;background:var(--surface)"><span data-h aria-label="Verschieben" style="touch-action:none;cursor:grab;flex:none;width:34px;height:40px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--ink-2);letter-spacing:-3px;user-select:none">⋮⋮</span><label style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><input type="checkbox" data-sh="'+id+'"'+(on?' checked':'')+' style="width:22px;height:22px;flex:none"><span class="rt"><b style="font-weight:'+(on?600:400)+';'+(on?'':'opacity:.55')+'">'+esc(names[id])+'</b></span></label></div>'}).join('');
-    $$('#sl-rows [data-sh]').forEach(function(c){c.onchange=function(){var k=hid.indexOf(c.dataset.sh);if(c.checked&&k>-1)hid.splice(k,1);else if(!c.checked&&k<0)hid.push(c.dataset.sh);paint()}});
+    $$('#sl-rows [data-sh]').forEach(function(x){x.onchange=function(){var k=hid.indexOf(x.dataset.sh);if(x.checked&&k>-1)hid.splice(k,1);else if(!x.checked&&k<0)hid.push(x.dataset.sh);paint()}});
     $$('#sl-rows [data-h]').forEach(function(h){
       h.addEventListener('pointerdown',function(e){
         e.preventDefault();var row=h.parentNode,rows=$$('#sl-rows .row'),from=rows.indexOf(row),sy=e.clientY,to=from,
@@ -1906,9 +1913,48 @@ function statLayoutSheet(){
     });
   }
   paint();
-  $('#sl-reset').onclick=function(){ord=STAT_CARDS.map(function(c){return c[0]});hid=[];paint()};
-  $('#sl-save').onclick=function(){guard(Store.setting({statOrder:ord,statHidden:hid})).then(function(){closeSheet();renderStats()},function(){})};
+  $('#sl-reset').onclick=function(){ord=c.cards.map(function(x){return x[0]});hid=[];paint()};
+  $('#sl-save').onclick=function(){var o={};o[c.ok]=ord;o[c.hk]=hid;guard(Store.setting(o)).then(function(){closeSheet();c.after()},function(){})};
 }
+/* ---------- Start: eigenes Dashboard ---------- */
+ICON.start='<path d="M3 11l9-8 9 8"/><path d="M5 9.5V20h5v-6h4v6h5V9.5"/>';
+function wCard(title,inner){return '<div class="card"><h2 class="sec">'+title+'</h2>'+inner+'</div>'}
+function startQuickHtml(){
+  var q=[['kill','Abschuss','K'],['sight','Sichtung','S'],['res','Ansitz reservieren','R'],['track',S.rec?'Track beenden':'Track starten','T'],['parcel','Fläche','F'],['dmg','Wildschaden','€']];
+  return '<div class="card"><h2 class="sec">Schnellaktionen</h2><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">'+q.map(function(x){return '<button type="button" class="btn" data-q="'+x[0]+'" style="flex-direction:column;gap:4px;height:auto;padding:12px 4px;line-height:1.15;font-size:13px"><b style="font-size:18px">'+x[2]+'</b>'+x[1]+'</button>'}).join('')+'</div></div>';
+}
+function startResHtml(){
+  var up=resUpcoming().slice(0,3);
+  return wCard('Anstehende Ansitze',up.length?resRowsHtml(up,true):'<p class="hint">Keine anstehenden Reservierungen.</p>')+'';
+}
+function startHuntHtml(){
+  var today=toLocalInput().slice(0,10),hs=hunts().filter(function(h){return (h.date||'')>=today}).sort(function(a,b){return (a.date||'').localeCompare(b.date||'')}),no=openNach(),h='';
+  if(hs.length){var n=hs[0];h+='<button class="row" type="button" data-sh="'+esc(n.id)+'"><span class="mk sq" style="background:var(--accent)">J</span><span class="rt"><b>'+esc(n.name||'Drückjagd')+'</b><small>'+esc(new Date(n.date+'T12:00').toLocaleDateString('de-LU',{weekday:'long',day:'numeric',month:'long'}))+((n.posts||[]).length?' · '+n.posts.length+' Posten':'')+'</small></span></button>'}
+  else h+='<p class="hint">Keine kommende Drückjagd geplant.</p>';
+  if(no.length)h+='<div class="warnbox" style="margin-top:8px">'+no.length+(no.length===1?' offene Nachsuche':' offene Nachsuchen')+'</div>';
+  return wCard('Nächste Drückjagd',h);
+}
+function startKillsHtml(kills){
+  var y=new Date().getFullYear(),ks=kills.filter(function(k){return new Date(k.ts).getFullYear()===y}),m={};
+  ks.forEach(function(k){m[k.species]=(m[k.species]||0)+1});
+  var rows=Object.keys(m).map(function(k){return [k,m[k]]}).sort(function(a,b){return b[1]-a[1]}).slice(0,6),mxv=rows.length?rows[0][1]:1;
+  return wCard('Meine Abschüsse '+y,'<div class="big">'+ks.length+'</div>'+(rows.length?'<div class="bars" style="margin-top:8px">'+rows.map(function(r){return '<div class="bar"><span class="bl">'+esc(r[0])+'</span><span class="bt"><i style="width:'+Math.max(4,Math.round(r[1]/mxv*100))+'%"></i></span><span class="bv">'+r[1]+'</span></div>'}).join('')+'</div>':'<p class="hint">Noch kein Abschuss in diesem Jahr.</p>'));
+}
+function renderStart(){
+  var box=$('#startBody');if(!box)return;
+  var kills=G('kills'),d=new Date(),parts=[
+    ['quick',startQuickHtml()],['jz',jzCardHtml()],['res',startResHtml()],['hunt',startHuntHtml()],['plan',lotPlanCardHtml(kills)],['kills',startKillsHtml(kills)],['dmg',damageCardHtml('all')],['crop',cropSumHtml(null,true)||'']
+  ];
+  box.innerHTML='<p class="hint" style="margin:0 0 12px">'+esc(d.toLocaleDateString('de-LU',{weekday:'long',day:'numeric',month:'long',year:'numeric'}))+'</p>'+
+    parts.map(function(p){return p[1]?'<div class="wid" data-cid="'+p[0]+'" style="margin-bottom:12px">'+p[1]+'</div>':''}).join('');
+  $$('#startBody .wid > .card').forEach(function(c){c.style.marginBottom='0'});
+  cardLayout(CARD_CFG.start);
+  jzBind();bindLotPlan();bindDamage();bindResRows(box);
+  $$('#startBody [data-q]').forEach(function(b){b.onclick=function(){var k=b.dataset.q;
+    if(k==='res')resForm(null,null);else if(k==='dmg')pickParcelFor0();else if(k==='track')S.rec?trkStopSheet():trkStart();else newEntry(k)}});
+  $$('#startBody [data-sh]').forEach(function(b){b.onclick=function(){switchTab('hunt')}});
+}
+function pickParcelFor0(){if(!parcels().length)parcelNew();else pickParcelFor()}
 function loop(){if(dirty)draw();requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){dirty=true});
@@ -2018,14 +2064,14 @@ function renderHeader(){
   g.lastChild.textContent={on:'GPS an',busy:'Suche …',off:'GPS aus'}[S.gpsState];
 }
 function renderTabs(){
-  var t=[['map','Karte'],['log','Einträge'],['hunt','Jagd'],['stats','Statistik'],['data','Daten']];
-  $('#tabs').innerHTML=t.map(function(x){var ic={map:'map',log:'list',hunt:'hunt',stats:'chart',data:'data'}[x[0]];return '<button type="button" data-t="'+x[0]+'"'+(S.tab===x[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICON[ic]+'</svg>'+x[1]+'</button>'}).join('');
+  var t=[['start','Start'],['map','Karte'],['log','Einträge'],['hunt','Jagd'],['stats','Statistik'],['data','Daten']];
+  $('#tabs').innerHTML=t.map(function(x){var ic={start:'start',map:'map',log:'list',hunt:'hunt',stats:'chart',data:'data'}[x[0]];return '<button type="button" data-t="'+x[0]+'"'+(S.tab===x[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24">'+ICON[ic]+'</svg>'+x[1]+'</button>'}).join('');
 }
 $('#tabs').addEventListener('click',function(e){var b=e.target.closest('button[data-t]');if(b)switchTab(b.dataset.t)});
 function switchTab(t){
   if(S.placing&&t!=='map')return;
   S.tab=t;
-  [['map','viewMap'],['log','viewLog'],['hunt','viewHunt'],['stats','viewStats'],['data','viewData']].forEach(function(p){$('#'+p[1]).hidden=p[0]!==t});
+  [['start','viewStart'],['map','viewMap'],['log','viewLog'],['hunt','viewHunt'],['stats','viewStats'],['data','viewData']].forEach(function(p){$('#'+p[1]).hidden=p[0]!==t});if(t!=='start')$('#startBody').innerHTML='';if(t!=='stats')$('#statsBody').innerHTML='';
   renderTabs();renderActive();if(t==='map'){setTimeout(function(){resize();dirty=true},0)}
 }
 function renderLayers(){
@@ -2039,7 +2085,7 @@ $('#demoOff').onclick=function(){guard(Store.setting({hideExamples:true}))};
 function renderAll(){renderHeader();renderLayers();$('#demo').hidden=!useDemo()||!!S.placing||!!S.guide;renderActive();dirty=true;migrate()}
 function renderActive(){
   $('#fab').hidden=!!S.placing;$('#place').hidden=!S.placing;$('.maptools').hidden=false;
-  if(S.tab==='log')renderLog();else if(S.tab==='stats')renderStats();else if(S.tab==='hunt')renderHunt();else if(S.tab==='data')renderData();
+  if(S.tab==='start')renderStart();else if(S.tab==='log')renderLog();else if(S.tab==='stats')renderStats();else if(S.tab==='hunt')renderHunt();else if(S.tab==='data')renderData();
 }
 
 /* ---------- add flow ---------- */
