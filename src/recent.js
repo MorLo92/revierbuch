@@ -6,7 +6,7 @@ function recentCardHtml(){
   if(c.types!=='kill')G('sightings').forEach(function(o){list.push({k:'sight',o:o})});
   list.sort(function(a,b){return new Date(b.o.ts)-new Date(a.o.ts)});list=list.slice(0,c.n);
   var rows=list.length?'<div class="rows">'+list.map(function(it){
-    var o=it.o,mk=it.k==='kill'?'<span class="mk sq" style="background:var(--kill)">✕</span>':'<span class="mk sq" style="background:var(--sicht)">'+(o.count||1)+'</span>';
+    var o=it.o,mk=spBadge(it.k,o);
     var t=it.k==='kill'?esc(o.species)+' · '+SEX[o.sex]+(o.weight!=null?' · '+nf.format(o.weight)+' kg':''):(o.count||1)+'× '+esc(o.species)+' · '+SEX[o.sex];
     var m=fmtDate(o.ts)+(o.kanzelId?' · '+esc(facName(o.kanzelId)):'')+(o.group?' · '+esc(o.group):'');
     return '<button class="row" type="button" data-k="'+it.k+'" data-id="'+esc(o.id)+'">'+mk+'<span class="rt"><b>'+t+'</b><small>'+m+'</small></span>'+(o.tag?'<span class="tagc">'+esc(o.tag)+'</span>':'')+'</button>'}).join('')+'</div>':'<div class="empty">Noch keine Einträge.</div>';

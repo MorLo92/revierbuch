@@ -553,7 +553,7 @@ sub(".gbtn{display:flex;gap:6px;flex-wrap:wrap;width:100%}",
     ".pick{display:flex;align-items:center;gap:10px;cursor:pointer}.pick input{width:22px;height:22px;flex:none}")
 
 # ---------- Drückjagd-Planung ----------
-sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + open('start.js',encoding='utf8').read() + open('recent.js',encoding='utf8').read() + open('tabs.js',encoding='utf8').read() + open('legend.js',encoding='utf8').read() + 'function loop(){')
+sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + open('start.js',encoding='utf8').read() + open('recent.js',encoding='utf8').read() + open('tabs.js',encoding='utf8').read() + open('legend.js',encoding='utf8').read() + open('speciesico.js',encoding='utf8').read() + 'function loop(){')
 sub(".tabs{display:grid;grid-template-columns:repeat(4,1fr);", ".tabs{display:grid;grid-template-columns:repeat(5,1fr);")
 sub(".pick input{width:22px;height:22px;flex:none}", ".pick input{width:22px;height:22px;flex:none}\n.tabs button{letter-spacing:.03em!important;padding-inline:2px!important}")
 sub('<section class="view" id="viewStats" hidden>', '<section class="view" id="viewHunt" hidden><div class="pad gx" id="huntBody"></div></section>\n    <section class="view" id="viewStats" hidden>')
@@ -671,6 +671,19 @@ sub("if(S.layers.kill)G('kills').forEach(function(o){out.push({k:'kill',o:o})});
 sub("$('#layers').hidden=!!S.placing||!!S.guide;", "$('#layers').hidden=!!S.placing||!!S.guide;legRender();")
 sub("S.layers[b.dataset.l]=!S.layers[b.dataset.l];renderLayers();dirty=true});", "S.layers[b.dataset.l]=!legOn(b.dataset.l);legSave();renderLayers();dirty=true});")
 
+# Wildart-Köpfe: Abschuss rot, Sichtung grün
+sub("else if(it.k==='sight')diamond(s.x,s.y,o.count||1,sel);", "else if(it.k==='sight')spMark(s.x,s.y,o.species,sel,o.count||1,true);")
+sub("else killMark(s.x,s.y,sel);", "else spMark(s.x,s.y,o.species,sel,1,false);")
+sub("""if(e.k==='sight')return '<span class="mk sq" style="background:var(--sicht)">'+(o.count||1)+'</span>';return '<span class="mk sq" style="background:var(--kill)">✕</span>'}""", "return spBadge(e.k,o)}")
+sub("""mk=it.k==='kill'?'<span class="mk sq" style="background:var(--kill)">✕</span>':'<span class="mk sq" style="background:var(--sicht)">'+(o.count||1)+'</span>';""", "mk=spBadge(it.k,o);")
+sub("""<span class="mk sq" style="background:var(--kill)">✕</span><span><b>Abschuss</b><small>Wildart, Kanzel, Wildmarke""", """'+spBadge('kill',{species:'Rehwild'})+'<span><b>Abschuss</b><small>Wildart, Kanzel, Wildmarke""")
+sub("""<span class="mk sq" style="background:var(--kill)">✕</span><span><b>Abschuss</b><small>Wildart, Ort, Kanzel, Wildmarke""", """'+spBadge('kill',{species:'Rehwild'})+'<span><b>Abschuss</b><small>Wildart, Ort, Kanzel, Wildmarke""")
+sub("""\n    '<button class="choice" data-n="sight" type="button"><span class="mk sq" style="background:var(--sicht)">3</span><span><b>Wildsichtung</b>""", """\n    '<button class="choice" data-n="sight" type="button">'+spBadge('sight',{species:'Rehwild',count:1})+'<span><b>Wildsichtung</b>""")
+sub("""\n  '<button class="choice" data-n="sight" type="button"><span class="mk sq" style="background:var(--sicht)">3</span><span><b>Wildsichtung</b>""", """\n  '<button class="choice" data-n="sight" type="button">'+spBadge('sight',{species:'Rehwild',count:1})+'<span><b>Wildsichtung</b>""")
+sub("--sicht:#6A4C93;", "--sicht:#2E8B3E;")
+assert src.count("--sicht:#BDA3E6;")==2
+src = src.replace("--sicht:#BDA3E6;", "--sicht:#8CD97A;")
+
 # ---------- split into document ----------
 i = src.index('<div id="app">')
 head_part, body_part = src[:i], src[i:]
@@ -715,7 +728,7 @@ json.dump({
 
 # ---------- service worker ----------
 open(OUT + '/sw.js', 'w', encoding='utf8').write(r'''/* Revierbuch service worker: app shell offline, map tiles cached as they are viewed */
-const VERSION = 'v34';
+const VERSION = 'v35';
 const SHELL = 'shell-' + VERSION, TILES = 'tiles-v1', FONTS = 'fonts-v1';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'lots-lu.geojson', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 const MAX_TILES = 6000;
