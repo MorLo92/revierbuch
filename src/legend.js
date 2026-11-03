@@ -10,11 +10,12 @@ function legOn(k){return k==='par'?S.layers.par!==false:!!S.layers[k]}
 (function(){
   var st=document.createElement('style');
   st.textContent=
-  '.legbtn{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:232px;height:40px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 14px 0 12px;display:flex;align-items:center;gap:7px;box-shadow:var(--shadow);font:600 14px/1 var(--font-body,inherit)}'+
+  '.legbtn{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:16px;height:46px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 14px 0 12px;display:flex;align-items:center;gap:7px;box-shadow:var(--shadow);font:600 14px/1 var(--font-body,inherit)}'+
   '.legbtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s}'+
   '.legbtn[aria-expanded="true"] svg.chev{transform:rotate(180deg)}'+
-  '.legpanel{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:280px;width:min(280px,calc(100% - 32px));max-height:calc(100% - 340px);min-height:140px;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px 10px 12px}'+
+  '.legpanel{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:70px;width:min(280px,calc(100% - 32px));max-height:calc(100% - 130px);min-height:140px;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px 10px 12px}'+
   '.legpanel[hidden],.legbtn[hidden]{display:none}'+
+  '.maptools{bottom:70px}'+
   '.legpanel h4{margin:10px 4px 6px;font:700 12px/1 var(--font-body,inherit);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}'+
   '.legpanel .lgtop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:2px}'+
   '.legpanel .lgtop b{font:700 16px/1 var(--font-display,inherit);letter-spacing:.06em;text-transform:uppercase}'+
