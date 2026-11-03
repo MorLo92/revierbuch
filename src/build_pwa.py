@@ -553,7 +553,7 @@ sub(".gbtn{display:flex;gap:6px;flex-wrap:wrap;width:100%}",
     ".pick{display:flex;align-items:center;gap:10px;cursor:pointer}.pick input{width:22px;height:22px;flex:none}")
 
 # ---------- Drückjagd-Planung ----------
-sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + open('start.js',encoding='utf8').read() + open('recent.js',encoding='utf8').read() + open('tabs.js',encoding='utf8').read() + open('legend.js',encoding='utf8').read() + open('speciesico.js',encoding='utf8').read() + 'function loop(){')
+sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + open('start.js',encoding='utf8').read() + open('recent.js',encoding='utf8').read() + open('tabs.js',encoding='utf8').read() + open('legend.js',encoding='utf8').read() + open('speciesico.js',encoding='utf8').read() + open('sight.js',encoding='utf8').read() + 'function loop(){')
 sub(".tabs{display:grid;grid-template-columns:repeat(4,1fr);", ".tabs{display:grid;grid-template-columns:repeat(5,1fr);")
 sub(".pick input{width:22px;height:22px;flex:none}", ".pick input{width:22px;height:22px;flex:none}\n.tabs button{letter-spacing:.03em!important;padding-inline:2px!important}")
 sub('<section class="view" id="viewStats" hidden>', '<section class="view" id="viewHunt" hidden><div class="pad gx" id="huntBody"></div></section>\n    <section class="view" id="viewStats" hidden>')
@@ -684,6 +684,13 @@ sub("--sicht:#6A4C93;", "--sicht:#2E8B3E;")
 assert src.count("--sicht:#BDA3E6;")==2
 src = src.replace("--sicht:#BDA3E6;", "--sicht:#8CD97A;")
 
+# Sichtung: gemischt nur bei Anzahl > 1, Verteilung
+sub("""'<div class="field"><span class="lbl">Geschlecht</span>'+chips('sex',SEX,d.sex,['m','w','g','u'])+'</div>'+""", """'<div class="field"><span class="lbl">Geschlecht</span>'+chips('sex',SEX,d.sex,['m','w','g','u'])+'</div>'+brkHtml(d)+""")
+sub("bindForm();updPos();if(kind==='kill'){checkTag();seasonCheck()}", "bindForm();updPos();if(kind==='kill'){checkTag();seasonCheck()}if(kind==='sight')sightSync(true);")
+sub("if(key==='tag')checkTag();", "if(key==='tag')checkTag();if(f.kind==='sight'&&(key==='count'||key==='sex'))sightSync(false);")
+sub("o.photos=(d.photos||[]).slice();o.group=", "if(f.kind==='sight')brkSave(d,o);o.photos=(d.photos||[]).slice();o.group=")
+sub("""<dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd>'+(o.kanzelId?'<dt>Von</dt><dd>'+esc(facName(o.kanzelId))+'</dd>':'')+'<dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(o.note?""", """<dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd>'+brkRow(o)+(o.kanzelId?'<dt>Von</dt><dd>'+esc(facName(o.kanzelId))+'</dd>':'')+'<dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(o.note?""")
+
 # ---------- split into document ----------
 i = src.index('<div id="app">')
 head_part, body_part = src[:i], src[i:]
@@ -728,7 +735,7 @@ json.dump({
 
 # ---------- service worker ----------
 open(OUT + '/sw.js', 'w', encoding='utf8').write(r'''/* Revierbuch service worker: app shell offline, map tiles cached as they are viewed */
-const VERSION = 'v35';
+const VERSION = 'v36';
 const SHELL = 'shell-' + VERSION, TILES = 'tiles-v1', FONTS = 'fonts-v1';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'lots-lu.geojson', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 const MAX_TILES = 6000;

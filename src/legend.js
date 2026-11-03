@@ -10,12 +10,8 @@ function legOn(k){return k==='par'?S.layers.par!==false:!!S.layers[k]}
 (function(){
   var st=document.createElement('style');
   st.textContent=
-  '.legbtn{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:16px;height:46px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 14px 0 12px;display:flex;align-items:center;gap:7px;box-shadow:var(--shadow);font:600 14px/1 var(--font-body,inherit)}'+
-  '.legbtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s}'+
-  '.legbtn[aria-expanded="true"] svg.chev{transform:rotate(180deg)}'+
   '.legpanel{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:70px;width:min(280px,calc(100% - 32px));max-height:calc(100% - 130px);min-height:140px;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px 10px 12px}'+
-  '.legpanel[hidden],.legbtn[hidden]{display:none}'+
-  '.maptools{bottom:70px}'+
+  '.legpanel[hidden],.maptools .rb[hidden]{display:none}'+
   '.legpanel h4{margin:10px 4px 6px;font:700 12px/1 var(--font-body,inherit);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}'+
   '.legpanel .lgtop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:2px}'+
   '.legpanel .lgtop b{font:700 16px/1 var(--font-display,inherit);letter-spacing:.06em;text-transform:uppercase}'+
@@ -35,10 +31,10 @@ function legOn(k){return k==='par'?S.layers.par!==false:!!S.layers[k]}
   '.lgsub.off{opacity:.45}';
   document.head.appendChild(st);
   var host=document.getElementById('viewMap');
-  var b=document.createElement('button');b.type='button';b.id='legBtn';b.className='legbtn';b.setAttribute('aria-expanded','false');b.setAttribute('aria-controls','legPanel');
-  b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 6h3M10 6h10M4 12h3M10 12h10M4 18h3M10 18h10"/></svg>Legende<svg class="chev" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>';
+  var b=document.createElement('button');b.type='button';b.id='legBtn';b.className='rb';b.setAttribute('aria-label','Legende');b.setAttribute('aria-expanded','false');b.setAttribute('aria-controls','legPanel');
+  b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 6h3M10 6h10M4 12h3M10 12h10M4 18h3M10 18h10"/></svg>';
   var p=document.createElement('div');p.id='legPanel';p.className='legpanel';p.hidden=true;p.setAttribute('role','group');p.setAttribute('aria-label','Legende');
-  host.appendChild(p);host.appendChild(b);
+  host.appendChild(p);(host.querySelector('.maptools')||host).appendChild(b);
   b.onclick=function(){S.legOpen=!S.legOpen;legRender()};
   p.addEventListener('click',function(e){
     var t=e.target.closest('[data-lg]');if(!t)return;
@@ -59,7 +55,7 @@ function legSw(c,txt,round){return '<span class="sw'+(round?' round':'')+'" styl
 function legRender(){
   var b=$('#legBtn'),p=$('#legPanel');if(!b||!p)return;
   var gone=!!S.placing||!!S.guide||!!S.draw;
-  b.hidden=gone;b.setAttribute('aria-expanded',S.legOpen?'true':'false');
+  b.hidden=gone;b.classList.toggle('on',!!S.legOpen);b.setAttribute('aria-expanded',S.legOpen?'true':'false');
   p.hidden=gone||!S.legOpen;if(p.hidden)return;
   var keep=p.scrollTop;
   var fac=G('markers'),si=G('sightings'),ki=G('kills'),cnt={},spc={},i;

@@ -2127,12 +2127,8 @@ function legOn(k){return k==='par'?S.layers.par!==false:!!S.layers[k]}
 (function(){
   var st=document.createElement('style');
   st.textContent=
-  '.legbtn{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:16px;height:46px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 14px 0 12px;display:flex;align-items:center;gap:7px;box-shadow:var(--shadow);font:600 14px/1 var(--font-body,inherit)}'+
-  '.legbtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s}'+
-  '.legbtn[aria-expanded="true"] svg.chev{transform:rotate(180deg)}'+
   '.legpanel{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:70px;width:min(280px,calc(100% - 32px));max-height:calc(100% - 130px);min-height:140px;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px 10px 12px}'+
-  '.legpanel[hidden],.legbtn[hidden]{display:none}'+
-  '.maptools{bottom:70px}'+
+  '.legpanel[hidden],.maptools .rb[hidden]{display:none}'+
   '.legpanel h4{margin:10px 4px 6px;font:700 12px/1 var(--font-body,inherit);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}'+
   '.legpanel .lgtop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:2px}'+
   '.legpanel .lgtop b{font:700 16px/1 var(--font-display,inherit);letter-spacing:.06em;text-transform:uppercase}'+
@@ -2152,10 +2148,10 @@ function legOn(k){return k==='par'?S.layers.par!==false:!!S.layers[k]}
   '.lgsub.off{opacity:.45}';
   document.head.appendChild(st);
   var host=document.getElementById('viewMap');
-  var b=document.createElement('button');b.type='button';b.id='legBtn';b.className='legbtn';b.setAttribute('aria-expanded','false');b.setAttribute('aria-controls','legPanel');
-  b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 6h3M10 6h10M4 12h3M10 12h10M4 18h3M10 18h10"/></svg>Legende<svg class="chev" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>';
+  var b=document.createElement('button');b.type='button';b.id='legBtn';b.className='rb';b.setAttribute('aria-label','Legende');b.setAttribute('aria-expanded','false');b.setAttribute('aria-controls','legPanel');
+  b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 6h3M10 6h10M4 12h3M10 12h10M4 18h3M10 18h10"/></svg>';
   var p=document.createElement('div');p.id='legPanel';p.className='legpanel';p.hidden=true;p.setAttribute('role','group');p.setAttribute('aria-label','Legende');
-  host.appendChild(p);host.appendChild(b);
+  host.appendChild(p);(host.querySelector('.maptools')||host).appendChild(b);
   b.onclick=function(){S.legOpen=!S.legOpen;legRender()};
   p.addEventListener('click',function(e){
     var t=e.target.closest('[data-lg]');if(!t)return;
@@ -2176,7 +2172,7 @@ function legSw(c,txt,round){return '<span class="sw'+(round?' round':'')+'" styl
 function legRender(){
   var b=$('#legBtn'),p=$('#legPanel');if(!b||!p)return;
   var gone=!!S.placing||!!S.guide||!!S.draw;
-  b.hidden=gone;b.setAttribute('aria-expanded',S.legOpen?'true':'false');
+  b.hidden=gone;b.classList.toggle('on',!!S.legOpen);b.setAttribute('aria-expanded',S.legOpen?'true':'false');
   p.hidden=gone||!S.legOpen;if(p.hidden)return;
   var keep=p.scrollTop;
   var fac=G('markers'),si=G('sightings'),ki=G('kills'),cnt={},spc={},i;
@@ -2247,6 +2243,35 @@ function spBadge(kind,o){
     return '<path d="'+d+'" fill="none" stroke-width="'+w+'" stroke-linecap="round" stroke-linejoin="round" '+(c==='s'?'stroke="#fff"':'style="stroke:'+col+'"')+'/>'}).join('');
   return '<span class="mk spb" style="background:transparent;position:relative"><svg viewBox="0 0 48 48" width="28" height="28" aria-hidden="true"><circle cx="24" cy="24" r="23" style="fill:'+col+'"/><g transform="translate(24 25) scale(.84) translate(-24 -24)">'+ops+'</g></svg>'+(n>1?'<b style="position:absolute;right:-5px;top:-5px;min-width:15px;height:15px;border-radius:8px;background:var(--ink);color:var(--surface);font:700 10px/15px var(--font-body,inherit);text-align:center;padding:0 3px">'+n+'</b>':'')+'</span>';
 }
+/* ---------- Wildsichtung: "gemischt" nur bei Gruppen, Verteilung ♂ / ♀ / unbekannt ---------- */
+(function(){var st=document.createElement('style');st.textContent='.seg button[hidden]{display:none}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.grid3 .field{margin:0}';document.head.appendChild(st)})();
+function brkHtml(d){
+  function inp(id,l,v){return '<label class="field"><span class="lbl">'+l+'</span><input type="number" inputmode="numeric" min="0" step="1" id="'+id+'" value="'+(v?v:'')+'" placeholder="0"></label>'}
+  return '<div class="field" id="f-brk" hidden><span class="lbl">Verteilung (optional)</span><div class="grid3">'+inp('f-cm','♂ männlich',d.cm)+inp('f-cf','♀ weiblich',d.cf)+inp('f-cu','unbekannt',d.cu)+'</div><p class="hint" id="f-brkh"></p></div>';
+}
+function brkNum(id){var n=$(id),v=n?parseInt(n.value,10):0;return isFinite(v)&&v>0?v:0}
+function sightChips(sex){$$('[data-f="sex"] button').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.v===sex)})}
+function sightSync(init){
+  var f=S.form;if(!f||f.kind!=='sight')return;var d=f.d,one=(d.count||1)<=1;
+  if(!init&&one&&d.sex==='g'){d.sex='u';sightChips('u')}
+  var g=$('[data-f="sex"] button[data-v="g"]');if(g)g.hidden=one&&d.sex!=='g';
+  var br=$('#f-brk');if(br)br.hidden=one;
+  var h=$('#f-brkh');if(h){var m=brkNum('#f-cm'),w=brkNum('#f-cf'),u=brkNum('#f-cu'),sum=m+w+u;
+    h.textContent=sum>0&&sum!==(d.count||1)?'Die Anzahl wird beim Speichern auf die Summe ('+sum+') gesetzt.':''}
+  if(init){
+    var bind=function(){var m=brkNum('#f-cm'),w=brkNum('#f-cf'),u=brkNum('#f-cu'),sum=m+w+u;
+      d.cm=m;d.cf=w;d.cu=u;
+      if(sum>0){d.count=sum;var c=$('[data-f="count"]');if(c)c.value=sum;
+        var cls=(m?1:0)+(w?1:0)+(u?1:0);d.sex=cls>1?'g':m?'m':w?'w':'u';sightChips(d.sex)}
+      sightSync(false)};
+    ['#f-cm','#f-cf','#f-cu'].forEach(function(id){var n=$(id);if(n){n.addEventListener('input',bind);n.addEventListener('change',bind)}});
+  }
+}
+function brkSave(d,o){
+  var m=d.cm||0,w=d.cf||0,u=d.cu||0,sum=m+w+u;
+  if(sum>0){o.cm=m;o.cf=w;o.cu=u;o.count=sum}
+}
+function brkRow(o){return (o.cm||o.cf||o.cu)?'<dt>Verteilung</dt><dd>♂ '+(o.cm||0)+' · ♀ '+(o.cf||0)+' · unbekannt '+(o.cu||0)+'</dd>':''}
 function loop(){if(dirty)draw();requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){dirty=true});
@@ -2416,7 +2441,7 @@ function openForm(kind,d,isEdit){
   }else if(kind==='sight'){
     body='<div class="grid2"><label class="field"><span class="lbl">Wildart</span><select data-f="species">'+opts(SPECIES,d.species)+'</select></label>'+
     '<label class="field"><span class="lbl">Anzahl</span><input type="number" inputmode="numeric" min="1" step="1" data-f="count" data-t="int" value="'+d.count+'"></label></div>'+
-    '<div class="field"><span class="lbl">Geschlecht</span>'+chips('sex',SEX,d.sex,['m','w','g','u'])+'</div>'+
+    '<div class="field"><span class="lbl">Geschlecht</span>'+chips('sex',SEX,d.sex,['m','w','g','u'])+'</div>'+brkHtml(d)+
     '<div class="grid2"><label class="field"><span class="lbl">Zeitpunkt</span><input type="datetime-local" data-f="tsl" value="'+d.tsl+'"></label>'+
     '<label class="field"><span class="lbl">Beobachtet von</span><select data-f="kanzelId">'+seatOpts(d.kanzelId)+'</select></label></div>'+posRow(d)+
     '<label class="field"><span class="lbl">Notiz</span><textarea rows="2" data-f="note">'+esc(d.note)+'</textarea></label>';
@@ -2433,7 +2458,7 @@ function openForm(kind,d,isEdit){
   openSheet('<h2>'+(isEdit?title+' bearbeiten':'Neu: '+title)+'</h2>'+body+extraFormHtml(d)+
     '<div class="btnrow"><button class="btn primary" id="f-save" type="button" style="flex:2">Speichern</button><button class="btn" id="f-cancel" type="button" style="flex:1">Abbrechen</button></div>'+
     (isEdit?'<button class="btn danger" id="f-del" type="button">Löschen</button>':''));
-  bindForm();updPos();if(kind==='kill'){checkTag();seasonCheck()}
+  bindForm();updPos();if(kind==='kill'){checkTag();seasonCheck()}if(kind==='sight')sightSync(true);
 }
 function bindForm(){
   var f=S.form,d=f.d,root=$('#sheetBody');
@@ -2457,7 +2482,7 @@ function changed(key){
   var f=S.form,d=f.d;
   if(f.kind==='kill'&&(key==='species'||key==='sex'||key==='age'||key==='tsl'))seasonCheck();
   if(key==='kanzelId'&&!d.posManual){var k=findFac(d.kanzelId);if(k){d.lat=k.lat;d.lon=k.lon;updPos()}}
-  if(key==='tag')checkTag();
+  if(key==='tag')checkTag();if(f.kind==='sight'&&(key==='count'||key==='sex'))sightSync(false);
   if(key==='type'){var sf=$('#f-subf');if(sf)sf.hidden=d.type!=='kanzel'}
 }
 function updPos(){
@@ -2491,7 +2516,7 @@ function saveForm(){
     if(f.kind==='sight'){coll='sightings';o={id:d.id,species:d.species,count:d.count||1,sex:d.sex,ts:t.toISOString(),lat:d.lat,lon:d.lon,kanzelId:d.kanzelId||'',note:d.note||''}}
     else{coll='kills';o={id:d.id,species:d.species,sex:d.sex,age:d.age,weight:d.weight==null||isNaN(d.weight)?null:d.weight,ts:t.toISOString(),lat:d.lat,lon:d.lon,kanzelId:d.kanzelId||'',tag:(d.tag||'').trim(),note:d.note||''}}
   }
-  o.photos=(d.photos||[]).slice();o.group=(d.group||'').trim();if(f.kind==='marker')o.sub=d.type==='kanzel'?(d.sub||''):'';
+  if(f.kind==='sight')brkSave(d,o);o.photos=(d.photos||[]).slice();o.group=(d.group||'').trim();if(f.kind==='marker')o.sub=d.type==='kanzel'?(d.sub||''):'';
   var b=$('#f-save');b.disabled=true;
   guard(Store.put(coll,o)).then(function(){f.saved=true;phSaved(d);hookNewPost(o,d);closeSheet();toast('Gespeichert');if(S.tab==='map'){S.sel={k:f.kind==='marker'?'fac':f.kind==='sight'?'sight':'kill',id:o.id};dirty=true}},function(){b.disabled=false});
 }
@@ -2506,7 +2531,7 @@ function showDetail(kind,o){
     rows='<dt>Art</dt><dd>'+esc(FAC[o.type].label)+(o.sub?' ('+esc(SUBK[o.sub].toLowerCase())+')':'')+'</dd><dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(SEATS.indexOf(o.type)>-1?'<dt>Abschüsse</dt><dd>'+nk+'</dd><dt>Sichtungen</dt><dd>'+ns+'</dd>':'')+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
   }else if(kind==='sight'){
     title=(o.count||1)+'× '+o.species;
-    rows='<dt>Zeitpunkt</dt><dd>'+fmtDate(o.ts)+'</dd><dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd>'+(o.kanzelId?'<dt>Von</dt><dd>'+esc(facName(o.kanzelId))+'</dd>':'')+'<dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
+    rows='<dt>Zeitpunkt</dt><dd>'+fmtDate(o.ts)+'</dd><dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd>'+brkRow(o)+(o.kanzelId?'<dt>Von</dt><dd>'+esc(facName(o.kanzelId))+'</dd>':'')+'<dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
   }else{
     title=o.species;
     rows='<dt>Datum</dt><dd>'+fmtDate(o.ts)+'</dd><dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd><dt>Alter</dt><dd>'+AGE[o.age]+'</dd>'+(o.weight!=null?'<dt>Gewicht</dt><dd>'+nf.format(o.weight)+' kg</dd>':'')+(o.kanzelId?'<dt>Kanzel</dt><dd>'+esc(facName(o.kanzelId))+'</dd>':'')+(o.tag?'<dt>Wildmarke</dt><dd><code>'+esc(o.tag)+'</code></dd>':'')+'<dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
