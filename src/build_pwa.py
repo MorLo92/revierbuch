@@ -553,7 +553,7 @@ sub(".gbtn{display:flex;gap:6px;flex-wrap:wrap;width:100%}",
     ".pick{display:flex;align-items:center;gap:10px;cursor:pointer}.pick input{width:22px;height:22px;flex:none}")
 
 # ---------- Drückjagd-Planung ----------
-sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + open('start.js',encoding='utf8').read() + open('recent.js',encoding='utf8').read() + open('tabs.js',encoding='utf8').read() + open('legend.js',encoding='utf8').read() + open('speciesico.js',encoding='utf8').read() + open('sight.js',encoding='utf8').read() + open('account.js',encoding='utf8').read() + 'function loop(){')
+sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + open('start.js',encoding='utf8').read() + open('recent.js',encoding='utf8').read() + open('tabs.js',encoding='utf8').read() + open('legend.js',encoding='utf8').read() + open('speciesico.js',encoding='utf8').read() + open('sight.js',encoding='utf8').read() + open('account.js',encoding='utf8').read() + open('i18n.js',encoding='utf8').read() + 'function loop(){')
 sub(".tabs{display:grid;grid-template-columns:repeat(4,1fr);", ".tabs{display:grid;grid-template-columns:repeat(5,1fr);")
 sub(".pick input{width:22px;height:22px;flex:none}", ".pick input{width:22px;height:22px;flex:none}\n.tabs button{letter-spacing:.03em!important;padding-inline:2px!important}")
 sub('<section class="view" id="viewStats" hidden>', '<section class="view" id="viewHunt" hidden><div class="pad gx" id="huntBody"></div></section>\n    <section class="view" id="viewStats" hidden>')
@@ -694,7 +694,11 @@ sub("""<dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd>'+(o.kanzelId?'<dt>Von</dt><dd>
 # Konto und Gruppen
 sub('<span class="pill" id="stStore"><i></i><span>Lade …</span></span>', '<button class="pill" id="stStore" type="button" data-accopen aria-label="Konto und Gruppen"><i></i><span>Lade …</span></button>')
 sub("st.title=S.mode==='cloud'?'Deine Daten liegen privat in deinem Konto.':'Die Daten bleiben nur in diesem Browser.';", "st.title=S.mode==='cloud'?'Deine Daten liegen privat in deinem Konto.':'Die Daten bleiben nur in diesem Browser.';accPill(st);")
-sub("""html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""", """html+=accCardHtml();html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""")
+sub("""html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""", """html+=langCardHtml();html+=accCardHtml();html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""")
+
+# Sprachen
+src = src.replace("'de-LU'", 'LOC')
+sub("'use strict';", "'use strict';\n" + open(SP + '/i18n_head.js', encoding='utf8').read())
 
 # ---------- split into document ----------
 i = src.index('<div id="app">')
@@ -740,7 +744,7 @@ json.dump({
 
 # ---------- service worker ----------
 open(OUT + '/sw.js', 'w', encoding='utf8').write(r'''/* Revierbuch service worker: app shell offline, map tiles cached as they are viewed */
-const VERSION = 'v37';
+const VERSION = 'v38';
 const SHELL = 'shell-' + VERSION, TILES = 'tiles-v1', FONTS = 'fonts-v1';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'lots-lu.geojson', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 const MAX_TILES = 6000;

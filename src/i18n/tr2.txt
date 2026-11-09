@@ -1,0 +1,294 @@
+Entfernt ¦ Retiré ¦ Ewechgeholl ¦ Removed
+Erfolglos beendet ¦ Terminé sans succès ¦ Ouni Erfolleg ofgeschloss ¦ Ended unsuccessfully
+erfüllt ¦ rempli ¦ erfëllt ¦ fulfilled
+Ergebnis ¦ Résultat ¦ Resultat ¦ Result
+Ergebnis laut Schütze ¦ Résultat selon le tireur ¦ Resultat laut Schëtz ¦ Result according to shooter
+Erste Nummer ¦ Premier numéro ¦ Éischt Nummer ¦ First number
+Erstellen ¦ Créer ¦ Erstellen ¦ Create
+Es braucht mindestens einen Administrator. ¦ Il faut au moins un administrateur. ¦ Et brauch mindestens een Administrateur. ¦ At least one administrator is required.
+Es gibt noch keine eigenen Abschüsse zum Exportieren. ¦ Il n'y a pas encore de tirs personnels à exporter. ¦ Et gëtt nach keng eegen Ofschëss fir z'exportéieren. ¦ There are no own kills to export yet.
+Es gibt noch keine Posten. Lege sie unter Eintragen → Einrichtung an (Art „Drückjagdposten“, „Kanzel“ oder „Ansitzbock / Drückjagdstand“). ¦ Il n'y a pas encore de postes. Crée-les sous Ajouter → Installation (type « Poste de battue », « Mirador » ou « Siège d'affût / poste de battue »). ¦ Et gëtt nach keng Posten. Leet se ënner Androen → Aarichtung un (Aart „Dréckjuegdposten“, „Hochsëtz“ oder „Ansëtzbock / Dréckjuegdstand“). ¦ There are no stands yet. Create them under Add → Facility (type "Driven-hunt stand", "High seat" or "Raised hide / driven-hunt stand").
+Es läuft schon eine Aufzeichnung. ¦ Un enregistrement est déjà en cours. ¦ Et leeft schonn eng Opzeechnung. ¦ A recording is already running.
+Falls die Adresse registriert ist, wurde eine E-Mail zum Zurücksetzen gesendet. ¦ Si l'adresse est enregistrée, un e-mail de réinitialisation a été envoyé. ¦ Wann d'Adress registréiert ass, gouf eng E-Mail zum Zrécksetzen geschéckt. ¦ If the address is registered, a reset email has been sent.
+Farbe der Gruppe (optional) ¦ Couleur du groupe (facultatif) ¦ Faarf vun der Grupp (optional) ¦ Group colour (optional)
+Farbe der Linie ¦ Couleur de la ligne ¦ Faarf vun der Linn ¦ Line colour
+Farbe der Linie wählen ¦ Choisir la couleur de la ligne ¦ Faarf vun der Linn wielen ¦ Choose line colour
+Farbe: ¦ Couleur : ¦ Faarf: ¦ Colour:
+Fasan ¦ Faisan ¦ Fasan ¦ Pheasant
+Fassung 1 ¦ Version 1 ¦ Fassung 1 ¦ Version 1
+Feb ¦ févr. ¦ Feb. ¦ Feb
+Fehler ¦ Erreur ¦ Feeler ¦ Error
+Fehlschuss ¦ Tir manqué ¦ Feelschoss ¦ Miss
+Feld / Acker ¦ Champ / terre arable ¦ Feld / Acker ¦ Field / arable land
+Feld oder Waldparzelle, für Wildschaden ¦ Champ ou parcelle forestière, pour dégâts de gibier ¦ Feld oder Bëschparzell, fir Wëllschued ¦ Field or forest plot, for game damage
+Feldhase ¦ Lièvre d'Europe ¦ Feldhues ¦ Brown hare
+Fertig ¦ Terminé ¦ Fäerdeg ¦ Done
+Festgestellt am ¦ Constaté le ¦ Festgestallt den ¦ Found on
+Fichtenkultur ¦ Culture d'épicéas ¦ Fichtekultur ¦ Spruce plantation
+Fläche ¦ Surface ¦ Fläch ¦ Area
+Fläche bearbeiten ¦ Modifier la surface ¦ Fläch änneren ¦ Edit area
+Fläche einzeichnen ¦ Dessiner une surface ¦ Fläch zeechnen ¦ Draw area
+Fläche gespeichert ¦ Surface enregistrée ¦ Fläch gespäichert ¦ Area saved
+Fläche nach Kultur ¦ Surface par culture ¦ Fläch no Kultur ¦ Area by crop
+Fläche nach Kultur · aktuell ¦ Surface par culture · actuel ¦ Fläch no Kultur · aktuell ¦ Area by crop · current
+Fläche schließen ¦ Fermer la surface ¦ Fläch zoumaachen ¦ Close area
+Flächen ¦ Surfaces ¦ Flächen ¦ Areas
+Flächen in der Datei. Wähle dein Los und bei Bedarf die Nachbarlose. ¦ surfaces dans le fichier. Choisis ton lot et, si besoin, les lots voisins. ¦ Flächen an der Datei. Wiel däi Lous an bei Bedarf d'Nopeschlous. ¦ areas in the file. Choose your lot and, if needed, the neighbouring lots.
+Flüchtig / krank ¦ Fuyant / malade ¦ Flüchteg / krank ¦ Fleeing / sick
+Foto ansehen ¦ Voir la photo ¦ Foto kucken ¦ View photo
+Foto entfernen ¦ Supprimer la photo ¦ Foto ewechhuelen ¦ Remove photo
+Foto hinzufügen ¦ Ajouter une photo ¦ Foto derbäisetzen ¦ Add photo
+Foto konnte nicht gespeichert werden. ¦ La photo n'a pas pu être enregistrée. ¦ D'Foto konnt net gespäichert ginn. ¦ The photo could not be saved.
+Fotos ¦ Photos ¦ Fotoen ¦ Photos
+Freigeben ¦ Valider ¦ Fräigi ¦ Approve
+Freigegeben ¦ Validé ¦ Fräigeginn ¦ Approved
+Freiwillig: Mit einem Konto kannst du Informationen mit anderen Jägern deines Loses teilen. Ohne Konto bleibt alles wie bisher auf diesem Gerät. ¦ Facultatif : avec un compte, tu peux partager des informations avec d'autres chasseurs de ton lot. Sans compte, tout reste comme avant sur cet appareil. ¦ Fräiwëlleg: Mat engem Kont kanns du Informatiounen mat anere Jäger vun dengem Lous deelen. Ouni Kont bleift alles wéi bis elo op dësem Apparat. ¦ Optional: with an account you can share information with other hunters of your lot. Without an account everything stays on this device as before.
+Fuchs ¦ Renard ¦ Fiss ¦ Fox
+Futterplatz ¦ Place d'affouragement ¦ Fudderplaz ¦ Feeding place
+Futterplatz Nord ¦ Place d'affouragement nord ¦ Fudderplaz Norden ¦ Feeding place north
+Führer ¦ Conducteur ¦ Guide ¦ Handler
+Führer informiert ¦ Conducteur informé ¦ Guide informéiert ¦ Handler informed
+Für deine Lose ist kein Plan eingetragen. ¦ Aucun plan n'est enregistré pour tes lots. ¦ Fir deng Lous ass kee Plang agedroen. ¦ No plan is entered for your lots.
+Für diesen Zeitraum gibt es noch keine Abschüsse. Trage sie unter „Einträge“ ein, dann erscheint hier die Auswertung. ¦ Il n'y a pas encore de tirs pour cette période. Saisis-les sous « Entrées » et l'analyse apparaîtra ici. ¦ Fir dësen Zäitraum gëtt et nach keng Ofschëss. Gëff se ënner „Androungen“ an, dann erschéngt hei d'Auswäertung. ¦ There are no kills for this period yet. Enter them under "Entries" and the analysis will appear here.
+Für welche Fläche? ¦ Pour quelle surface ? ¦ Fir wéi eng Fläch? ¦ For which area?
+Ganze Fläche übernehmen ¦ Reprendre toute la surface ¦ Ganz Fläch iwwerhuelen ¦ Use whole area
+Ganze Tabelle ¦ Tout le tableau ¦ Ganz Tabell ¦ Whole table
+ganzjährig ¦ toute l'année ¦ ganzjäreg ¦ year-round
+Ganztags ¦ Toute la journée ¦ Ganzdaags ¦ All day
+gedrückt und ziehe die Karte an die gewünschte Stelle. Mit dem Haken blendest du einen Eintrag ein oder aus. ¦ appuyé et déplace la carte à l'endroit souhaité. Avec la coche, tu affiches ou masques une entrée. ¦ gedréckt a zéi d'Kaart un déi gewënscht Plaz. Mam Haken blendes du eng Androung an oder aus. ¦ pressed and drag the map to the desired spot. With the tick you show or hide an entry.
+gefunden und eingetragen ¦ trouvé et saisi ¦ fonnt an ageschriwwen ¦ found and entered
+Gelöscht ¦ Supprimé ¦ Geläscht ¦ Deleted
+Gelöschte Fläche ¦ Surface supprimée ¦ Gelöscht Fläch ¦ Deleted area
+Gelöschte Kanzel ¦ Mirador supprimé ¦ Gelöschten Hochsëtz ¦ Deleted high seat
+Gelöschter Posten ¦ Poste supprimé ¦ Gelöschte Posten ¦ Deleted stand
+Gelöschter Stand ¦ Poste supprimé ¦ Gelöschte Stand ¦ Deleted stand
+Gerste ¦ Orge ¦ Gerscht ¦ Barley
+Gerät: ¦ Appareil : ¦ Apparat: ¦ Device:
+Gesamt ¦ Total ¦ Total ¦ Total
+Gesamt (EUR) ¦ Total (EUR) ¦ Total (EUR) ¦ Total (EUR)
+Gesamt: ¦ Total : ¦ Total: ¦ Total:
+Gesamtbetrag ¦ Montant total ¦ Gesamtbetrag ¦ Total amount
+Geschlecht ¦ Sexe ¦ Geschlecht ¦ Sex
+Geschlossen ¦ Fermé ¦ Zou ¦ Closed
+Geschlossen ( ¦ Fermé ( ¦ Zou ( ¦ Closed (
+Geschädigt (ar) ¦ Endommagé (ares) ¦ Beschiedegt (Ar) ¦ Damaged (are)
+Geschädigte Fläche (ar) ¦ Surface endommagée (ares) ¦ Beschiedegt Fläch (Ar) ¦ Damaged area (are)
+Gesehenes Wild ¦ Gibier observé ¦ Gesinne Wëld ¦ Game seen
+Gespeichert ¦ Enregistré ¦ Gespäichert ¦ Saved
+Gestentest ¦ Test de gestes ¦ Gestentest ¦ Gesture test
+Geteilt wird noch nichts. Zuerst richten wir Gruppen, Lose und Rollen ein. ¦ Rien n'est encore partagé. Nous configurons d'abord les groupes, lots et rôles. ¦ Et gëtt nach näischt gedeelt. Fir d'éischt riichte mir Gruppen, Lous a Rollen an. ¦ Nothing is shared yet. First we set up groups, lots and roles.
+Geteilte Einträge sehen die Mitglieder der Gruppen, die das jeweilige Los verwalten, entsprechend ihrer Rolle. Die Rolle legt der Administrator der Gruppe fest. Mitglieder mit der Stufe „Ungefähr“ sehen Positionen nur auf etwa 100 Meter gerundet. Dein Anzeigename ist für Mitglieder deiner Gruppen sichtbar. ¦ Les entrées partagées sont visibles par les membres des groupes qui gèrent le lot concerné, selon leur rôle. Le rôle est défini par l'administrateur du groupe. Les membres au niveau « Approximatif » voient les positions arrondies à environ 100 mètres. Ton nom affiché est visible pour les membres de tes groupes. ¦ Gedeelt Androungen gesinn d'Memberen vun de Gruppen, déi dat jeweilegt Lous verwalten, entspriechend hirer Roll. D'Roll leet den Administrateur vun der Grupp fest. Memberen mat der Stuf „Ongeféier“ gesinn Positiounen nëmmen op ongeféier 100 Meter ofgerënnt. Däin Ugewisenen Numm ass fir d'Memberen vun dengen Gruppen ze gesinn. ¦ Shared entries are visible to members of the groups that manage the respective lot, according to their role. The group administrator sets the role. Members at the "Approximate" level see positions rounded to about 100 metres only. Your display name is visible to members of your groups.
+Gewicht ¦ Poids ¦ Gewiicht ¦ Weight
+Gewicht aufgebrochen (kg) ¦ Poids éviscéré (kg) ¦ Gewiicht opgebrach (kg) ¦ Dressed weight (kg)
+Gewicht kg ¦ Poids kg ¦ Gewiicht kg ¦ Weight kg
+Gezählt werden die Abschüsse im Kalenderjahr ¦ Les tirs sont comptés sur l'année civile ¦ Gezielt ginn d'Ofschëss am Kalennerjoer ¦ Kills are counted per calendar year
+GPS an ¦ GPS activé ¦ GPS un ¦ GPS on
+GPS aus ¦ GPS désactivé ¦ GPS aus ¦ GPS off
+GPX gespeichert ¦ GPX enregistré ¦ GPX gespäichert ¦ GPX saved
+Gruppe ¦ Groupe ¦ Grupp ¦ Group
+Gruppe (optional) ¦ Groupe (facultatif) ¦ Grupp (optional) ¦ Group (optional)
+Gruppe aufgelöst ¦ Groupe dissous ¦ Grupp opgeléist ¦ Group dissolved
+Gruppe auflösen ¦ Dissoudre le groupe ¦ Grupp opléisen ¦ Dissolve group
+Gruppe bearbeiten ¦ Modifier le groupe ¦ Grupp änneren ¦ Edit group
+Gruppe erstellen ¦ Créer un groupe ¦ Grupp erstellen ¦ Create group
+Gruppe gespeichert ¦ Groupe enregistré ¦ Grupp gespäichert ¦ Group saved
+Gruppe löschen ¦ Supprimer le groupe ¦ Grupp läschen ¦ Delete group
+Gruppe verlassen ¦ Quitter le groupe ¦ Grupp verloossen ¦ Leave group
+Gruppe wirklich löschen? ¦ Vraiment supprimer le groupe ? ¦ Grupp wierklech läschen? ¦ Really delete group?
+Gruppen ¦ Groupes ¦ Gruppen ¦ Groups
+Größe der Fläche (ar) ¦ Taille de la surface (ares) ¦ Gréisst vun der Fläch (Ar) ¦ Size of the area (are)
+Grün: Jagd erlaubt, rot: verboten. Anfangs- und Enddaten gehören zur Jagdzeit. Nicht aufgeführte Arten sind das ganze Jahr geschlossen. ¦ Vert : chasse autorisée, rouge : interdite. Les dates de début et de fin font partie de la période de chasse. Les espèces non listées sont fermées toute l'année. ¦ Gréng: Juegd erlaabt, rout: verbueden. Ufanks- an Enddaten gehéieren zur Juegdzäit. Net opgelëscht Aarte sinn d'ganzt Joer zou. ¦ Green: hunting allowed, red: prohibited. Start and end dates belong to the season. Species not listed are closed all year.
+Grünland ¦ Prairie ¦ Gréngland ¦ Grassland
+ha · Zeitraum ¦ ha · Période ¦ ha · Zäitraum ¦ ha · Period
+Hafer ¦ Avoine ¦ Hafer ¦ Oats
+Hake die Posten an, die bei dieser Jagd besetzt sind. Mit den Gruppen-Knöpfen wählst du eine ganze Linie auf einmal. ¦ Coche les postes occupés lors de cette chasse. Avec les boutons de groupe, tu choisis toute une ligne d'un coup. ¦ Hak d'Posten un, déi bei dëser Juegd besat sinn. Mat de Gruppe-Knäpp wiels du eng ganz Linn op eemol. ¦ Tick the stands that are manned for this hunt. With the group buttons you select a whole line at once.
+Halte den Griff ¦ Maintiens la poignée ¦ Haal de Grëff ¦ Hold the handle
+Hier eintragen ¦ Saisir ici ¦ Hei androen ¦ Add here
+Hier halten ¦ Maintiens ici ¦ Hei halen ¦ Hold here
+Hier setzen ¦ Placer ici ¦ Hei setzen ¦ Place here
+Hierher führen ¦ Guider ici ¦ Heihin féieren ¦ Lead here
+Hilft bei Problemen mit dem langen Drücken. Halte einen Finger eine Sekunde auf das Feld und schicke mir den Text darunter. ¦ Aide en cas de problème avec l'appui long. Maintiens un doigt une seconde sur le champ et envoie-moi le texte en dessous. ¦ Hëlleft bei Problemer mam laangen Drécken. Haal e Fanger eng Sekonn um Feld a schéck mer den Text drënner. ¦ Helps with problems with long-press. Hold a finger on the field for one second and send me the text below.
+Hinführen ¦ Guider vers ¦ Hinféieren ¦ Lead to
+Hinzufügen ¦ Ajouter ¦ Derbäisetzen ¦ Add
+hinzugefügt ¦ ajouté ¦ derbäigesat ¦ added
+Hirsch ¦ Cerf ¦ Hirsch ¦ Red deer stag
+Höchstzahl überschritten (+ ¦ Nombre maximal dépassé (+ ¦ Héichstzuel iwwerschratt (+ ¦ Maximum exceeded (+
+Ich habe die Datenschutzerklärung gelesen und akzeptiere sie. ¦ J'ai lu la déclaration de protection des données et je l'accepte. ¦ Ech hunn d'Dateschutzerklärung gelies an akzeptéieren se. ¦ I have read and accept the privacy policy.
+Import fehlgeschlagen ( ¦ Échec de l'importation ( ¦ Import fehlgeschloen ( ¦ Import failed (
+Importieren ¦ Importer ¦ Importéieren ¦ Import
+Importieren ( ¦ Importer ( ¦ Importéieren ( ¦ Import (
+in dieser Gruppe ¦ dans ce groupe ¦ an dëser Grupp ¦ in this group
+innerhalb der Losgrenzen erfolgt sind (nach Position). Die Plansummen gelten für den ganzen Zeitraum. Die Plan-Zahlen sind amtlich und nicht änderbar. Abschüsse, die du vor der App-Nutzung erlegt hast, trägst du über „Bisherige Abschüsse eintragen“ nach. ¦ dans les limites du lot (selon la position). Les totaux du plan valent pour toute la période. Les chiffres du plan sont officiels et non modifiables. Les tirs réalisés avant l'utilisation de l'app sont à ajouter via « Saisir les tirs précédents ». ¦ banner de Lousgrenzen geschitt sinn (no Positioun). D'Plangzommen gëllen fir de ganzen Zäitraum. D'Plangzuelen sinn amtlech an net ännerbar. Ofschëss, déi du virun der App-Notzung erluecht hues, dréit du iwwer „Bis elo Ofschëss androen“ no. ¦ took place within the lot boundaries (by position). The plan totals apply to the whole period. The plan figures are official and cannot be changed. Kills made before using the app are added via "Enter previous kills".
+iPhone: In Safari auf „Teilen“ tippen, dann „Zum Home-Bildschirm“. Android: In Chrome das Menü öffnen, dann „App installieren“. ¦ iPhone : dans Safari, touche « Partager », puis « Sur l'écran d'accueil ». Android : dans Chrome, ouvre le menu, puis « Installer l'application ». ¦ iPhone: A Safari op „Deelen“ tippen, dann „Zum Home-Bildschirm“. Android: A Chrome d'Menü opmaachen, dann „App installéieren“. ¦ iPhone: in Safari tap "Share", then "Add to Home Screen". Android: in Chrome open the menu, then "Install app".
+Jagd ¦ Chasse ¦ Juegd ¦ Hunt
+Jagd löschen ¦ Supprimer la chasse ¦ Juegd läschen ¦ Delete hunt
+Jagd mit Laufhunden (chien courant) ¦ Chasse avec chiens courants (chien courant) ¦ Juegd mat Laafhënn (chien courant) ¦ Hunt with scent hounds (chien courant)
+Jagd öffnen ¦ Ouvrir la chasse ¦ Juegd opmaachen ¦ Open hunt
+Jagd: ¦ Chasse : ¦ Juegd: ¦ Hunt:
+Jagdlos ¦ Lot de chasse ¦ Juegdlous ¦ Hunting lot
+Jagdlose ¦ Lots de chasse ¦ Juegdlous ¦ Hunting lots
+Jagdunterstand ¦ Abri de chasse ¦ Juegdënnerstand ¦ Hunting shelter
+Jagdunterstand / Hütte ¦ Abri de chasse / cabane ¦ Juegdënnerstand / Hütt ¦ Hunting shelter / hut
+Jagdzeiten ¦ Périodes de chasse ¦ Juegdzäiten ¦ Hunting seasons
+Jagdzeiten auswählen ¦ Choisir les périodes de chasse ¦ Juegdzäite wielen ¦ Choose hunting seasons
+Jagdzeiten heute ¦ Périodes de chasse aujourd'hui ¦ Juegdzäite vun haut ¦ Hunting seasons today
+Jahr ¦ Année ¦ Joer ¦ Year
+Jan ¦ janv. ¦ Jan. ¦ Jan
+Je Zeile eine Wildart, optional eingeschränkt auf männlich, weiblich oder Jungtiere, mit der geplanten Stückzahl. ¦ Une espèce par ligne, éventuellement limitée aux mâles, femelles ou jeunes, avec le nombre prévu. ¦ Pro Zeil eng Wëldaart, optional beschränkt op männlech, weiblech oder Jungdéieren, mat der geplangter Stéckzuel. ¦ One species per row, optionally limited to male, female or young, with the planned number.
+Jeder Abschuss von Hirsch, Alttier, Kalb, Damwild, Muffelwild, Marderhund, Nutria und Nerz muss innerhalb von 12 Stunden der Naturverwaltung (ANF) gemeldet werden: Tel. 621 280 000 oder gibier@anf.etat.lu. ¦ Chaque tir de cerf, biche, faon, daim, mouflon, chien viverrin, ragondin et vison doit être déclaré dans les 12 heures à l'Administration de la nature et des forêts (ANF) : tél. 621 280 000 ou gibier@anf.etat.lu. ¦ All Ofschoss vun Hirsch, Alttéier, Kalb, Damwëld, Muffelwëld, Marderhond, Nutria an Nerz muss bannent 12 Stonne der Naturverwaltung (ANF) gemellt ginn: Tel. 621 280 000 oder gibier@anf.etat.lu. ¦ Every kill of red deer stag, hind, calf, fallow deer, mouflon, raccoon dog, coypu and mink must be reported to the Nature and Forest Agency (ANF) within 12 hours: tel. 621 280 000 or gibier@anf.etat.lu.
+Jul ¦ juil. ¦ Jul. ¦ Jul
+Jun ¦ juin ¦ Jun. ¦ Jun
+Jungtier ¦ Jeune ¦ Jungdéier ¦ Young animal
+Jungtiere ¦ Jeunes ¦ Jungdéieren ¦ Young animals
+Kachel bearbeiten ¦ Modifier la tuile ¦ Kachel änneren ¦ Edit tile
+Kacheln ¦ Tuiles ¦ Kacheln ¦ Tiles
+Kalb ¦ Faon ¦ Kalb ¦ Calf
+Kanzel ¦ Mirador ¦ Hochsëtz ¦ High seat
+Kanzel / Stand ¦ Mirador / poste ¦ Hochsëtz / Stand ¦ High seat / stand
+Kanzel, Posten, Bock, Futterplatz, Hütte, Beschriftung ¦ Mirador, poste, siège, place d'affouragement, cabane, étiquette ¦ Hochsëtz, Posten, Bock, Fudderplaz, Hütt, Beschrëftung ¦ High seat, stand, hide, feeding place, hut, label
+Karte ¦ Carte ¦ Kaart ¦ Map
+Karte und Daten lassen sich nicht ausblenden. ¦ La carte et les données ne peuvent pas être masquées. ¦ Kaart an Daten kënnen net verstoppt ginn. ¦ Map and data cannot be hidden.
+Karte verschieben, bis das Fadenkreuz auf einer Ecke der Fläche liegt, dann „Punkt setzen“. ¦ Déplace la carte jusqu'à ce que le réticule soit sur un coin de la surface, puis « Placer le point ». ¦ Kaart réckelen, bis d'Fiedekräiz op engem Eck vun der Fläch läit, dann „Punkt setzen“. ¦ Move the map until the crosshair is on a corner of the area, then "Set point".
+Karte: ¦ Carte : ¦ Kaart: ¦ Map:
+Kartenmitte. Mit „Auf Karte setzen“ genauer festlegen. ¦ Centre de la carte. Précise avec « Placer sur la carte ». ¦ Kaartemëtt. Mat „Op d'Kaart setzen“ méi genee festleeën. ¦ Map centre. Use "Place on map" to set it more precisely.
+Kartoffeln ¦ Pommes de terre ¦ Gromperen ¦ Potatoes
+Kataster ¦ Cadastre ¦ Kataster ¦ Cadastre
+Kataster nicht verfügbar ( ¦ Cadastre non disponible ( ¦ Kataster net disponibel ( ¦ Cadastre not available (
+Kataster: ¦ Cadastre : ¦ Kataster: ¦ Cadastre:
+Kein Los gewählt ¦ Aucun lot choisi ¦ Kee Lous gewielt ¦ No lot chosen
+kein Plan ¦ pas de plan ¦ kee Plang ¦ no plan
+kein Schütze eingetragen ¦ aucun tireur saisi ¦ kee Schëtz agedroen ¦ no shooter entered
+Keine ¦ Aucun ¦ Keng ¦ None
+keine Angabe ¦ non précisé ¦ keng Angab ¦ not specified
+Keine anstehenden Reservierungen. ¦ Aucune réservation à venir. ¦ Keng kommend Reservatiounen. ¦ No upcoming reservations.
+Keine Daten für diese Auswahl. ¦ Aucune donnée pour cette sélection. ¦ Keng Daten fir dës Auswiel. ¦ No data for this selection.
+Keine Einträge gefunden. ¦ Aucune entrée trouvée. ¦ Keng Androungen fonnt. ¦ No entries found.
+Keine Flächen (Polygone) in der Datei gefunden. ¦ Aucune surface (polygone) trouvée dans le fichier. ¦ Keng Flächen (Polygonen) an der Datei fonnt. ¦ No areas (polygons) found in the file.
+Keine kommende Drückjagd geplant. ¦ Aucune battue à venir prévue. ¦ Keng kommend Dréckjuegd geplangt. ¦ No upcoming driven hunt planned.
+keine Parzelle an dieser Stelle ¦ aucune parcelle à cet endroit ¦ keng Parzell op dëser Plaz ¦ no parcel at this spot
+Keine Verbindung. Bitte später noch einmal versuchen. ¦ Pas de connexion. Réessaie plus tard. ¦ Keng Verbindung. Probéier w.e.g. méi spéit nach eng Kéier. ¦ No connection. Please try again later.
+Keine Wildart ausgewählt. ¦ Aucune espèce sélectionnée. ¦ Keng Wëldaart ausgewielt. ¦ No species selected.
+Kennzahl bearbeiten ¦ Modifier l'indicateur ¦ Kennzuel änneren ¦ Edit metric
+Kirrung ¦ Agrainage ¦ Kierung ¦ Bait site
+Kirrung Fichtenschlag ¦ Agrainage coupe d'épicéas ¦ Kierung Fichtenschlag ¦ Bait site spruce clearing
+Konto ¦ Compte ¦ Kont ¦ Account
+Konto erstellen ¦ Créer un compte ¦ Kont erstellen ¦ Create account
+Konto und Gruppen ¦ Compte et groupes ¦ Kont a Gruppen ¦ Account and groups
+Konto und Gruppen öffnen ¦ Ouvrir compte et groupes ¦ Kont a Gruppen opmaachen ¦ Open account and groups
+Kopieren nicht möglich ¦ Copie impossible ¦ Kopéiere net méiglech ¦ Copy not possible
+Kuh ¦ Vache ¦ Kou ¦ Cow
+Kultur ¦ Culture ¦ Kultur ¦ Crop
+Kultur / Bestand (neu) ¦ Culture / peuplement (nouveau) ¦ Kultur / Bestand (nei) ¦ Crop / stand (new)
+Lade … ¦ Chargement … ¦ Lued … ¦ Loading …
+laut Jagdzeitentabelle geschlossen. Jagdzeit: ¦ fermé selon le tableau des périodes de chasse. Période de chasse : ¦ laut Juegdzäitentabell zou. Juegdzäit: ¦ closed according to the season table. Season:
+Lege pro Rolle fest, was die Mitglieder sehen oder eintragen dürfen. „Ungefähr“ zeigt Positionen nur auf etwa 100 m gerundet. Administratoren dürfen alles. ¦ Définis pour chaque rôle ce que les membres peuvent voir ou saisir. « Approximatif » n'affiche les positions qu'arrondies à environ 100 m. Les administrateurs peuvent tout faire. ¦ Leet pro Roll fest, wat d'Memberen gesinn oder androen däerfen. „Ongeféier“ weist Positiounen nëmmen op ongeféier 100 m ofgerënnt. Administrateuren däerfen alles. ¦ Set for each role what members may see or enter. "Approximate" shows positions rounded to about 100 m only. Administrators may do everything.
+Lege zuerst eine Kanzel an. ¦ Crée d'abord un mirador. ¦ Leet fir d'éischt en Hochsëtz un. ¦ Create a high seat first.
+Lege zuerst Einträge an, die du zusammenfassen willst. ¦ Crée d'abord les entrées que tu veux regrouper. ¦ Leet fir d'éischt Androungen un, déi du zesummefaasse wëlls. ¦ First create the entries you want to group.
+Legende ¦ Légende ¦ Legend ¦ Legend
+Lesen ¦ Lire ¦ Liesen ¦ Read
+Letzte 30 Tage ¦ 30 derniers jours ¦ Läscht 30 Deeg ¦ Last 30 days
+Letzte Einträge ¦ Dernières entrées ¦ Lescht Androungen ¦ Latest entries
+Letztes Jahr ¦ Année dernière ¦ Lescht Joer ¦ Last year
+Lichtung Ost ¦ Clairière est ¦ Luucht Osten ¦ Clearing east
+Linie ¦ Ligne ¦ Linn ¦ Line
+Lokaler Speicher ist voll oder gesperrt. ¦ La mémoire locale est pleine ou bloquée. ¦ Lokale Späicher ass voll oder gespaart. ¦ Local storage is full or blocked.
+Los ¦ Lot ¦ Lous ¦ Lot
+Los entfernt ¦ Lot retiré ¦ Lous ewechgeholl ¦ Lot removed
+Los hinzufügen ¦ Ajouter un lot ¦ Lous derbäisetzen ¦ Add lot
+Lose ¦ Lots ¦ Lous ¦ Lots
+Lose auswählen ¦ Choisir des lots ¦ Lous wielen ¦ Choose lots
+Lose der Gruppe ¦ Lots du groupe ¦ Lous vun der Grupp ¦ Group lots
+Losnummer ¦ Numéro de lot ¦ Lousnummer ¦ Lot number
+Luftbild ¦ Photo aérienne ¦ Loftbild ¦ Aerial imagery
+Länge ¦ Longueur ¦ Längt ¦ Length
+Löschen ¦ Supprimer ¦ Läschen ¦ Delete
+Löschen fehlgeschlagen ¦ Échec de la suppression ¦ Läschen fehlgeschloen ¦ Delete failed
+Mai ¦ mai ¦ Mee ¦ May
+Mais ¦ Maïs ¦ Mais ¦ Maize
+Marder ¦ Martre ¦ Marder ¦ Marten
+Marderhund ¦ Chien viverrin ¦ Marderhond ¦ Raccoon dog
+Markiere zuerst dein Los auf der Karte. ¦ Marque d'abord ton lot sur la carte. ¦ Markéier fir d'éischt däi Lous op der Kaart. ¦ Mark your lot on the map first.
+Markierter Punkt ¦ Point marqué ¦ Markéierte Punkt ¦ Marked point
+Mein Standort ¦ Ma position ¦ Meng Standuert ¦ My location
+Meine Abschüsse ¦ Mes tirs ¦ Meng Ofschëss ¦ My kills
+Meine Gruppen ¦ Mes groupes ¦ Meng Gruppen ¦ My groups
+Meine Lose ¦ Mes lots ¦ Meng Lous ¦ My lots
+Meinen Bereich offline speichern ¦ Enregistrer ma zone hors ligne ¦ Mäi Beräich offline späicheren ¦ Save my area offline
+Mindestens 3 Punkte nötig. ¦ Au moins 3 points nécessaires. ¦ Mindestens 3 Punkte néideg. ¦ At least 3 points needed.
+Minimum erfüllt ¦ Minimum atteint ¦ Minimum erfëllt ¦ Minimum met
+Mit „Kataster“ weitere Parzellen wählen oder „Fertig“ tippen. „Zurück“ entfernt die letzte. ¦ Avec « Cadastre », choisis d'autres parcelles ou touche « Terminé ». « Retour » supprime la dernière. ¦ Mat „Kataster“ weider Parzellen wielen oder „Fäerdeg“ tippen. „Zréck“ hëlt déi lescht ewech. ¦ Use "Cadastre" to pick more parcels or tap "Done". "Back" removes the last one.
+Mitglied ¦ Membre ¦ Member ¦ Member
+Mitglieder ( ¦ Membres ( ¦ Memberen ( ¦ Members (
+Mobil ¦ Mobile ¦ Mobil ¦ Mobile
+Morgen ¦ Matin ¦ Moien ¦ Morning
+Muff m ¦ Mouf. m ¦ Muff m ¦ Mouflon m
+Muff w ¦ Mouf. f ¦ Muff w ¦ Mouflon f
+Muffelwild ¦ Mouflon ¦ Muffelwëld ¦ Mouflon
+Muffelwild männlich ¦ Mouflon mâle ¦ Muffelwëld männlech ¦ Mouflon male
+Muffelwild weiblich/Lämmer ¦ Mouflon femelle/agneaux ¦ Muffelwëld weiblech/Lämmercher ¦ Mouflon female/lambs
+männlich ¦ mâle ¦ männlech ¦ male
+Mär ¦ mars ¦ Mäe ¦ Mar
+möchte Los ¦ souhaite le lot ¦ wëll Lous ¦ wants lot
+Nach Altersklasse ¦ Par classe d'âge ¦ No Alterskategorie ¦ By age class
+Nach Fläche ¦ Par surface ¦ No Fläch ¦ By area
+Nach Fläche · ¦ Par surface · ¦ No Fläch · ¦ By area ·
+Nach Geschlecht ¦ Par sexe ¦ No Geschlecht ¦ By sex
+Nach Jahr ¦ Par année ¦ No Joer ¦ By year
+Nach Kanzel ¦ Par mirador ¦ No Hochsëtz ¦ By high seat
+Nach Monat ¦ Par mois ¦ No Mount ¦ By month
+Nach Name oder Nummer suchen ¦ Rechercher par nom ou numéro ¦ No Numm oder Nummer sichen ¦ Search by name or number
+Nach Verursacher ¦ Par responsable ¦ No Verursaacher ¦ By cause
+Nach Wildart ¦ Par espèce ¦ No Wëldaart ¦ By species
+Nachsuche ¦ Recherche au sang ¦ Nosich ¦ Tracking
+Nachsuche läuft ¦ Recherche en cours ¦ Nosich leeft ¦ Tracking in progress
+Nachsuche melden (teilen) ¦ Signaler une recherche (partager) ¦ Nosich mellen (deelen) ¦ Report tracking (share)
+Nachsuche offen ¦ Recherche ouverte ¦ Nosich oppen ¦ Tracking open
+NACHSUCHE – ¦ RECHERCHE AU SANG – ¦ NOSICH – ¦ TRACKING –
+Nachsuchenführer ¦ Conducteur de recherche au sang ¦ Nosichguide ¦ Tracking handler
+Nacht ¦ Nuit ¦ Nuecht ¦ Night
+Name ¦ Nom ¦ Numm ¦ Name
+Name (für Mitglieder deiner Gruppen sichtbar) ¦ Nom (visible par les membres de tes groupes) ¦ Numm (fir Memberen vun dengen Gruppen ze gesinn) ¦ Name (visible to members of your groups)
+Name / Linie / Lage ¦ Nom / ligne / emplacement ¦ Numm / Linn / Lag ¦ Name / line / location
+Name bzw. Text, z. B. Posten 1 ¦ Nom ou texte, p. ex. Poste 1 ¦ Numm bzw. Text, z. B. Posten 1 ¦ Name or text, e.g. Stand 1
+Name der Gruppe ¦ Nom du groupe ¦ Numm vun der Grupp ¦ Group name
+Name der Gruppe (frei wählbar) ¦ Nom du groupe (libre) ¦ Numm vun der Grupp (fräi wielbar) ¦ Group name (free choice)
+Name der Linie (frei wählbar) ¦ Nom de la ligne (libre) ¦ Numm vun der Linn (fräi wielbar) ¦ Line name (free choice)
+Name der Rolle ¦ Nom du rôle ¦ Numm vun der Roll ¦ Role name
+Name ändern ¦ Modifier le nom ¦ Numm änneren ¦ Change name
+Nationale Nummer ¦ Numéro national ¦ Nationalen Nummer ¦ National number
+Neozoen und Sonstiges ¦ Néozoaires et divers ¦ Neozoen an Soss ¦ Invasive species and other
+Neu einzeichnen ¦ Redessiner ¦ Nei zeechnen ¦ Redraw
+Neu: ¦ Nouveau : ¦ Nei: ¦ New:
+Neue Drückjagd ¦ Nouvelle battue ¦ Nei Dréckjuegd ¦ New driven hunt
+Neue Fläche ¦ Nouvelle surface ¦ Nei Fläch ¦ New area
+Neue Gruppe ¦ Nouveau groupe ¦ Nei Grupp ¦ New group
+Neue Kennzahl ¦ Nouvel indicateur ¦ Nei Kennzuel ¦ New metric
+Neue Kultur mit Zeitraum eintragen (z. B. Mais bis 10.9., Zwischenfrucht ab 15.9.). Dazwischen gilt das Feld als leer. Tippe einen Eintrag unten an, um ihn zu ändern. ¦ Saisis une nouvelle culture avec sa période (p. ex. maïs jusqu'au 10.9., culture intermédiaire dès le 15.9.). Entre les deux, le champ est considéré comme vide. Touche une entrée ci-dessous pour la modifier. ¦ Gëff eng nei Kultur mat Zäitraum an (z. B. Mais bis 10.9., Zwëschenfrucht ab 15.9.). Dozwëschent gëllt d'Feld als eidel. Tipp ënnen eng Androung un, fir se z'änneren. ¦ Enter a new crop with its period (e.g. maize until 10.9., catch crop from 15.9.). In between, the field counts as empty. Tap an entry below to change it.
+Neue Linie ¦ Nouvelle ligne ¦ Nei Linn ¦ New line
+Neue Rolle, z. B. Forst ¦ Nouveau rôle, p. ex. Forêt ¦ Nei Roll, z. B. Bësch ¦ New role, e.g. Forestry
+Neuer Textblock ¦ Nouveau bloc de texte ¦ Neien Textblock ¦ New text block
+Nicht angemeldet ¦ Non connecté ¦ Net ugemellt ¦ Not signed in
+Nichts ¦ Rien ¦ Näischt ¦ Nothing
+Nichts gefunden. ¦ Rien trouvé. ¦ Näischt fonnt. ¦ Nothing found.
+Niederwild und Federwild ¦ Petit gibier et gibier à plumes ¦ Nidderwëld a Fiederwëld ¦ Small game and feathered game
+Noch einmal ¦ Encore une fois ¦ Nach eemol ¦ Once more
+Noch kein Abschuss in diesem Jahr. ¦ Pas encore de tir cette année. ¦ Nach kee Ofschoss an dësem Joer. ¦ No kill yet this year.
+Noch kein Los markiert. ¦ Aucun lot marqué pour l'instant. ¦ Nach kee Lous markéiert. ¦ No lot marked yet.
+Noch kein Plan für ¦ Pas encore de plan pour ¦ Nach kee Plang fir ¦ No plan yet for
+Noch kein Schaden eingetragen. ¦ Aucun dégât saisi pour l'instant. ¦ Nach kee Schued agedroen. ¦ No damage entered yet.
+Noch kein Wildschaden eingetragen. Zeichne unter „Eintragen → Fläche“ ein Feld oder eine Waldparzelle ein und trage dort Schäden ein. Hier siehst du dann die Jahre im Vergleich. ¦ Aucun dégât de gibier saisi. Dessine sous « Ajouter → Surface » un champ ou une parcelle forestière et saisis-y les dégâts. Tu verras ici les années en comparaison. ¦ Nach kee Wëllschued agedroen. Zeechent ënner „Androen → Fläch“ e Feld oder eng Bëschparzell an dréi do Schied an. Hei gesäis du dann d'Joeren am Vergläich. ¦ No game damage entered yet. Under "Add → Area" draw a field or forest plot and enter damage there. Here you will then see the years compared.
+Noch keine Drückjagd. Lege zuerst unter Eintragen → Einrichtung die Posten an (Art „Drückjagdposten“, optional mit Gruppe wie „Linie 1“). Dann erstellst du hier die Jagd, wählst die Posten und trägst die Schützen ein. ¦ Pas encore de battue. Crée d'abord les postes sous Ajouter → Installation (type « Poste de battue », éventuellement avec un groupe comme « Ligne 1 »). Ensuite, crée ici la chasse, choisis les postes et saisis les tireurs. ¦ Nach keng Dréckjuegd. Leet fir d'éischt ënner Androen → Aarichtung d'Posten un (Aart „Dréckjuegdposten“, optional mat Grupp wéi „Linn 1“). Dann erstells du hei d'Juegd, wiels d'Posten a gëss d'Schëtze an. ¦ No driven hunt yet. First create the stands under Add → Facility (type "Driven-hunt stand", optionally with a group such as "Line 1"). Then create the hunt here, choose the stands and enter the shooters.
+Noch keine Einrichtungen eingetragen. Lege zuerst eine Kanzel an. ¦ Aucune installation saisie. Crée d'abord un mirador. ¦ Nach keng Aarichtunge agedroen. Leet fir d'éischt en Hochsëtz un. ¦ No facilities entered yet. Create a high seat first.
+Noch keine Einträge. ¦ Pas encore d'entrées. ¦ Nach keng Androungen. ¦ No entries yet.
+Noch keine Flächen. Tippe auf „+ Fläche“ und zeichne ein Feld oder eine Waldparzelle ein. Die Größe wird berechnet, danach kannst du Wildschäden mit Preis pro ar eintragen. ¦ Pas encore de surfaces. Touche « + Surface » et dessine un champ ou une parcelle forestière. La taille est calculée, puis tu peux saisir les dégâts de gibier avec prix par are. ¦ Nach keng Flächen. Tipp op „+ Fläch“ an zeechent e Feld oder eng Bëschparzell. D'Gréisst gëtt berechent, duerno kanns du Wëllschied mat Präis pro Ar androen. ¦ No areas yet. Tap "+ Area" and draw a field or forest plot. The size is calculated, then you can enter game damage with a price per are.
+Noch keine Gruppen. Tippe auf „+ Gruppe“, wähle Einträge aus und gib einen Namen ein, z. B. „Linie 1“. Du kannst den Namen auch direkt beim Bearbeiten eines Eintrags eintippen. ¦ Pas encore de groupes. Touche « + Groupe », choisis des entrées et saisis un nom, p. ex. « Ligne 1 ». Tu peux aussi saisir le nom directement en modifiant une entrée. ¦ Nach keng Gruppen. Tipp op „+ Grupp“, wiel Androungen aus a gëff en Numm an, z. B. „Linn 1“. Du kanns den Numm och direkt beim Änneren vun enger Androung androen. ¦ No groups yet. Tap "+ Group", select entries and enter a name, e.g. "Line 1". You can also type the name directly when editing an entry.
+noch keine Position ¦ pas encore de position ¦ nach keng Positioun ¦ no position yet
+Noch keine Posten gewählt. Tippe auf „Posten wählen“. ¦ Aucun poste choisi. Touche « Choisir les postes ». ¦ Nach keng Posten gewielt. Tipp op „Posten wielen“. ¦ No stands chosen yet. Tap "Choose stands".
+Noch keine Schüsse gemeldet. ¦ Aucun tir signalé pour l'instant. ¦ Nach keng Schëss gemellt. ¦ No shots reported yet.
+Noch keine Tracks. ¦ Pas encore de traces. ¦ Nach keng Tracken. ¦ No tracks yet.
+Noch keine Zeilen. ¦ Pas encore de lignes. ¦ Nach keng Zeilen. ¦ No rows yet.
+noch nicht festgelegt ¦ pas encore défini ¦ nach net festgeluecht ¦ not set yet
+Notiz ¦ Note ¦ Notiz ¦ Note
+Notizen, Telefonnummern, Hinweise … ¦ Notes, numéros de téléphone, remarques … ¦ Notizen, Telefonsnummeren, Hiweiser … ¦ Notes, phone numbers, hints …
+Nov ¦ nov. ¦ Nov. ¦ Nov
+Nur lokal ¦ Local uniquement ¦ Nëmme lokal ¦ Local only

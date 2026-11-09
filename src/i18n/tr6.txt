@@ -1,0 +1,15 @@
+Wähle unter „Daten“ deine Jagdlose aus, dann erscheint hier der amtliche Plan de tir {n} dafür. ¦ Choisis tes lots de chasse sous « Données » ; le plan de tir officiel {n} apparaîtra ici. ¦ Wiel ënner „Daten“ deng Juegdlous aus, dann erschéngt hei den amtlechen Plan de tir {n} dofir. ¦ Choose your hunting lots under "Data" and the official plan de tir {n} will appear here.
+Ø {n} kg aufgebrochen ¦ Ø {n} kg éviscéré ¦ Ø {n} kg opgebrach ¦ Ø {n} kg dressed
+Noch kein Plan für {n}. Trage ein, wie viele Stücke je Wildart geplant sind, dann siehst du hier, wie weit du bist. ¦ Pas encore de plan pour {n}. Saisis combien de pièces sont prévues par espèce et tu verras ici où tu en es. ¦ Nach kee Plang fir {n}. Gëff an, wéi vill Stécker pro Wëldaart geplangt sinn, dann gesäis du hei, wéi wäit du bass. ¦ No plan yet for {n}. Enter how many animals are planned per species and you will see here how far along you are.
+Gezählt werden die Abschüsse im Kalenderjahr {n} (wähle oben ein Jahr für ein anderes Jahr). ¦ Les tirs sont comptés sur l'année civile {n} (choisis une année en haut pour une autre année). ¦ Gezielt ginn d'Ofschëss am Kalennerjoer {n} (wiel uewen e Joer fir en anert Joer). ¦ Kills are counted for calendar year {n} (pick a year above for another year).
+Abschüsse als CSV ¦ Tirs en CSV ¦ Ofschëss als CSV ¦ Kills as CSV
+Abschüsse und Sichtungen ¦ Tirs et observations ¦ Ofschëss an Observatiounen ¦ Kills and sightings
+Sicherung (JSON) ¦ Sauvegarde (JSON) ¦ Sécherung (JSON) ¦ Backup (JSON)
+Nur Abschüsse ¦ Tirs uniquement ¦ Nëmmen Ofschëss ¦ Kills only
+Nur Sichtungen ¦ Observations uniquement ¦ Nëmmen Observatiounen ¦ Sightings only
+unbekannt ¦ inconnu ¦ onbekannt ¦ unknown
+weiblich ¦ femelle ¦ weiblech ¦ female
+gemischt ¦ mixte ¦ gemëscht ¦ mixed
+Adult ¦ Adulte ¦ Erwuessen ¦ Adult
+Tracks ¦ Traces ¦ Tracken ¦ Tracks
+Position ¦ Position ¦ Positioun ¦ Position

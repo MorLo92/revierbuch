@@ -1,0 +1,277 @@
+Nur wenn du ein Konto anlegst: E-Mail-Adresse, Anzeigename, Passwort (nur als Prüfwert gespeichert), Zugehörigkeit zu Gruppen und Rollen sowie deine Zustimmung mit Datum. Später zusätzlich die Einträge, die du bewusst mit einer Gruppe teilst (zum Beispiel Einrichtungen, Abschüsse, Sichtungen, jeweils mit Position, Zeit und Wildart). ¦ Uniquement si tu crées un compte : adresse e-mail, nom affiché, mot de passe (stocké uniquement sous forme de valeur de contrôle), appartenance aux groupes et rôles ainsi que ton consentement avec la date. Plus tard, en plus, les entrées que tu partages volontairement avec un groupe (par exemple installations, tirs, observations, chacune avec position, heure et espèce). ¦ Nëmmen wann du e Kont uleefs: E-Mail-Adress, Ugewisenen Numm, Passwuert (nëmmen als Kontrollwäert gespäichert), Zougehéieregkeet zu Gruppen a Rollen souwéi deng Zoustëmmung mat Datum. Méi spéit zousätzlech d'Androungen, déi du bewosst mat enger Grupp deels (zum Beispill Aarichtungen, Ofschëss, Observatiounen, jeweils mat Positioun, Zäit a Wëldaart). ¦ Only if you create an account: email address, display name, password (stored only as a check value), group and role memberships and your consent with date. Later also the entries you deliberately share with a group (for example facilities, kills, sightings, each with position, time and species).
+Nutria ¦ Ragondin ¦ Nutria ¦ Coypu
+Nächste Drückjagd ¦ Prochaine battue ¦ Nächst Dréckjuegd ¦ Next driven hunt
+Nächste Parzelle übernommen, bitte prüfen. ¦ Parcelle suivante reprise, merci de vérifier. ¦ Nächst Parzell iwwerholl, w.e.g. kontrolléieren. ¦ Next parcel taken, please check.
+Offen ¦ Ouvert ¦ Oppen ¦ Open
+Offen ( ¦ Ouvert ( ¦ Oppen ( ¦ Open (
+offene Nachsuche ¦ recherche ouverte ¦ oppen Nosich ¦ open tracking
+offene Nachsuchen ¦ recherches ouvertes ¦ oppen Nosichen ¦ open trackings
+Offene Nachsuchen ( ¦ Recherches ouvertes ( ¦ Oppen Nosichen ( ¦ Open trackings (
+Ohne Gruppe ¦ Sans groupe ¦ Ouni Grupp ¦ No group
+Ohne Kanzel ¦ Sans mirador ¦ Ouni Hochsëtz ¦ No high seat
+Ohne Kompass-Erlaubnis zeigt der Pfeil von Norden. Erlaube die Bewegungssensoren in den Browser-Einstellungen. ¦ Sans autorisation de la boussole, la flèche part du nord. Autorise les capteurs de mouvement dans les réglages du navigateur. ¦ Ouni Kompass-Erlaabnis weist de Feil vum Norden. Erlaabt d'Bewegungssensoren an den Browser-Astellungen. ¦ Without compass permission the arrow points from north. Allow motion sensors in the browser settings.
+Ohne Kultur / leer ¦ Sans culture / vide ¦ Ouni Kultur / eidel ¦ No crop / empty
+ohne Namen ¦ sans nom ¦ ouni Numm ¦ unnamed
+Ohne Namen ¦ Sans nom ¦ Ouni Numm ¦ Unnamed
+ohne Rolle ¦ sans rôle ¦ ouni Roll ¦ no role
+Ohne Standort keine Aufzeichnung. Erlaube den Standortzugriff. ¦ Pas d'enregistrement sans position. Autorise l'accès à la position. ¦ Ouni Standuert keng Opzeechnung. Erlaabt den Zougrëff op de Standuert. ¦ No recording without location. Allow location access.
+Okt ¦ oct. ¦ Okt. ¦ Oct
+Parzelle abgewählt. ¦ Parcelle désélectionnée. ¦ Parzell ofgewielt. ¦ Parcel deselected.
+Parzelle · ¦ Parcelle · ¦ Parzell · ¦ Parcel ·
+Parzelle übernommen. ¦ Parcelle reprise. ¦ Parzell iwwerholl. ¦ Parcel taken.
+Parzellen · ¦ Parcelles · ¦ Parzellen · ¦ Parcels ·
+Passwort ¦ Mot de passe ¦ Passwuert ¦ Password
+Passwort vergessen? ¦ Mot de passe oublié ? ¦ Passwuert vergiess? ¦ Forgot password?
+Pfeil und Entfernung zu diesem Punkt ¦ Flèche et distance jusqu'à ce point ¦ Feil an Distanz bis zu dësem Punkt ¦ Arrow and distance to this point
+Plan ¦ Plan ¦ Plang ¦ Plan
+Plan bearbeiten ¦ Modifier le plan ¦ Plang änneren ¦ Edit plan
+Plan eintragen ¦ Saisir le plan ¦ Plang androen ¦ Enter plan
+Plan gespeichert ¦ Plan enregistré ¦ Plang gespäichert ¦ Plan saved
+Plan je Los ¦ Plan par lot ¦ Plang pro Lous ¦ Plan per lot
+Polygon ¦ Polygone ¦ Polygon ¦ Polygon
+Position ¦ Position ¦ Positioun ¦ Position
+Position der gewählten Kanzel übernommen. ¦ Position du mirador choisi reprise. ¦ Positioun vum gewielten Hochsëtz iwwerholl. ¦ Position of the chosen high seat taken.
+Position des Postens. Für eine genaue Nachsuche den Anschuss mit „Mein Standort“ oder auf der Karte festlegen. ¦ Position du poste. Pour une recherche précise, définis le lieu du tir avec « Ma position » ou sur la carte. ¦ Positioun vum Posten. Fir eng genau Nosich den Unschoss mat „Meng Standuert“ oder op der Kaart festleeën. ¦ Position of the stand. For an accurate tracking, set the point of impact with "My location" or on the map.
+Position für ¦ Position pour ¦ Positioun fir ¦ Position for
+Posten ¦ Poste ¦ Posten ¦ Stand
+Posten auf Karte setzen ¦ Placer le poste sur la carte ¦ Posten op d'Kaart setzen ¦ Place stand on map
+Posten gewählt ¦ Postes choisis ¦ Posten gewielt ¦ Stands chosen
+Posten und Schützen ¦ Postes et tireurs ¦ Posten a Schëtzen ¦ Stands and shooters
+Posten wählen ¦ Choisir les postes ¦ Posten wielen ¦ Choose stands
+Preis pro ar (EUR) ¦ Prix par are (EUR) ¦ Präis pro Ar (EUR) ¦ Price per are (EUR)
+Preis pro ar (€) ¦ Prix par are (€) ¦ Präis pro Ar (€) ¦ Price per are (€)
+Punkt ¦ Point ¦ Punkt ¦ Point
+Punkt setzen ¦ Placer le point ¦ Punkt setzen ¦ Set point
+Punkte ¦ Points ¦ Punkten ¦ Points
+Quelle: ¦ Source : ¦ Quell: ¦ Source:
+Raps ¦ Colza ¦ Raps ¦ Rapeseed
+Raster ¦ Grille ¦ Raster ¦ Grid
+Registrieren ¦ S'inscrire ¦ Registréieren ¦ Register
+Reh ¦ Chevreuil ¦ Rei ¦ Roe deer
+Rehwild ¦ Chevreuil ¦ Reiwëld ¦ Roe deer
+Rehwild · Bock ¦ Chevreuil · brocard ¦ Reiwëld · Bock ¦ Roe deer · buck
+Rehwild · Ricke und Kitz ¦ Chevreuil · chevrette et faon ¦ Reiwëld · Rick a Kitz ¦ Roe deer · doe and fawn
+Rehwild · Schmalreh (Vorjahr geboren) ¦ Chevreuil · chevrette d'un an (née l'année précédente) ¦ Reiwëld · Schmalrei (Virjoer gebuer) ¦ Roe deer · yearling doe (born last year)
+Reservieren ¦ Réserver ¦ Reservéieren ¦ Reserve
+Reserviert ¦ Réservé ¦ Reservéiert ¦ Reserved
+Reservierung bearbeiten ¦ Modifier la réservation ¦ Reservatioun änneren ¦ Edit reservation
+Reservierung löschen ¦ Supprimer la réservation ¦ Reservatioun läschen ¦ Delete reservation
+Reservierungen ¦ Réservations ¦ Reservatiounen ¦ Reservations
+Richtung ¦ Direction ¦ Richtung ¦ Direction
+Ringeltaube (im Feld) ¦ Pigeon ramier (en plaine) ¦ Ringeldaf (am Feld) ¦ Wood pigeon (in field)
+Ringeltaube (im Wald) ¦ Pigeon ramier (en forêt) ¦ Ringeldaf (am Bësch) ¦ Wood pigeon (in forest)
+Rolle anlegen ¦ Créer un rôle ¦ Roll uleeën ¦ Create role
+Rolle löschen ¦ Supprimer le rôle ¦ Roll läschen ¦ Delete role
+Rolle löschen? ¦ Supprimer le rôle ? ¦ Roll läschen? ¦ Delete role?
+Rollen und Rechte ¦ Rôles et droits ¦ Rollen a Rechter ¦ Roles and permissions
+Rotwild ¦ Cerf élaphe ¦ Rotwëld ¦ Red deer
+Rotwild Kälber/Jungtiere ¦ Cerf élaphe faons/jeunes ¦ Rotwëld Kälwer/Jungdéieren ¦ Red deer calves/young
+Rotwild männlich ¦ Cerf élaphe mâle ¦ Rotwëld männlech ¦ Red deer male
+Rotwild weiblich ¦ Cerf élaphe femelle ¦ Rotwëld weiblech ¦ Red deer female
+Rotwild · Alttier, Schmaltier, Kalb ¦ Cerf élaphe · biche, bichette, faon ¦ Rotwëld · Alttéier, Schmaltéier, Kalb ¦ Red deer · hind, young hind, calf
+Rotwild · Hirsch mit Geweih ¦ Cerf élaphe · cerf avec bois ¦ Rotwëld · Hirsch mat Geweih ¦ Red deer · stag with antlers
+Rotwild · Spießer (unverzweigt) ¦ Cerf élaphe · daguet (non ramifié) ¦ Rotwëld · Spiisser (net verzweegt) ¦ Red deer · spiker (unbranched)
+Route Auto ¦ Itinéraire voiture ¦ Route Auto ¦ Route by car
+Route zu Fuß ¦ Itinéraire à pied ¦ Route zu Fouss ¦ Route on foot
+Salzlecke ¦ Pierre à sel ¦ Salzlecken ¦ Salt lick
+Salzlecke Quellbach ¦ Pierre à sel ruisseau ¦ Salzlecken Quellbaach ¦ Salt lick spring brook
+Sau ¦ Sanglier ¦ Sau ¦ Boar
+Schaden bearbeiten ¦ Modifier le dégât ¦ Schued änneren ¦ Edit damage
+Schaden gespeichert · ¦ Dégât enregistré · ¦ Schued gespäichert · ¦ Damage saved ·
+Schaden löschen ¦ Supprimer le dégât ¦ Schued läschen ¦ Delete damage
+Schalenwild ¦ Gibier à sabots ¦ Schuelewëld ¦ Hoofed game
+Schließen ¦ Fermer ¦ Zoumaachen ¦ Close
+Schnellaktionen ¦ Actions rapides ¦ Séier Aktiounen ¦ Quick actions
+Schonzeit: ¦ Période de protection : ¦ Schounzäit: ¦ Closed season:
+Schreiben ¦ Écrire ¦ Schreiwen ¦ Write
+Schuss ¦ Tir ¦ Schoss ¦ Shot
+Schuss melden ¦ Signaler un tir ¦ Schoss mellen ¦ Report shot
+Schuss: ¦ Tir : ¦ Schoss: ¦ Shot:
+Schussmeldung bearbeiten ¦ Modifier le signalement de tir ¦ Schossmeldung änneren ¦ Edit shot report
+Schussmeldungen ¦ Signalements de tir ¦ Schossmeldungen ¦ Shot reports
+Schwarz-, Dam- und Muffelwild ¦ Sanglier, daim et mouflon ¦ Schwaarz-, Dam- a Muffelwëld ¦ Wild boar, fallow deer and mouflon
+Schwarzwild ¦ Sanglier ¦ Schwarzwëld ¦ Wild boar
+Schwarzwild in der Feldflur, nur in Maisfeldern: Der Zeitraum beginnt am 1. August. Jäger dürfen aber im angrenzenden Wald angestellt sein. ¦ Sanglier en plaine, uniquement dans les champs de maïs : la période commence le 1er août. Les chasseurs peuvent toutefois être postés dans la forêt voisine. ¦ Schwarzwëld op der Feldfluer, nëmmen a Maisfelder: Den Zäitraum fänkt den 1. August un. Jeeër däerfen awer am ugrenzende Bësch ugestallt sinn. ¦ Wild boar in open farmland, only in maize fields: the period begins on 1 August. Hunters may however be posted in the adjacent forest.
+Schäden gehen verloren. ¦ Les dégâts seront perdus. ¦ Schied ginn verluer. ¦ Damage entries will be lost.
+Schäden gesamt ¦ Total des dégâts ¦ Schied insgesamt ¦ Total damage
+Schüsse ¦ Tirs ¦ Schëss ¦ Shots
+Schütze ¦ Tireur ¦ Schëtz ¦ Shooter
+Schütze: ¦ Tireur : ¦ Schëtz: ¦ Shooter:
+Sep ¦ sept. ¦ Sep. ¦ Sep
+Sicher? ¦ Sûr ? ¦ Sécher? ¦ Sure?
+Sicherung einlesen ¦ Importer une sauvegarde ¦ Sécherung ariichten ¦ Import backup
+Sicherung gespeichert ¦ Sauvegarde enregistrée ¦ Sécherung gespäichert ¦ Backup saved
+Sichtung ¦ Observation ¦ Observatioun ¦ Sighting
+Sichtungen ¦ Observations ¦ Observatiounen ¦ Sightings
+Sichtungen (Anzahl Stücke) ¦ Observations (nombre de pièces) ¦ Observatiounen (Unzuel Stécker) ¦ Sightings (number of animals)
+Solange noch nichts eingetragen ist, zeigt die App Beispieldaten. ¦ Tant que rien n'est saisi, l'app affiche des données d'exemple. ¦ Souwäit nach näischt agedroen ass, weist d'App Beispilldaten. ¦ As long as nothing is entered, the app shows sample data.
+Soll ¦ Cible ¦ Soll ¦ Target
+Sonstige / unbekannt ¦ Autre / inconnu ¦ Aner / onbekannt ¦ Other / unknown
+Sonstige Fläche ¦ Autre surface ¦ Aner Fläch ¦ Other area
+Sonstiges ¦ Divers ¦ Soss ¦ Other
+Sortiert nach Entfernung. ¦ Trié par distance. ¦ Sortéiert no Distanz. ¦ Sorted by distance.
+Speicher und Export ¦ Stockage et export ¦ Späicher an Export ¦ Storage and export
+Speicher voll: Track konnte nicht gespeichert werden. ¦ Mémoire pleine : la trace n'a pas pu être enregistrée. ¦ Späicher voll: Track konnt net gespäichert ginn. ¦ Storage full: track could not be saved.
+Speichere … ¦ Enregistrement … ¦ Späicheren … ¦ Saving …
+Speichern ¦ Enregistrer ¦ Späicheren ¦ Save
+Speichern fehlgeschlagen ¦ Échec de l'enregistrement ¦ Späicheren fehlgeschloen ¦ Saving failed
+Speichern fehlgeschlagen. ¦ Échec de l'enregistrement. ¦ Späicheren fehlgeschloen. ¦ Saving failed.
+Speichern fehlgeschlagen. Eventuell ist der Speicher voll. ¦ Échec de l'enregistrement. La mémoire est peut-être pleine. ¦ Späicheren fehlgeschloen. Eventuell ass de Späicher voll. ¦ Saving failed. Storage may be full.
+Speichern nicht möglich ( ¦ Enregistrement impossible ( ¦ Späichere net méiglech ( ¦ Cannot save (
+Speichern nicht möglich. ¦ Enregistrement impossible. ¦ Späichere net méiglech. ¦ Cannot save.
+Speichert die gewählte Karte um deine Lose herum, damit sie im Wald ohne Empfang funktioniert. Mit WLAN ausführen. ¦ Enregistre la carte choisie autour de tes lots pour qu'elle fonctionne en forêt sans réseau. À faire avec le Wi-Fi. ¦ Späichert déi gewielte Kaart ronderëm deng Lous, dass se am Bësch ouni Empfang funktionéiert. Mat WLAN ausféieren. ¦ Saves the chosen map around your lots so that it works in the forest without reception. Run it on Wi-Fi.
+Standliste teilen ¦ Partager la liste des postes ¦ Standlëscht deelen ¦ Share stand list
+Standort nicht verfügbar. Prüfe die GPS-Erlaubnis. ¦ Position non disponible. Vérifie l'autorisation GPS. ¦ Standuert net disponibel. Kontrolléier d'GPS-Erlaabnis. ¦ Location not available. Check the GPS permission.
+Standort wird gesucht ¦ Recherche de la position ¦ Standuert gëtt gesicht ¦ Looking for location
+Start ¦ Accueil ¦ Start ¦ Home
+Start anpassen ¦ Personnaliser l'accueil ¦ Start upassen ¦ Customise home
+Statistik ¦ Statistiques ¦ Statistik ¦ Statistics
+Statistik anpassen ¦ Personnaliser les statistiques ¦ Statistik upassen ¦ Customise statistics
+Status der Nachsuche ¦ Statut de la recherche ¦ Status vun der Nosich ¦ Tracking status
+Stockente ¦ Canard colvert ¦ Wëllenten ¦ Mallard
+Straßenkarte ¦ Plan routier ¦ Stroossekaart ¦ Road map
+Stück gefunden ¦ Pièce trouvée ¦ Stéck fonnt ¦ Animal found
+Stücke ¦ Pièces ¦ Stécker ¦ Animals
+Stücken mit Gewicht ¦ pièces avec poids ¦ Stécker mat Gewiicht ¦ animals with weight
+Suche passende Adressen. Das dauert bis zu 10 Sekunden … ¦ Recherche d'adresses adaptées. Cela peut prendre jusqu'à 10 secondes … ¦ Sich passend Adressen. Dat dauert bis zu 10 Sekonnen … ¦ Searching for matching addresses. This takes up to 10 seconds …
+Suche … ¦ Recherche … ¦ Sich … ¦ Searching …
+Suchen: Wildart, Wildmarke, Kanzel ¦ Rechercher : espèce, marque de gibier, mirador ¦ Sichen: Wëldaart, Wëldmark, Hochsëtz ¦ Search: species, game tag, high seat
+Tabs anpassen ¦ Personnaliser les onglets ¦ Tabs upassen ¦ Customise tabs
+Teilen ¦ Partager ¦ Deelen ¦ Share
+Teilen wird hier nicht unterstützt. ¦ Le partage n'est pas pris en charge ici. ¦ Deelen gëtt hei net ënnerstëtzt. ¦ Sharing is not supported here.
+Telefon ¦ Téléphone ¦ Telefon ¦ Phone
+Teste … ¦ Test … ¦ Test … ¦ Testing …
+Testen ¦ Tester ¦ Testen ¦ Test
+Text ¦ Texte ¦ Text ¦ Text
+Text kopiert ¦ Texte copié ¦ Text kopéiert ¦ Text copied
+Textblock ¦ Bloc de texte ¦ Textblock ¦ Text block
+Textblock bearbeiten ¦ Modifier le bloc de texte ¦ Textblock änneren ¦ Edit text block
+Tipp: Auf der Karte lange drücken, um dort etwas einzutragen. ¦ Astuce : appuie longuement sur la carte pour y saisir quelque chose. ¦ Tipp: Op der Kaart laang drécken, fir do eppes anzedroen. ¦ Tip: long-press on the map to add something there.
+Topokarte ¦ Carte topographique ¦ Topokaart ¦ Topographic map
+Topokarte: ¦ Carte topographique : ¦ Topokaart: ¦ Topographic map:
+Tot am Anschuss ¦ Mort sur le lieu du tir ¦ Dout um Unschoss ¦ Dead at point of impact
+Track ¦ Trace ¦ Track ¦ Track
+Track aufzeichnen ¦ Enregistrer une trace ¦ Track opzeechnen ¦ Record track
+Track beenden ¦ Terminer la trace ¦ Track ophalen ¦ End track
+Track gespeichert · ¦ Trace enregistrée · ¦ Track gespäichert · ¦ Track saved ·
+Track starten ¦ Démarrer la trace ¦ Track starten ¦ Start track
+Track umbenennen ¦ Renommer la trace ¦ Track ëmbenennen ¦ Rename track
+Track zu kurz, nicht gespeichert. ¦ Trace trop courte, non enregistrée. ¦ Track ze kuerz, net gespäichert. ¦ Track too short, not saved.
+Tracks ¦ Traces ¦ Tracken ¦ Tracks
+Trage ein, wie viele Stücke du in diesem Planzeitraum schon vor der App-Nutzung erlegt hast. Sie werden zu den erfassten Abschüssen addiert. Die amtlichen Plan-Zahlen bleiben unverändert. ¦ Saisis combien de pièces tu as déjà abattues pendant cette période du plan avant d'utiliser l'app. Elles sont ajoutées aux tirs enregistrés. Les chiffres officiels du plan restent inchangés. ¦ Gëff an, wéi vill Stécker du an dësem Planzäitraum scho viru der App-Notzung erluecht hues. Si ginn zu den erfaasten Ofschëss derbäigezielt. Déi amtlech Planzuelen bleiwen onverännert. ¦ Enter how many animals you already shot in this plan period before using the app. They are added to the recorded kills. The official plan figures stay unchanged.
+Treffpunkt ¦ Point de rencontre ¦ Treffpunkt ¦ Meeting point
+Treffpunkt (Name) ¦ Point de rencontre (nom) ¦ Treffpunkt (Numm) ¦ Meeting point (name)
+Treffpunkt auf der Karte ¦ Point de rencontre sur la carte ¦ Treffpunkt op der Kaart ¦ Meeting point on the map
+Treffpunkt festlegen ¦ Définir le point de rencontre ¦ Treffpunkt festleeën ¦ Set meeting point
+Treffpunkt · ¦ Point de rencontre · ¦ Treffpunkt · ¦ Meeting point ·
+Treffpunkt: ¦ Point de rencontre : ¦ Treffpunkt: ¦ Meeting point:
+Uhrzeit ¦ Heure ¦ Auerzäit ¦ Time
+Unbekannter Fehler. ¦ Erreur inconnue. ¦ Onbekannte Feeler. ¦ Unknown error.
+Ungefähr ¦ Approximatif ¦ Ongeféier ¦ Approximate
+Unklar ¦ Incertain ¦ Onkloer ¦ Unclear
+Vergleich nach Jahren ¦ Comparaison par années ¦ Vergläich no Joeren ¦ Comparison by year
+Verlauf ¦ Historique ¦ Verlaf ¦ History
+Verschieben ¦ Déplacer ¦ Verréckelen ¦ Move
+Verteilung ¦ Répartition ¦ Verdeelung ¦ Distribution
+Verteilung (optional) ¦ Répartition (facultatif) ¦ Verdeelung (optional) ¦ Distribution (optional)
+Verursacher ¦ Responsable ¦ Verursaacher ¦ Cause
+Verwerfen ¦ Annuler ¦ Verwerfen ¦ Discard
+Verworfen ¦ Annulé ¦ Verworf ¦ Discarded
+Von ¦ De ¦ Vun ¦ From
+Vorschau ¦ Aperçu ¦ Virschau ¦ Preview
+Waldparzelle ¦ Parcelle forestière ¦ Bëschparzell ¦ Forest plot
+wartet auf Freigabe ¦ en attente de validation ¦ waart op Fräigab ¦ awaiting approval
+Was ¦ Quoi ¦ Wat ¦ What
+Waschbär ¦ Raton laveur ¦ Wäschbier ¦ Raccoon
+Weiter ¦ Suivant ¦ Weider ¦ Next
+Weitere Losnummern, z. B. 12, 14 ¦ Autres numéros de lot, p. ex. 12, 14 ¦ Weider Lousnummeren, z. B. 12, 14 ¦ Further lot numbers, e.g. 12, 14
+Weitere Parzelle: Fadenkreuz darauf, „Kataster“. Nochmal dieselbe tippen wählt sie ab. Dann „Fertig“. ¦ Autre parcelle : réticule dessus, « Cadastre ». Toucher à nouveau la même la désélectionne. Puis « Terminé ». ¦ Weider Parzell: Fiedekräiz drop, „Kataster“. Nach eemol déiselwecht tippen wielt se of. Dann „Fäerdeg“. ¦ Another parcel: crosshair on it, "Cadastre". Tapping the same one again deselects it. Then "Done".
+Weizen ¦ Blé ¦ Weess ¦ Wheat
+Welche Einträge ¦ Quelles entrées ¦ Wéi eng Androungen ¦ Which entries
+Wer sitzt an ¦ Qui est posté à ¦ Wien sëtzt un ¦ Who sits at
+Wie Posten ¦ Comme poste ¦ Wéi Posten ¦ Like stand
+Wiese ¦ Pré ¦ Wiss ¦ Meadow
+Wiese / Grünland ¦ Pré / prairie ¦ Wiss / Gréngland ¦ Meadow / grassland
+Wild gesehen ¦ Gibier observé ¦ Wëld gesinn ¦ Game seen
+Wild: ¦ Gibier : ¦ Wëld: ¦ Game:
+Wildacker / Äsungsfläche ¦ Culture à gibier / zone de nourrissage ¦ Wëldacker / Äsungsfläch ¦ Game plot / browsing area
+Wildacker Hang ¦ Culture à gibier versant ¦ Wëldacker Hang ¦ Game plot slope
+Wildart ¦ Espèce ¦ Wëldaart ¦ Species
+Wildart, Anzahl, Uhrzeit ¦ Espèce, nombre, heure ¦ Wëldaart, Unzuel, Auerzäit ¦ Species, count, time
+Wildart, Kanzel, Wildmarke ¦ Espèce, mirador, marque de gibier ¦ Wëldaart, Hochsëtz, Wëldmark ¦ Species, high seat, game tag
+Wildart, Ort, Kanzel, Wildmarke ¦ Espèce, lieu, mirador, marque de gibier ¦ Wëldaart, Uert, Hochsëtz, Wëldmark ¦ Species, place, high seat, game tag
+Wildarten ¦ Espèces ¦ Wëldaarten ¦ Species
+Wildgans ¦ Oie sauvage ¦ Wëllgous ¦ Wild goose
+Wildkaninchen ¦ Lapin de garenne ¦ Wëllkningchen ¦ Wild rabbit
+Wildmarke ¦ Marque de gibier ¦ Wëldmark ¦ Game tag
+Wildmarke (optional) ¦ Marque de gibier (facultatif) ¦ Wëldmark (optional) ¦ Game tag (optional)
+Wildschaden ¦ Dégâts de gibier ¦ Wëllschued ¦ Game damage
+Wildschaden (€) ¦ Dégâts de gibier (€) ¦ Wëllschued (€) ¦ Game damage (€)
+Wildschaden eintragen ¦ Saisir un dégât de gibier ¦ Wëllschued androen ¦ Record game damage
+Wildschäden ¦ Dégâts de gibier ¦ Wëllschied ¦ Game damage
+Wildsichtung ¦ Observation de gibier ¦ Wëldobservatioun ¦ Game sighting
+Wir haben dir eine Bestätigungs-Mail geschickt. Öffne den Link darin und melde dich danach an. ¦ Nous t'avons envoyé un e-mail de confirmation. Ouvre le lien qu'il contient, puis connecte-toi. ¦ Mir hunn dir eng Bestätegungs-Mail geschéckt. Maach de Link dran op a mell dech duerno un. ¦ We sent you a confirmation email. Open the link in it and then sign in.
+Wirklich auflösen? Die Einträge bleiben erhalten. ¦ Vraiment dissoudre ? Les entrées sont conservées. ¦ Wierklech opléisen? D'Androungen bleiwen erhalen. ¦ Really dissolve? The entries are kept.
+Wirklich entfernen? ¦ Vraiment retirer ? ¦ Wierklech ewechhuelen? ¦ Really remove?
+Wirklich löschen? ¦ Vraiment supprimer ? ¦ Wierklech läschen? ¦ Really delete?
+Wirklich löschen? Alle Schussmeldungen gehen verloren. ¦ Vraiment supprimer ? Tous les signalements de tir seront perdus. ¦ Wierklech läschen? All Schossmeldungen ginn verluer. ¦ Really delete? All shot reports will be lost.
+Wirklich löschen? Auch ¦ Vraiment supprimer ? Aussi ¦ Wierklech läschen? Och ¦ Really delete? Also
+Wirklich verlassen? ¦ Vraiment quitter ? ¦ Wierklech verloossen? ¦ Really leave?
+Wirklich verwerfen? ¦ Vraiment annuler ? ¦ Wierklech verwerfen? ¦ Really discard?
+Wirklich? ¦ Vraiment ? ¦ Wierklech? ¦ Really?
+Wähle auf der Karte zuerst „Topokarte“ oder „Luftbild“. ¦ Choisis d'abord « Carte topographique » ou « Photo aérienne » sur la carte. ¦ Wiel op der Kaart fir d'éischt „Topokaart“ oder „Loftbild“. ¦ First choose "Topographic map" or "Aerial imagery" on the map.
+Wähle die Wildarten, die in der Übersicht und in der Tabelle erscheinen sollen. Die Schonzeit-Warnung beim Abschuss gilt weiterhin für alle. ¦ Choisis les espèces qui doivent apparaître dans l'aperçu et le tableau. L'avertissement de période de protection lors du tir reste valable pour toutes. ¦ Wiel d'Wëldaarten, déi an der Iwwersiicht an an der Tabell erschéine sollen. D'Schounzäit-Warnung beim Ofschoss gëllt weiderhin fir all. ¦ Choose the species that should appear in the overview and the table. The closed-season warning when recording a kill still applies to all.
+Wähle unter „Daten“ deine Jagdlose aus, dann erscheint hier der amtliche Plan de tir ¦ Choisis tes lots de chasse sous « Données », le plan de tir officiel apparaîtra ici ¦ Wiel ënner „Daten“ deng Juegdlous aus, dann erschéngt hei den amtlechen Plan de tir ¦ Choose your hunting lots under "Data" and the official plan de tir will appear here
+Wähle zuerst die Posten dieser Jagd. ¦ Choisis d'abord les postes de cette chasse. ¦ Wiel fir d'éischt d'Posten vun dëser Juegd. ¦ First choose the stands of this hunt.
+z. B. Drückjagd Eichberg ¦ p. ex. Battue Eichberg ¦ z. B. Dréckjuegd Eichberg ¦ e.g. Driven hunt Eichberg
+z. B. Jagdgesellschaft Beispiel ¦ p. ex. Société de chasse Exemple ¦ z. B. Juegdgesellschaft Beispill ¦ e.g. Hunting party Example
+z. B. Linie 1 ¦ p. ex. Ligne 1 ¦ z. B. Linn 1 ¦ e.g. Line 1
+z. B. Mais ¦ p. ex. Maïs ¦ z. B. Mais ¦ e.g. Maize
+z. B. Maisfeld Eichberg ¦ p. ex. Champ de maïs Eichberg ¦ z. B. Maisfeld Eichberg ¦ e.g. Maize field Eichberg
+z. B. Parkplatz Waldhütte ¦ p. ex. Parking cabane forestière ¦ z. B. Parkplaz Bëschhütt ¦ e.g. Car park forest hut
+z. B. Wichtige Nummern ¦ p. ex. Numéros importants ¦ z. B. Wichteg Nummeren ¦ e.g. Important numbers
+Zeichne zuerst eine Fläche. ¦ Dessine d'abord une surface. ¦ Zeechent fir d'éischt eng Fläch. ¦ Draw an area first.
+Zeichnen, Schweiß, Fluchtrichtung, Notiz ¦ Dessin, sang, direction de fuite, note ¦ Zeechnen, Schweess, Fluchtrichtung, Notiz ¦ Drawing, blood, flight direction, note
+Zeichnen/Notiz: ¦ Dessin/note : ¦ Zeechnen/Notiz: ¦ Drawing/note:
+Zeichnet deinen Weg per GPS auf, z. B. Pirschgang oder Treiberlinie. Während der Aufzeichnung muss die App geöffnet bleiben, der Bildschirm bleibt dafür an. ¦ Enregistre ton trajet par GPS, p. ex. approche ou ligne de traqueurs. Pendant l'enregistrement, l'app doit rester ouverte ; l'écran reste allumé. ¦ Zeechent däi Wee per GPS op, z. B. Pirschgang oder Dreiwerlinn. Während der Opzeechnung muss d'App op bleiwen, de Bildschierm bleift dofir un. ¦ Records your route by GPS, e.g. a stalk or a beaters' line. The app must stay open during recording; the screen stays on.
+Zeile entfernen ¦ Supprimer la ligne ¦ Zeil ewechhuelen ¦ Remove row
+Zeitpunkt ¦ Moment ¦ Zäitpunkt ¦ Time point
+Zeitraum ¦ Période ¦ Zäitraum ¦ Period
+Ziel ¦ Destination ¦ Zil ¦ Destination
+Zu einer Kanzel oder Einrichtung gehen ¦ Aller à un mirador ou une installation ¦ Zu engem Hochsëtz oder enger Aarichtung goen ¦ Go to a high seat or facility
+Zu viele Versuche. Bitte in einigen Minuten noch einmal. ¦ Trop de tentatives. Réessaie dans quelques minutes. ¦ Ze vill Versich. Probéier w.e.g. an e puer Minutten nach eng Kéier. ¦ Too many attempts. Please try again in a few minutes.
+zur Jagd hinzugefügt ¦ ajouté à la chasse ¦ zur Juegd derbäigesat ¦ added to hunt
+Zurück ¦ Retour ¦ Zréck ¦ Back
+Zurückgesetzt. ¦ Réinitialisé. ¦ Zréckgesat. ¦ Reset.
+Zurücksetzen ¦ Réinitialiser ¦ Zrécksetzen ¦ Reset
+Zweck ist das Teilen von Revierinformationen innerhalb von Jagdgruppen. Rechtsgrundlage ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die du jederzeit widerrufen kannst. ¦ L'objectif est le partage d'informations de territoire au sein de groupes de chasse. La base juridique est ton consentement (art. 6, par. 1, point a RGPD), que tu peux révoquer à tout moment. ¦ Zweck ass d'Deele vu Revéierinformatiounen innerhalb vu Juegdgruppen. Rechtsgrondlag ass deng Awilligung (Art. 6 Abs. 1 lit. a DSGVO), déi du zu all Moment widderruffe kanns. ¦ The purpose is sharing territory information within hunting groups. The legal basis is your consent (Art. 6(1)(a) GDPR), which you can withdraw at any time.
+· aktuell ¦ · actuel ¦ · aktuell ¦ · current
+· alle anzeigen ¦ · tout afficher ¦ · all weisen ¦ · show all
+· anzeigen ¦ · afficher ¦ · weisen ¦ · show
+· Beginn ¦ · début ¦ · Ufank ¦ · start
+· bis ¦ · jusqu'à ¦ · bis ¦ · until
+· davon ¦ · dont ¦ · dovun ¦ · of which
+· dein Los ¦ · ton lot ¦ · däi Lous ¦ · your lot
+· eigene Grenze ¦ · limite personnelle ¦ · eege Grenz ¦ · own boundary
+· Luftbild: ¦ · photo aérienne : ¦ · Loftbild: ¦ · aerial imagery:
+· Max ¦ · max. ¦ · Max ¦ · max
+· meine Lose ¦ · mes lots ¦ · meng Lous ¦ · my lots
+· Nachsuche: ¦ · recherche au sang : ¦ · Nosich: ¦ · tracking:
+· Pfeil zeigt von Norden (Kompass aus) ¦ · la flèche part du nord (boussole désactivée) ¦ · Feil weist vum Norden (Kompass aus) ¦ · arrow points from north (compass off)
+· Schäden ¦ · dégâts ¦ · Schied ¦ · damage
+· Tippen für nächstes Foto ¦ · touche pour la photo suivante ¦ · Tippen fir nächst Foto ¦ · tap for next photo
+· unbekannt ¦ · inconnu ¦ · onbekannt ¦ · unknown
+· wartet ¦ · en attente ¦ · waart ¦ · waiting
+Öffnen ¦ Ouvrir ¦ Opmaachen ¦ Open
+Ø Gewicht ¦ Poids moy. ¦ Ø Gewiicht ¦ Avg weight
+Ø Gewicht aufgebrochen (kg) ¦ Poids moy. éviscéré (kg) ¦ Ø Gewiicht opgebrach (kg) ¦ Avg dressed weight (kg)
+Überläufer / Jährling ¦ Bête rousse / yearling ¦ Iwwerlaf / Joerling ¦ Young boar / yearling
+Übernehmen ¦ Appliquer ¦ Iwwerhuelen ¦ Apply
+übernehmen ¦ appliquer ¦ iwwerhuelen ¦ apply
+Überschneidung: ¦ Chevauchement : ¦ Iwwerschneidung: ¦ Overlap:
+Überschrift ¦ Titre ¦ Iwwerschrëft ¦ Heading
+Überschrift (optional) ¦ Titre (facultatif) ¦ Iwwerschrëft (optional) ¦ Heading (optional)
+„Unklar“ und „Flüchtig“ legen automatisch eine offene Nachsuche an. ¦ « Incertain » et « Fuyant » créent automatiquement une recherche ouverte. ¦ „Onkloer“ a „Flüchteg“ leeën automatesch eng oppen Nosich un. ¦ "Unclear" and "Fleeing" automatically create an open tracking.
+„wartet“: Ein Administrator der Gruppe, die das Los schon verwaltet, muss zustimmen. Bis dahin siehst du dort nichts. ¦ « en attente » : un administrateur du groupe qui gère déjà le lot doit donner son accord. D'ici là, tu n'y vois rien. ¦ „waart“: Een Administrateur vun der Grupp, déi d'Lous schonn verwalt, muss zoustëmmen. Bis dohin gesäis du do näischt. ¦ "waiting": an administrator of the group that already manages the lot must approve. Until then you see nothing there.
+‹ Alle Jagden ¦ ‹ Toutes les battues ¦ ‹ All Juegden ¦ ‹ All hunts
+♀ weiblich ¦ ♀ femelle ¦ ♀ weiblech ¦ ♀ female

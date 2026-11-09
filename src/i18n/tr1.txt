@@ -1,0 +1,230 @@
+(freie Lizenz). Für die App in WGS 84 umgerechnet und auf etwa einen Meter vereinfacht. ¦ (licence libre). Converties en WGS 84 pour l'app et simplifiées à environ un mètre. ¦ (fräi Lizenz). Fir d'App op WGS 84 ëmgerechent a ronn op ongeféier ee Meter vereinfacht. ¦ (free licence). Converted to WGS 84 for the app and simplified to about one metre.
+(in der App unter Daten > Konto und Gruppen > Einladung einlösen). ¦ (dans l'app sous Données > Compte et groupes > Utiliser une invitation). ¦ (an der App ënner Daten > Kont a Gruppen > Invitatioun ariichten). ¦ (in the app under Data > Account and groups > Redeem invitation).
+(mindestens 8 Zeichen) ¦ (au moins 8 caractères) ¦ (mindestens 8 Zeechen) ¦ (at least 8 characters)
+(unterbrochen) ¦ (interrompu) ¦ (ënnerbrach) ¦ (interrupted)
+(wähle oben ein Jahr für ein anderes Jahr) ¦ (choisis une année en haut pour une autre année) ¦ (wiel uewen e Joer fir en anert Joer) ¦ (pick a year above for another year)
++ Abschuss ¦ + Tir ¦ + Ofschoss ¦ + Kill
++ Ansitz reservieren ¦ + Réserver un affût ¦ + Hochsëtz reservéieren ¦ + Reserve a seat
++ Fläche ¦ + Surface ¦ + Fläch ¦ + Area
++ Fläche einzeichnen ¦ + Dessiner une surface ¦ + Fläch zeechnen ¦ + Draw area
++ Gruppe ¦ + Groupe ¦ + Grupp ¦ + Group
++ Gruppe erstellen ¦ + Créer un groupe ¦ + Grupp erstellen ¦ + Create group
++ Kennzahl ¦ + Indicateur ¦ + Kennzuel ¦ + Metric
++ Linie ¦ + Ligne ¦ + Linn ¦ + Line
++ Neue Drückjagd ¦ + Nouvelle battue ¦ + Nei Dréckjuegd ¦ + New driven hunt
++ Neue Fläche ¦ + Nouvelle surface ¦ + Nei Fläch ¦ + New area
++ Posten ¦ + Poste ¦ + Posten ¦ + Stand
++ Schaden eintragen ¦ + Saisir un dégât ¦ + Schued androen ¦ + Record damage
++ Sichtung ¦ + Observation ¦ + Observatioun ¦ + Sighting
++ Textblock ¦ + Bloc de texte ¦ + Textblock ¦ + Text block
++ Zeile ¦ + Ligne ¦ + Zeil ¦ + Row
+1 Person ¦ 1 personne ¦ 1 Persoun ¦ 1 person
+20 Personen ¦ 20 personnes ¦ 20 Persounen ¦ 20 people
+5 Personen ¦ 5 personnes ¦ 5 Persounen ¦ 5 people
+>Abschüsse als CSV ¦ >Tirs en CSV ¦ >Ofschëss als CSV ¦ >Kills as CSV
+>Abschüsse und Sichtungen ¦ >Tirs et observations ¦ >Ofschëss an Observatiounen ¦ >Kills and sightings
+>Administrator ¦ >Administrateur ¦ >Administrateur ¦ >Administrator
+>Nur Abschüsse ¦ >Tirs uniquement ¦ >Nëmmen Ofschëss ¦ >Kills only
+>Nur Sichtungen ¦ >Observations uniquement ¦ >Nëmmen Observatiounen ¦ >Sightings only
+>Sicherung (JSON) ¦ >Sauvegarde (JSON) ¦ >Sécherung (JSON) ¦ >Backup (JSON)
+Abbrechen ¦ Annuler ¦ Ofbriechen ¦ Cancel
+Abend ¦ Soir ¦ Owend ¦ Evening
+Abgemeldet ¦ Déconnecté ¦ Ofgemellt ¦ Signed out
+Ablehnen ¦ Refuser ¦ Oflehnen ¦ Decline
+Ablehnen? ¦ Refuser ? ¦ Oflehnen? ¦ Decline?
+Abmelden ¦ Se déconnecter ¦ Ofmellen ¦ Sign out
+Abschuss ¦ Tir ¦ Ofschoss ¦ Kill
+Abschuss liegt ¦ Le tir se trouve ¦ Den Ofschoss läit ¦ The kill lies
+Abschussplan ¦ Plan de tir ¦ Ofschossplang ¦ Cull plan
+Abschussplan (eigene Zahlen) ¦ Plan de tir (chiffres personnels) ¦ Ofschossplang (eegen Zuelen) ¦ Cull plan (own figures)
+Abschussplan 2024/2027 (meine Lose) ¦ Plan de tir 2024/2027 (mes lots) ¦ Ofschossplang 2024/2027 (meng Lous) ¦ Cull plan 2024/2027 (my lots)
+Abschussplan meiner Lose ¦ Plan de tir de mes lots ¦ Ofschossplang vu menge Lous ¦ Cull plan of my lots
+Abschüsse ¦ Tirs ¦ Ofschëss ¦ Kills
+Abschüsse (Anzahl) ¦ Tirs (nombre) ¦ Ofschëss (Zuel) ¦ Kills (count)
+Abschüsse (gesamt, Wildart, Kanzel, Monat) ¦ Tirs (total, espèce, mirador, mois) ¦ Ofschëss (total, Wëldaart, Hochsëtz, Mount) ¦ Kills (total, species, high seat, month)
+Abschüsse gesamt ¦ Total des tirs ¦ Ofschëss insgesamt ¦ Total kills
+Abschüsse liegen ¦ Les tirs se trouvent ¦ D'Ofschëss leien ¦ The kills lie
+Abschüsse ohne passendes Geschlecht/Alter konnten nicht zugeordnet werden. ¦ Les tirs sans sexe/âge correspondant n'ont pas pu être attribués. ¦ Ofschëss ouni passend Geschlecht/Alter konnten net zougeuerdent ginn. ¦ Kills without a matching sex/age could not be assigned.
+Adresse Luftbild ¦ Adresse photo aérienne ¦ Adress Loftbild ¦ Aerial imagery URL
+Adresse Topokarte ¦ Adresse carte topographique ¦ Adress Topokaart ¦ Topographic map URL
+Adult ¦ Adulte ¦ Erwuessen ¦ Adult
+Aktueller Standort. ¦ Position actuelle. ¦ Aktuelle Standuert. ¦ Current location.
+Akzeptieren ¦ Accepter ¦ Akzeptéieren ¦ Accept
+Alle ¦ Tous ¦ All ¦ All
+Alle Einträge ¦ Toutes les entrées ¦ All Androungen ¦ All entries
+Alle Einträge, die du nicht teilst, bleiben ausschließlich in deinem Browser bzw. auf deinem Gerät. Ohne Konto werden keine Daten an einen Server gesendet. ¦ Toutes les entrées que tu ne partages pas restent exclusivement dans ton navigateur ou sur ton appareil. Sans compte, aucune donnée n'est envoyée à un serveur. ¦ All Androungen, déi du net deelst, bleiwen ausschliesslech an dengem Browser bzw. op dengem Apparat. Ouni Kont ginn keng Daten un e Server geschéckt. ¦ All entries you do not share stay exclusively in your browser or on your device. Without an account, no data is sent to a server.
+Alle Jahre ¦ Toutes les années ¦ All Joeren ¦ All years
+Alle Lose ¦ Tous les lots ¦ All Lous ¦ All lots
+Alle Lose von Luxemburg (gültig ab 1. April 2021) sind auf der Karte sichtbar. Tippe dort auf ein Los, um es als dein Los zu markieren, oder gib die Nummer ein. ¦ Tous les lots du Luxembourg (valables depuis le 1er avril 2021) sont visibles sur la carte. Touche un lot pour le marquer comme le tien, ou saisis son numéro. ¦ All Lous vu Lëtzebuerg (gëlteg ab dem 1. Abrëll 2021) sinn op der Kaart ze gesinn. Tipp do op e Lous fir en als däi Lous ze markéieren, oder gëff d'Nummer an. ¦ All lots in Luxembourg (valid from 1 April 2021) are visible on the map. Tap a lot there to mark it as yours, or enter its number.
+Alle Posten dieser Linie bekommen diese Farbe auf der Karte. „Auto“ nimmt wieder die Farbe der Einrichtungsart. ¦ Tous les postes de cette ligne prennent cette couleur sur la carte. « Auto » reprend la couleur du type d'installation. ¦ All Posten vun dëser Linn kréie fir d'Faarf op der Kaart. „Auto“ hëlt erëm d'Faarf vun der Aart vun der Aarichtung. ¦ All stands on this line get this colour on the map. "Auto" returns to the colour of the facility type.
+Alle Zeit ¦ Depuis toujours ¦ Ëmmer ¦ All time
+Alles anzeigen ¦ Tout afficher ¦ Alles weisen ¦ Show all
+Als Abschuss eintragen ¦ Saisir comme tir ¦ Als Ofschoss androen ¦ Record as kill
+Als App installieren ¦ Installer comme application ¦ Als App installéieren ¦ Install as app
+Als CSV ¦ En CSV ¦ Als CSV ¦ As CSV
+Als dein Los markiert ¦ Marqué comme ton lot ¦ Als däi Lous markéiert ¦ Marked as your lot
+Als mein Los markieren ¦ Marquer comme mon lot ¦ Als mäi Lous markéieren ¦ Mark as my lot
+Alter ¦ Âge ¦ Alter ¦ Age
+Altersklasse ¦ Classe d'âge ¦ Alterskategorie ¦ Age class
+Amerikanischer Nerz ¦ Vison d'Amérique ¦ Amerikanesche Nerz ¦ American mink
+Anfragen anderer Gruppen ¦ Demandes d'autres groupes ¦ Ufroe vun anere Gruppen ¦ Requests from other groups
+Angekommen ¦ Arrivé ¦ Ukomm ¦ Arrived
+Angemeldet ¦ Connecté ¦ Ugemellt ¦ Signed in
+Angemeldet als ¦ Connecté en tant que ¦ Ugemellt als ¦ Signed in as
+Anmelden ¦ Se connecter ¦ Umellen ¦ Sign in
+Anmelden oder registrieren ¦ Se connecter ou s'inscrire ¦ Umellen oder registréieren ¦ Sign in or register
+Anpassen ¦ Personnaliser ¦ Upassen ¦ Customise
+Anschuss ¦ Lieu du tir ¦ Unschoss ¦ Point of impact
+Anschuss festlegen ¦ Définir le lieu du tir ¦ Unschoss festleeën ¦ Set point of impact
+Anschuss · ¦ Lieu du tir · ¦ Unschoss · ¦ Point of impact ·
+Anschuss: ¦ Lieu du tir : ¦ Unschoss: ¦ Point of impact:
+Ansitz reservieren ¦ Réserver un affût ¦ Hochsëtz reservéieren ¦ Reserve a seat
+Ansitz-Reservierungen ¦ Réservations d'affût ¦ Hochsëtz-Reservatiounen ¦ Seat reservations
+Ansitzbock / Drückjagdstand ¦ Siège d'affût / poste de battue ¦ Ansëtzbock / Dréckjuegdstand ¦ Raised hide / driven-hunt stand
+Anstehende Ansitze ¦ Affûts à venir ¦ Kommend Hochsëtzer ¦ Upcoming sits
+Anzahl ¦ Nombre ¦ Unzuel ¦ Count
+Anzeigen ¦ Afficher ¦ Weisen ¦ Show
+Anzeigename ¦ Nom affiché ¦ Ugewisenen Numm ¦ Display name
+Anzeigename (für andere Mitglieder sichtbar) ¦ Nom affiché (visible par les autres membres) ¦ Ugewisenen Numm (fir aner Memberen ze gesinn) ¦ Display name (visible to other members)
+Apr ¦ avr. ¦ Abr. ¦ Apr
+Art ¦ Type ¦ Aart ¦ Type
+Auf Karte ¦ Sur la carte ¦ Op der Kaart ¦ On map
+Auf Karte setzen ¦ Placer sur la carte ¦ Op d'Kaart setzen ¦ Place on map
+Auf Karte zeigen ¦ Montrer sur la carte ¦ Op der Kaart weisen ¦ Show on map
+Aufgeteilt ¦ Réparti ¦ Opgedeelt ¦ Split
+Aufzeichnung ¦ Enregistrement ¦ Opzeechnung ¦ Recording
+Aufzeichnung beenden ¦ Arrêter l'enregistrement ¦ Opzeechnung ophalen ¦ Stop recording
+Aufzeichnung beenden? ¦ Arrêter l'enregistrement ? ¦ Opzeechnung ophalen? ¦ Stop recording?
+Aufzeichnung läuft. Der Bildschirm bleibt an. ¦ Enregistrement en cours. L'écran reste allumé. ¦ Opzeechnung leeft. De Bildschierm bleift un. ¦ Recording in progress. The screen stays on.
+Aufzeichnung starten ¦ Démarrer l'enregistrement ¦ Opzeechnung starten ¦ Start recording
+Aug ¦ août ¦ Aug. ¦ Aug
+Aus Jagd entfernen ¦ Retirer de la battue ¦ Aus der Juegd ewechhuelen ¦ Remove from hunt
+Aus meinen Losen entfernen ¦ Retirer de mes lots ¦ Aus mengen Lous ewechhuelen ¦ Remove from my lots
+Ausblenden ¦ Masquer ¦ Verstoppen ¦ Hide
+Auswahl ( ¦ Sélection ( ¦ Auswiel ( ¦ Selection (
+Auswahl ändern ¦ Modifier la sélection ¦ Auswiel änneren ¦ Change selection
+Auto ¦ Auto ¦ Auto ¦ Auto
+Automatisch suchen ¦ Rechercher automatiquement ¦ Automatesch sichen ¦ Search automatically
+außerhalb deiner Lose und zählt nicht im Plan. ¦ en dehors de tes lots et ne compte pas dans le plan. ¦ ausserhalb vun dengen Lous a zielt net am Plang. ¦ outside your lots and does not count towards the plan.
+Außerhalb des 17.10.2026 bis 31.1.2027 sind nur Pirsch („à l’approche“) und Ansitz („à l’affût“) erlaubt. ¦ En dehors du 17.10.2026 au 31.1.2027, seuls l'approche et l'affût sont autorisés. ¦ Ausserhalb vum 17.10.2026 bis 31.1.2027 sinn nëmmen Pirsch („à l’approche“) an Ansëtz („à l’affût“) erlaabt. ¦ Outside 17.10.2026 to 31.1.2027 only stalking ("à l'approche") and sitting-up ("à l'affût") are allowed.
+Bachtal ¦ Bachtal ¦ Bachtal ¦ Bachtal
+Bauart der Kanzel ¦ Type de mirador ¦ Bauaart vum Hochsëtz ¦ Type of high seat
+Bearbeiten ¦ Modifier ¦ Änneren ¦ Edit
+Beginn ¦ Début ¦ Ufank ¦ Start
+Beispiel-Jagdlos ¦ Lot de chasse exemple ¦ Beispill-Juegdlous ¦ Example hunting lot
+Beispieldaten ¦ Données d'exemple ¦ Beispilldaten ¦ Sample data
+Beispieldaten ausblenden ¦ Masquer les données d'exemple ¦ Beispilldaten verstoppen ¦ Hide sample data
+Beispieldaten wieder einblenden ¦ Réafficher les données d'exemple ¦ Beispilldaten erëm weisen ¦ Show sample data again
+Beispieldaten. Trage einen eigenen Eintrag ein, dann verschwinden sie. ¦ Données d'exemple. Saisis une entrée personnelle et elles disparaîtront. ¦ Beispilldaten. Gëff eng eegen Androung an, dann verschwannen se. ¦ Sample data. Add your own entry and they disappear.
+Beispieldaten sind sichtbar. Sie verschwinden mit deinem ersten Eintrag. ¦ Des données d'exemple sont affichées. Elles disparaîtront avec ta première entrée. ¦ Beispilldaten sinn ze gesinn. Si verschwannen mat denger éischter Androung. ¦ Sample data is visible. It disappears with your first entry.
+Beitreten ¦ Rejoindre ¦ Bäitrieden ¦ Join
+Beobachtet von ¦ Observé depuis ¦ Observéiert vun ¦ Observed from
+Bereiche ¦ Sections ¦ Beräicher ¦ Sections
+Berechnete Größe ¦ Taille calculée ¦ Berechent Gréisst ¦ Calculated size
+Beschriftung (freier Text) ¦ Étiquette (texte libre) ¦ Beschrëftung (fräien Text) ¦ Label (free text)
+Bezeichnung der Posten ¦ Désignation des postes ¦ Bezeechnung vun de Posten ¦ Stand names
+Bis ¦ Jusqu'à ¦ Bis ¦ Until
+bis Minimum ¦ jusqu'au minimum ¦ bis Minimum ¦ to minimum
+Bisamratte ¦ Rat musqué ¦ Bisamrat ¦ Muskrat
+Bisherige Abschüsse ¦ Tirs précédents ¦ Bis elo Ofschëss ¦ Previous kills
+Bisherige Abschüsse eintragen ¦ Saisir les tirs précédents ¦ Bis elo Ofschëss androen ¦ Enter previous kills
+Bitte angeben, wann der Schaden festgestellt wurde. ¦ Indique quand le dégât a été constaté. ¦ Gëff w.e.g. un, wéini de Schued festgestallt gouf. ¦ Please state when the damage was found.
+Bitte Datum und Beginn angeben. ¦ Indique la date et le début. ¦ Gëff w.e.g. Datum an Ufank un. ¦ Please enter date and start.
+Bitte Datum und Uhrzeit angeben. ¦ Indique la date et l'heure. ¦ Gëff w.e.g. Datum an Auerzäit un. ¦ Please enter date and time.
+Bitte den Einladungscode eingeben. ¦ Saisis le code d'invitation. ¦ Gëff w.e.g. den Invitatiounscode an. ¦ Please enter the invitation code.
+Bitte den Preis pro ar eingeben. ¦ Saisis le prix par are. ¦ Gëff w.e.g. de Präis pro Ar an. ¦ Please enter the price per are.
+Bitte die Datenschutzerklärung bestätigen. ¦ Confirme la déclaration de protection des données. ¦ Bestätegt w.e.g. d'Dateschutzerklärung. ¦ Please confirm the privacy policy.
+Bitte die geschädigte Fläche in ar eingeben. ¦ Saisis la surface endommagée en ares. ¦ Gëff w.e.g. déi beschiedegt Fläch an Ar an. ¦ Please enter the damaged area in ares.
+Bitte E-Mail und Passwort eingeben. ¦ Saisis l'e-mail et le mot de passe. ¦ Gëff w.e.g. E-Mail a Passwuert an. ¦ Please enter email and password.
+Bitte eine gültige E-Mail-Adresse eingeben. ¦ Saisis une adresse e-mail valide. ¦ Gëff w.e.g. eng gülteg E-Mail-Adress an. ¦ Please enter a valid email address.
+Bitte eine Losnummer eingeben. ¦ Saisis un numéro de lot. ¦ Gëff w.e.g. eng Lousnummer an. ¦ Please enter a lot number.
+Bitte eine Position festlegen. ¦ Définis une position. ¦ Leet w.e.g. eng Positioun fest. ¦ Please set a position.
+Bitte eine Rolle wählen. ¦ Choisis un rôle. ¦ Wiel w.e.g. eng Roll. ¦ Please choose a role.
+Bitte einen Anzeigenamen eingeben. ¦ Saisis un nom affiché. ¦ Gëff w.e.g. en Ugewisenen Numm an. ¦ Please enter a display name.
+Bitte einen Namen eingeben. ¦ Saisis un nom. ¦ Gëff w.e.g. en Numm an. ¦ Please enter a name.
+Bitte einen Namen für die Linie eingeben. ¦ Saisis un nom pour la ligne. ¦ Gëff w.e.g. engem Linn en Numm. ¦ Please enter a name for the line.
+Bitte mindestens ein Los angeben. ¦ Indique au moins un lot. ¦ Gëff w.e.g. mindestens ee Lous un. ¦ Please enter at least one lot.
+Bitte zuerst deine E-Mail eingeben. ¦ Saisis d'abord ton e-mail. ¦ Gëff w.e.g. fir d'éischt deng E-Mail an. ¦ Please enter your email first.
+Bitte zuerst den Link in der Bestätigungs-Mail öffnen. ¦ Ouvre d'abord le lien dans l'e-mail de confirmation. ¦ Maach w.e.g. fir d'éischt de Link an der Bestätegungs-Mail op. ¦ Please open the link in the confirmation email first.
+Bitte zuerst eine Position festlegen. ¦ Définis d'abord une position. ¦ Leet w.e.g. fir d'éischt eng Positioun fest. ¦ Please set a position first.
+Bitte Überschrift oder Text eingeben. ¦ Saisis un titre ou un texte. ¦ Gëff w.e.g. Iwwerschrëft oder Text an. ¦ Please enter a heading or text.
+Breite ¦ Largeur ¦ Breet ¦ Width
+Buchenverjüngung ¦ Régénération de hêtres ¦ Bichenverjüngung ¦ Beech regeneration
+Code erzeugen ¦ Générer le code ¦ Code erstellen ¦ Create code
+CSV gespeichert ¦ CSV enregistré ¦ CSV gespäichert ¦ CSV saved
+Dachs ¦ Blaireau ¦ Dachs ¦ Badger
+Dam m ¦ Daim m ¦ Dam m ¦ Fallow m
+Dam w ¦ Daim f ¦ Dam w ¦ Fallow f
+Damwild ¦ Daim ¦ Damwëld ¦ Fallow deer
+Damwild männlich ¦ Daim mâle ¦ Damwëld männlech ¦ Fallow deer male
+Damwild weiblich/Kälber ¦ Daim femelle/faons ¦ Damwëld weiblech/Kälwer ¦ Fallow deer female/calves
+Das Enddatum liegt vor dem Beginn. ¦ La date de fin est antérieure au début. ¦ D'Enddatum läit viru Ufank. ¦ The end date is before the start.
+Das Gebiet ist zu groß zum Speichern. ¦ La zone est trop grande pour être enregistrée. ¦ D'Gebitt ass ze grouss fir ze späicheren. ¦ The area is too large to save.
+Das Passwort braucht mindestens 8 Zeichen. ¦ Le mot de passe doit contenir au moins 8 caractères. ¦ De Passwuert brauch mindestens 8 Zeechen. ¦ The password needs at least 8 characters.
+Das Passwort ist zu schwach (mindestens 8 Zeichen). ¦ Le mot de passe est trop faible (au moins 8 caractères). ¦ De Passwuert ass ze schwaach (mindestens 8 Zeechen). ¦ The password is too weak (at least 8 characters).
+Das sind Beispieldaten. Sie verschwinden mit deinem ersten Eintrag. ¦ Ce sont des données d'exemple. Elles disparaîtront avec ta première entrée. ¦ Dat sinn Beispilldaten. Si verschwannen mat denger éischter Androung. ¦ This is sample data. It disappears with your first entry.
+Datei konnte nicht gelesen werden. ¦ Le fichier n'a pas pu être lu. ¦ D'Datei konnt net gelies ginn. ¦ The file could not be read.
+Daten ¦ Données ¦ Daten ¦ Data
+Daten konnten nicht geladen werden ( ¦ Impossible de charger les données ( ¦ Daten konnten net gelueden ginn ( ¦ Data could not be loaded (
+Datenschutzerklärung ¦ Déclaration de protection des données ¦ Dateschutzerklärung ¦ Privacy policy
+Datum ¦ Date ¦ Datum ¦ Date
+Datum und Uhrzeit ¦ Date et heure ¦ Datum an Auerzäit ¦ Date and time
+Dein Standort ist noch unbekannt, die Liste ist nach Namen sortiert. ¦ Ta position est encore inconnue, la liste est triée par nom. ¦ Deng Standuert ass nach net bekannt, d'Lëscht ass nom Numm sortéiert. ¦ Your location is not known yet, the list is sorted by name.
+Deine Daten liegen privat in deinem Konto. ¦ Tes données sont stockées en privé dans ton compte. ¦ Deng Daten leie privat an dengem Kont. ¦ Your data is stored privately in your account.
+Deine Einträge bleiben nur in diesem Browser. Erstelle regelmäßig eine Sicherung. ¦ Tes entrées restent uniquement dans ce navigateur. Crée régulièrement une sauvegarde. ¦ Deng Androungen bleiwen nëmmen an dësem Browser. Maach regelméisseg eng Sécherung. ¦ Your entries stay in this browser only. Make a backup regularly.
+Deine Einträge liegen privat in deinem Konto und sind auf allen deinen Geräten verfügbar. ¦ Tes entrées sont stockées en privé dans ton compte et disponibles sur tous tes appareils. ¦ Deng Androungen leie privat an dengem Kont a sinn op all dengen Apparater verfügbar. ¦ Your entries are stored privately in your account and available on all your devices.
+Deine Rolle: ¦ Ton rôle : ¦ Deng Roll: ¦ Your role:
+Deinen Weg per GPS mitschneiden ¦ Enregistrer ton trajet par GPS ¦ Däi Wee per GPS opzeechnen ¦ Record your route by GPS
+Der Kartenhintergrund kommt von Geoportail.lu (Administration du cadastre et de la topographie, frei nutzbar unter CC0). Auf der Karte wechselst du mit dem ersten Knopf zwischen Topokarte, Luftbild, Straßenkarte und Raster. ¦ Le fond de carte provient de Geoportail.lu (Administration du cadastre et de la topographie, libre d'utilisation sous CC0). Sur la carte, le premier bouton permet de passer entre carte topographique, photo aérienne, plan routier et grille. ¦ De Kaartenhannergrond kënnt vu Geoportail.lu (Administration du cadastre et de la topographie, fräi notzbar ënner CC0). Op der Kaart wiesselt een mam éischte Knäppchen tëscht Topokaart, Loftbild, Stroossekaart a Raster. ¦ The map background comes from Geoportail.lu (Administration du cadastre et de la topographie, free to use under CC0). On the map, the first button switches between topographic map, aerial imagery, road map and grid.
+Der Standort ist nicht verfügbar. Erlaube den Standortzugriff in den Einstellungen deines Browsers oder setze die Position über die Karte. ¦ La position n'est pas disponible. Autorise l'accès à la position dans les réglages de ton navigateur ou place la position sur la carte. ¦ D'Standuert ass net disponibel. Erlaabt den Zougrëff op de Standuert an den Astellunge vun dengem Browser oder setz d'Positioun iwwer d'Kaart. ¦ Location is not available. Allow location access in your browser settings or set the position on the map.
+Dez ¦ déc. ¦ Dez. ¦ Dec
+Die Anzahl wird beim Speichern auf die Summe ( ¦ Le nombre sera défini à la somme ( ¦ D'Unzuel gëtt beim Späicheren op d'Zomm ( ¦ The count will be set to the sum (
+Die Daten bleiben nur in diesem Browser. ¦ Les données restent uniquement dans ce navigateur. ¦ D'Daten bleiwen nëmmen an dësem Browser. ¦ Data stays in this browser only.
+Die Daten bleiben nur in diesem Browser. Tippen für Anmelden und Gruppen. ¦ Les données restent uniquement dans ce navigateur. Touche pour te connecter et gérer les groupes. ¦ D'Daten bleiwen nëmmen an dësem Browser. Tipp fir ze umellen a fir Gruppen. ¦ Data stays in this browser only. Tap to sign in and for groups.
+Die Grenzen aller Lose konnten nicht geladen werden. ¦ Les limites de tous les lots n'ont pas pu être chargées. ¦ D'Grenze vun alle Lous konnten net gelueden ginn. ¦ The boundaries of all lots could not be loaded.
+Die Jagd ist von einer Stunde nach Sonnenuntergang bis eine Stunde vor Sonnenaufgang verboten. ¦ La chasse est interdite d'une heure après le coucher du soleil à une heure avant le lever du soleil. ¦ D'Juegd ass vun enger Stonn no Sonnenënnergang bis eng Stonn virum Sonnenopgang verbuede. ¦ Hunting is prohibited from one hour after sunset until one hour before sunrise.
+Die Kartenkacheln lassen sich nicht laden. Prüfe die Adresse unter „Daten“ oder wähle eine andere Karte. ¦ Les tuiles de la carte ne se chargent pas. Vérifie l'adresse sous « Données » ou choisis une autre carte. ¦ D'Kaartekacheln loossen sech net lueden. Kontrolléier d'Adress ënner „Daten“ oder wiel eng aner Kaart. ¦ Map tiles cannot be loaded. Check the address under "Data" or choose another map.
+Die Lose sind noch nicht geladen. ¦ Les lots ne sont pas encore chargés. ¦ D'Lous sinn nach net gelueden. ¦ The lots are not loaded yet.
+Diese E-Mail ist bereits registriert. ¦ Cet e-mail est déjà enregistré. ¦ Dës E-Mail ass schonn registréiert. ¦ This email is already registered.
+Diese Wildmarke ist bereits bei einem anderen Abschuss eingetragen. ¦ Cette marque de gibier est déjà saisie pour un autre tir. ¦ Dës Wëldmark ass schonn bei engem anere Ofschoss ageschriwwen. ¦ This game tag is already entered for another kill.
+Dieser Browser kann keine Karten speichern. ¦ Ce navigateur ne peut pas enregistrer de cartes. ¦ Dëse Browser ka keng Kaarten späicheren. ¦ This browser cannot save maps.
+Dieses Jagdjahr (ab 1.4.) ¦ Cette année de chasse (dès le 1.4.) ¦ Dëst Juegdjoer (ab 1.4.) ¦ This hunting year (from 1 Apr)
+Dieses Jahr ¦ Cette année ¦ Dëst Joer ¦ This year
+Douglasienkultur ¦ Culture de douglas ¦ Douglasienkultur ¦ Douglas fir plantation
+Drückjagd ¦ Battue ¦ Dréckjuegd ¦ Driven hunt
+Drückjagd bearbeiten ¦ Modifier la battue ¦ Dréckjuegd änneren ¦ Edit driven hunt
+Drückjagdbock 1 ¦ Poste de battue 1 ¦ Dréckjuegdbock 1 ¦ Driven-hunt stand 1
+Drückjagdbock 2 ¦ Poste de battue 2 ¦ Dréckjuegdbock 2 ¦ Driven-hunt stand 2
+Drückjagden ¦ Battues ¦ Dréckjuegden ¦ Driven hunts
+Drückjagdposten ¦ Poste de battue ¦ Dréckjuegdposten ¦ Driven-hunt stand
+Du bist Administrator dieser Gruppe. ¦ Tu es administrateur de ce groupe. ¦ Du bass Administrateur vun dëser Grupp. ¦ You are an administrator of this group.
+Du bist jetzt in der Gruppe. ¦ Tu fais maintenant partie du groupe. ¦ Du bass elo an der Grupp. ¦ You are now in the group.
+Du bist noch in keiner Gruppe. ¦ Tu n'es encore dans aucun groupe. ¦ Du bass nach an enger Grupp. ¦ You are not in any group yet.
+Du hast noch kein Los gewählt. Gib die Losnummer unten ein. ¦ Tu n'as pas encore choisi de lot. Saisis le numéro de lot ci-dessous. ¦ Du hues nach kee Lous gewielt. Gëff d'Lousnummer ënnendrënner an. ¦ You have not chosen a lot yet. Enter the lot number below.
+E-Mail ¦ E-mail ¦ E-Mail ¦ Email
+E-Mail oder Passwort stimmt nicht. ¦ E-mail ou mot de passe incorrect. ¦ E-Mail oder Passwuert stëmmt net. ¦ Email or password is incorrect.
+Eichberg ¦ Eichberg ¦ Eichberg ¦ Eichberg
+Eichenkultur ¦ Culture de chênes ¦ Eechekultur ¦ Oak plantation
+Eigene Grenzen einlesen ¦ Importer des limites personnelles ¦ Eegen Grenzen ariichten ¦ Import own boundaries
+Ein Konto ist freiwillig. Ohne Konto bleibt dein Revierbuch wie bisher nur auf diesem Gerät. Mit Konto kannst du später Einträge mit anderen Jägern deines Loses teilen. Es wird nichts automatisch hochgeladen. ¦ Un compte est facultatif. Sans compte, ton carnet de territoire reste, comme avant, uniquement sur cet appareil. Avec un compte, tu pourras plus tard partager des entrées avec d'autres chasseurs de ton lot. Rien n'est envoyé automatiquement. ¦ E Kont ass fräiwëlleg. Ouni Kont bleift däi Revéierbuch wéi bis elo nëmmen op dësem Apparat. Mat engem Kont kanns du spéider Androungen mat anere Jäger vun dengem Lous deelen. Et gëtt näischt automatesch eropgelueden. ¦ An account is optional. Without an account your Revierbuch stays on this device only, as before. With an account you can later share entries with other hunters of your lot. Nothing is uploaded automatically.
+Ein Los gehört zuerst der Gruppe, die es als erste einträgt. Fordert eine weitere Gruppe dasselbe Los an, muss ein Administrator der ersten Gruppe zustimmen. Es werden automatisch die Rollen „Jäger“ und „Gast“ angelegt, die du danach anpassen kannst. ¦ Un lot appartient d'abord au groupe qui l'enregistre en premier. Si un autre groupe demande le même lot, un administrateur du premier groupe doit donner son accord. Les rôles « Chasseur » et « Invité » sont créés automatiquement et tu peux ensuite les adapter. ¦ E Lous gehéiert fir d'éischt der Grupp, déi en als éischt aschreift. Freet eng weider Grupp datselwecht Lous un, muss een Administrateur vun der éischter Grupp zoustëmmen. Et ginn automatesch d'Rollen „Jeeër“ an „Gaascht“ ugeluecht, déi du duerno upasse kanns. ¦ A lot belongs first to the group that registers it first. If another group requests the same lot, an administrator of the first group must approve. The roles "Hunter" and "Guest" are created automatically and you can adjust them afterwards.
+Ein Los mit dieser Nummer gibt es nicht. ¦ Il n'existe pas de lot avec ce numéro. ¦ Et gëtt kee Lous mat dëser Nummer. ¦ There is no lot with this number.
+Eine Linie fasst mehrere Posten zusammen. Du setzt die Posten danach nacheinander auf der Karte: Karte verschieben, bis das Fadenkreuz auf dem Standplatz liegt, dann „Hier setzen“. ¦ Une ligne regroupe plusieurs postes. Tu places ensuite les postes l'un après l'autre sur la carte : déplace la carte jusqu'à ce que le réticule soit sur l'emplacement, puis « Placer ici ». ¦ Eng Linn fasst méi Posten zesummen. Du setz d'Posten duerno een nom aneren op der Kaart: Kaart réckelen, bis d'Fiedekräiz um Standplaz läit, dann „Hei setzen“. ¦ A line groups several stands together. You then place the stands one after another on the map: move the map until the crosshair is on the stand location, then "Place here".
+Eine unterbrochene Aufzeichnung wurde gesichert. ¦ Un enregistrement interrompu a été sauvegardé. ¦ Eng ënnerbrach Opzeechnung gouf gesécheren. ¦ An interrupted recording was saved.
+Einladung einlösen ¦ Utiliser une invitation ¦ Invitatioun ariichten ¦ Redeem invitation
+Einladung kopiert ¦ Invitation copiée ¦ Invitatioun kopéiert ¦ Invitation copied
+Einladung zur Gruppe „ ¦ Invitation au groupe « ¦ Invitatioun an d'Grupp „ ¦ Invitation to the group "
+Einladungen ¦ Invitations ¦ Invitatiounen ¦ Invitations
+Einladungscode ¦ Code d'invitation ¦ Invitatiounscode ¦ Invitation code
+Einladungscode (läuft in 7 Tagen ab): ¦ Code d'invitation (expire dans 7 jours) : ¦ Invitatiounscode (leeft an 7 Deeg of): ¦ Invitation code (expires in 7 days):
+Einlesen fehlgeschlagen ( ¦ Échec de l'importation ( ¦ Ariichte fehlgeschloen ( ¦ Import failed (
+Einrichtung ¦ Installation ¦ Aarichtung ¦ Facility
+Einrichtungen ¦ Installations ¦ Aarichtungen ¦ Facilities
+Eintr ¦ Entr ¦ Androu ¦ Entr
+Eintrag entfernen ¦ Supprimer l'entrée ¦ Androung ewechhuelen ¦ Remove entry
+Eintragen ¦ Ajouter ¦ Androen ¦ Add
+Einträge ¦ Entrées ¦ Androungen ¦ Entries
+Einträge auswählen ¦ Choisir des entrées ¦ Androunge wielen ¦ Select entries
+Einträge eingelesen ¦ Entrées importées ¦ Androungen ageliest ¦ Entries imported
+Entfernen ¦ Retirer ¦ Ewechhuelen ¦ Remove
+Entfernen? ¦ Retirer ? ¦ Ewechhuelen? ¦ Remove?

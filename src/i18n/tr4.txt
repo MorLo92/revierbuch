@@ -1,0 +1,34 @@
+(max ¦ (max ¦ (max ¦ (max
+(nach Tabelle ¦ (selon le tableau ¦ (no Tabell ¦ (per table
+(Plan ¦ (plan ¦ (Plang ¦ (plan
+) gesetzt. ¦ ) défini. ¦ ) gesat. ¦ ) set.
+). Bitte von Hand einzeichnen. ¦ ). Merci de dessiner à la main. ¦ ). Zeechent w.e.g. vun Hand. ¦ ). Please draw by hand.
+1. Wer ist verantwortlich? ¦ 1. Qui est responsable ? ¦ 1. Wien ass verantwortlech? ¦ 1. Who is responsible?
+2. Welche Daten werden verarbeitet? ¦ 2. Quelles données sont traitées ? ¦ 2. Wéi eng Daten ginn verschafft? ¦ 2. What data is processed?
+3. Was bleibt auf deinem Gerät? ¦ 3. Qu'est-ce qui reste sur ton appareil ? ¦ 3. Wat bleift op dengem Apparat? ¦ 3. What stays on your device?
+4. Wer kann was sehen? ¦ 4. Qui peut voir quoi ? ¦ 4. Wien kann wat gesinn? ¦ 4. Who can see what?
+5. Zweck und Rechtsgrundlage ¦ 5. Finalité et base juridique ¦ 5. Zweck a Rechtsgrondlag ¦ 5. Purpose and legal basis
+6. Speicherung und Dienstleister ¦ 6. Stockage et prestataires ¦ 6. Späichere a Servicefirmen ¦ 6. Storage and service providers
+7. Speicherdauer ¦ 7. Durée de conservation ¦ 7. Späicherdauer ¦ 7. Retention period
+8. Deine Rechte ¦ 8. Tes droits ¦ 8. Deng Rechter ¦ 8. Your rights
+[Name und Kontakt-E-Mail der verantwortlichen Person – noch einzutragen] ¦ [Nom et e-mail de contact de la personne responsable – à compléter] ¦ [Numm a Kontakt-E-Mail vun der verantwortlecher Persoun – nach anzedroen] ¦ [Name and contact email of the responsible person – to be added]
+Administrator ¦ Administrateur ¦ Administrateur ¦ Administrator
+BEZEICHNUNG ¦ DÉSIGNATION ¦ BEZEECHNUNG ¦ DESIGNATION
+dafür. ¦ pour cela. ¦ derfir. ¦ for it.
+Deine Daten werden gespeichert, solange dein Konto besteht. Auf Wunsch werden Konto und zugehörige Daten gelöscht. ¦ Tes données sont conservées tant que ton compte existe. Sur demande, le compte et les données associées sont supprimés. ¦ Deng Daten ginn gespäichert, soulaang däi Kont besteet. Op Wonsch ginn de Kont an déi zougehéireg Daten geläscht. ¦ Your data is stored as long as your account exists. On request, the account and associated data are deleted.
+DEMO- ¦ DÉMO- ¦ DEMO- ¦ DEMO-
+Die Daten werden bei Supabase gespeichert. Die Datenbank liegt in Frankfurt am Main (EU). Eine Weitergabe zu Werbezwecken findet nicht statt. ¦ Les données sont stockées chez Supabase. La base de données se trouve à Francfort-sur-le-Main (UE). Aucune transmission à des fins publicitaires n'a lieu. ¦ D'Daten ginn bei Supabase gespäichert. D'Datebank ass zu Frankfurt um Main (EU). Eng Weidergab fir Reklamzwecker fënnt net statt. ¦ The data is stored with Supabase. The database is located in Frankfurt am Main (EU). No data is passed on for advertising purposes.
+Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Wende dich dazu an die oben genannte Kontaktadresse. Du kannst dich außerdem bei der zuständigen Aufsichtsbehörde beschweren, in Luxemburg ist das die Commission nationale pour la protection des données (CNPD, cnpd.lu). ¦ Tu as le droit d'accès, de rectification, d'effacement, de limitation du traitement, à la portabilité des données et d'opposition. Adresse-toi pour cela à l'adresse de contact indiquée ci-dessus. Tu peux aussi introduire une réclamation auprès de l'autorité de contrôle compétente ; au Luxembourg, il s'agit de la Commission nationale pour la protection des données (CNPD, cnpd.lu). ¦ Du hues d'Recht op Auskunft, Berichtegung, Läschung, Aschränkung vun der Veraarbechtung, Datenübertraagbarkeet a Widdersproch. Wend dech dofir un déi uewe genannt Kontaktadress. Du kanns dech och bei der zoustänneger Opsiichtsautoritéit beschwéieren; zu Lëtzebuerg ass dat d'Commission nationale pour la protection des données (CNPD, cnpd.lu). ¦ You have the right to access, rectification, erasure, restriction of processing, data portability and objection. Contact the address above for this. You can also complain to the competent supervisory authority; in Luxembourg this is the Commission nationale pour la protection des données (CNPD, cnpd.lu).
+Revierbuch ¦ Revierbuch ¦ Revéierbuch ¦ Revierbuch
+Revierkarte ¦ Carte du territoire ¦ Revéierkaart ¦ Territory map
+Standort ¦ Position ¦ Standuert ¦ Location
+Zu meinem Los ¦ Vers mon lot ¦ Zu mengem Lous ¦ To my lot
+Beenden ¦ Terminer ¦ Ophalen ¦ End
+Herauszoomen ¦ Dézoomer ¦ Erauszoomen ¦ Zoom out
+Hineinzoomen ¦ Zoomer ¦ Eranzoomen ¦ Zoom in
+Karte verschieben, bis das Fadenkreuz auf dem Ort liegt. ¦ Déplace la carte jusqu'à ce que le réticule soit sur le lieu. ¦ Kaart réckelen, bis d'Fiedekräiz um Uert läit. ¦ Move the map until the crosshair is on the place.
+Position wählen ¦ Choisir la position ¦ Positioun wielen ¦ Choose position
+♂ männlich ¦ ♂ mâle ¦ ♂ männlech ¦ ♂ male
+Quelle: Arrêté ministériel du 20 mars 2024 (Mémorial B n° 1267). Gezählt werden nur Abschüsse, die in der Zeit ¦ Source : Arrêté ministériel du 20 mars 2024 (Mémorial B n° 1267). Seuls les tirs réalisés pendant la période ¦ Quell: Arrêté ministériel du 20 mars 2024 (Mémorial B n° 1267). Gezielt ginn nëmmen Ofschëss, déi an der Zäit ¦ Source: Arrêté ministériel du 20 mars 2024 (Mémorial B n° 1267). Only kills made during the period
+Quelle: Tableau synoptique de l’ouverture de la chasse 2026/2027 (Ministère de l’Environnement, du Climat et de la Biodiversité). Prüfe im Zweifel die amtliche Fassung. ¦ Source : Tableau synoptique de l’ouverture de la chasse 2026/2027 (Ministère de l’Environnement, du Climat et de la Biodiversité). En cas de doute, vérifie la version officielle. ¦ Quell: Tableau synoptique de l’ouverture de la chasse 2026/2027 (Ministère de l’Environnement, du Climat et de la Biodiversité). Kontrolléier am Zweiwelsfall déi amtlech Fassung. ¦ Source: Tableau synoptique de l’ouverture de la chasse 2026/2027 (Ministère de l’Environnement, du Climat et de la Biodiversité). If in doubt, check the official version.
+♂ ¦ ♂ ¦ ♂ ¦ ♂
