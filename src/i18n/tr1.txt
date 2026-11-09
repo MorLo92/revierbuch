@@ -126,8 +126,8 @@ Bezeichnung der Posten ¦ Désignation des postes ¦ Bezeechnung vun de Posten �
 Bis ¦ Jusqu'à ¦ Bis ¦ Until
 bis Minimum ¦ jusqu'au minimum ¦ bis Minimum ¦ to minimum
 Bisamratte ¦ Rat musqué ¦ Bisamrat ¦ Muskrat
-Bisherige Abschüsse ¦ Tirs précédents ¦ Bis elo Ofschëss ¦ Previous kills
-Bisherige Abschüsse eintragen ¦ Saisir les tirs précédents ¦ Bis elo Ofschëss androen ¦ Enter previous kills
+Bisherige Abschüsse ¦ Tirs précédents ¦ Ofschëss bis elo ¦ Previous kills
+Bisherige Abschüsse eintragen ¦ Saisir les tirs précédents ¦ Ofschëss bis elo androen ¦ Enter previous kills
 Bitte angeben, wann der Schaden festgestellt wurde. ¦ Indique quand le dégât a été constaté. ¦ Gëff w.e.g. un, wéini de Schued festgestallt gouf. ¦ Please state when the damage was found.
 Bitte Datum und Beginn angeben. ¦ Indique la date et le début. ¦ Gëff w.e.g. Datum an Ufank un. ¦ Please enter date and start.
 Bitte Datum und Uhrzeit angeben. ¦ Indique la date et l'heure. ¦ Gëff w.e.g. Datum an Auerzäit un. ¦ Please enter date and time.
