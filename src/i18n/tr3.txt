@@ -50,8 +50,8 @@ Registrieren ¦ S'inscrire ¦ Registréieren ¦ Register
 Reh ¦ Chevreuil ¦ Rei ¦ Roe deer
 Rehwild ¦ Chevreuil ¦ Reiwëld ¦ Roe deer
 Rehwild · Bock ¦ Chevreuil · brocard ¦ Reiwëld · Bock ¦ Roe deer · buck
-Rehwild · Ricke und Kitz ¦ Chevreuil · chevrette et faon ¦ Reiwëld · Rick a Kitz ¦ Roe deer · doe and fawn
-Rehwild · Schmalreh (Vorjahr geboren) ¦ Chevreuil · chevrette d'un an (née l'année précédente) ¦ Reiwëld · Schmalrei (Virjoer gebuer) ¦ Roe deer · yearling doe (born last year)
+Rehwild · Ricke und Kitz ¦ Chevreuil · chevrette et faon ¦ Reiwëld · Geess a Kitz ¦ Roe deer · doe and fawn
+Rehwild · Schmalreh (Vorjahr geboren) ¦ Chevreuil · chevrette d'un an (née l'année précédente) ¦ Reiwëld · Schmuelréi (Virjoer gebuer) ¦ Roe deer · yearling doe (born last year)
 Reservieren ¦ Réserver ¦ Reservéieren ¦ Reserve
 Reserviert ¦ Réservé ¦ Reservéiert ¦ Reserved
 Reservierung bearbeiten ¦ Modifier la réservation ¦ Reservatioun änneren ¦ Edit reservation
@@ -64,13 +64,13 @@ Rolle anlegen ¦ Créer un rôle ¦ Roll uleeën ¦ Create role
 Rolle löschen ¦ Supprimer le rôle ¦ Roll läschen ¦ Delete role
 Rolle löschen? ¦ Supprimer le rôle ? ¦ Roll läschen? ¦ Delete role?
 Rollen und Rechte ¦ Rôles et droits ¦ Rollen a Rechter ¦ Roles and permissions
-Rotwild ¦ Cerf élaphe ¦ Rotwëld ¦ Red deer
-Rotwild Kälber/Jungtiere ¦ Cerf élaphe faons/jeunes ¦ Rotwëld Kälwer/Jungdéieren ¦ Red deer calves/young
-Rotwild männlich ¦ Cerf élaphe mâle ¦ Rotwëld männlech ¦ Red deer male
-Rotwild weiblich ¦ Cerf élaphe femelle ¦ Rotwëld weiblech ¦ Red deer female
-Rotwild · Alttier, Schmaltier, Kalb ¦ Cerf élaphe · biche, bichette, faon ¦ Rotwëld · Alttéier, Schmaltéier, Kalb ¦ Red deer · hind, young hind, calf
-Rotwild · Hirsch mit Geweih ¦ Cerf élaphe · cerf avec bois ¦ Rotwëld · Hirsch mat Geweih ¦ Red deer · stag with antlers
-Rotwild · Spießer (unverzweigt) ¦ Cerf élaphe · daguet (non ramifié) ¦ Rotwëld · Spiisser (net verzweegt) ¦ Red deer · spiker (unbranched)
+Rotwild ¦ Cerf élaphe ¦ Routwëld ¦ Red deer
+Rotwild Kälber/Jungtiere ¦ Cerf élaphe faons/jeunes ¦ Routwëld Kälwer/Jungdéieren ¦ Red deer calves/young
+Rotwild männlich ¦ Cerf élaphe mâle ¦ Routwëld männlech ¦ Red deer male
+Rotwild weiblich ¦ Cerf élaphe femelle ¦ Routwëld weiblech ¦ Red deer female
+Rotwild · Alttier, Schmaltier, Kalb ¦ Cerf élaphe · biche, bichette, faon ¦ Routwëld · Aldéier, Schmueldéier, Kallef ¦ Red deer · hind, young hind, calf
+Rotwild · Hirsch mit Geweih ¦ Cerf élaphe · cerf avec bois ¦ Routwëld · Geweiten Hirsch ¦ Red deer · stag with antlers
+Rotwild · Spießer (unverzweigt) ¦ Cerf élaphe · daguet (non ramifié) ¦ Routwëld · Spiisser (net verzweegt) ¦ Red deer · spiker (unbranched)
 Route Auto ¦ Itinéraire voiture ¦ Route Auto ¦ Route by car
 Route zu Fuß ¦ Itinéraire à pied ¦ Route zu Fouss ¦ Route on foot
 Salzlecke ¦ Pierre à sel ¦ Salzlecken ¦ Salt lick

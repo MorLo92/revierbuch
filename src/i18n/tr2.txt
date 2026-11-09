@@ -135,14 +135,14 @@ Jagdzeiten heute ¦ Périodes de chasse aujourd'hui ¦ Juegdzäite vun haut ¦ H
 Jahr ¦ Année ¦ Joer ¦ Year
 Jan ¦ janv. ¦ Jan. ¦ Jan
 Je Zeile eine Wildart, optional eingeschränkt auf männlich, weiblich oder Jungtiere, mit der geplanten Stückzahl. ¦ Une espèce par ligne, éventuellement limitée aux mâles, femelles ou jeunes, avec le nombre prévu. ¦ Pro Zeil eng Wëldaart, optional beschränkt op männlech, weiblech oder Jungdéieren, mat der geplangter Stéckzuel. ¦ One species per row, optionally limited to male, female or young, with the planned number.
-Jeder Abschuss von Hirsch, Alttier, Kalb, Damwild, Muffelwild, Marderhund, Nutria und Nerz muss innerhalb von 12 Stunden der Naturverwaltung (ANF) gemeldet werden: Tel. 621 280 000 oder gibier@anf.etat.lu. ¦ Chaque tir de cerf, biche, faon, daim, mouflon, chien viverrin, ragondin et vison doit être déclaré dans les 12 heures à l'Administration de la nature et des forêts (ANF) : tél. 621 280 000 ou gibier@anf.etat.lu. ¦ All Ofschoss vun Hirsch, Alttéier, Kalb, Damwëld, Muffelwëld, Marderhond, Nutria an Nerz muss bannent 12 Stonne der Naturverwaltung (ANF) gemellt ginn: Tel. 621 280 000 oder gibier@anf.etat.lu. ¦ Every kill of red deer stag, hind, calf, fallow deer, mouflon, raccoon dog, coypu and mink must be reported to the Nature and Forest Agency (ANF) within 12 hours: tel. 621 280 000 or gibier@anf.etat.lu.
+Jeder Abschuss von Hirsch, Alttier, Kalb, Damwild, Muffelwild, Marderhund, Nutria und Nerz muss innerhalb von 12 Stunden der Naturverwaltung (ANF) gemeldet werden: Tel. 621 280 000 oder gibier@anf.etat.lu. ¦ Chaque tir de cerf, biche, faon, daim, mouflon, chien viverrin, ragondin et vison doit être déclaré dans les 12 heures à l'Administration de la nature et des forêts (ANF) : tél. 621 280 000 ou gibier@anf.etat.lu. ¦ All Ofschoss vun Hirsch, Aldéier, Kallef, Damwëld, Muffelwëld, Marderhond, Nutria an Nerz muss bannent 12 Stonne der Naturverwaltung (ANF) gemellt ginn: Tel. 621 280 000 oder gibier@anf.etat.lu. ¦ Every kill of red deer stag, hind, calf, fallow deer, mouflon, raccoon dog, coypu and mink must be reported to the Nature and Forest Agency (ANF) within 12 hours: tel. 621 280 000 or gibier@anf.etat.lu.
 Jul ¦ juil. ¦ Jul. ¦ Jul
 Jun ¦ juin ¦ Jun. ¦ Jun
 Jungtier ¦ Jeune ¦ Jungdéier ¦ Young animal
 Jungtiere ¦ Jeunes ¦ Jungdéieren ¦ Young animals
 Kachel bearbeiten ¦ Modifier la tuile ¦ Kachel änneren ¦ Edit tile
 Kacheln ¦ Tuiles ¦ Kacheln ¦ Tiles
-Kalb ¦ Faon ¦ Kalb ¦ Calf
+Kalb ¦ Faon ¦ Kallef ¦ Calf
 Kanzel ¦ Mirador ¦ Hochsëtz ¦ High seat
 Kanzel / Stand ¦ Mirador / poste ¦ Hochsëtz / Stand ¦ High seat / stand
 Kanzel, Posten, Bock, Futterplatz, Hütte, Beschriftung ¦ Mirador, poste, siège, place d'affouragement, cabane, étiquette ¦ Hochsëtz, Posten, Bock, Fudderplaz, Hütt, Beschrëftung ¦ High seat, stand, hide, feeding place, hut, label
