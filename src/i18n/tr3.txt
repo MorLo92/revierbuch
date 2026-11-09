@@ -205,10 +205,10 @@ Wildgans ¦ Oie sauvage ¦ Wëllgous ¦ Wild goose
 Wildkaninchen ¦ Lapin de garenne ¦ Wëllkningchen ¦ Wild rabbit
 Wildmarke ¦ Marque de gibier ¦ Wëldmark ¦ Game tag
 Wildmarke (optional) ¦ Marque de gibier (facultatif) ¦ Wëldmark (optional) ¦ Game tag (optional)
-Wildschaden ¦ Dégâts de gibier ¦ Wëllschued ¦ Game damage
-Wildschaden (€) ¦ Dégâts de gibier (€) ¦ Wëllschued (€) ¦ Game damage (€)
-Wildschaden eintragen ¦ Saisir un dégât de gibier ¦ Wëllschued androen ¦ Record game damage
-Wildschäden ¦ Dégâts de gibier ¦ Wëllschied ¦ Game damage
+Wildschaden ¦ Dégâts de gibier ¦ Wëldschued ¦ Game damage
+Wildschaden (€) ¦ Dégâts de gibier (€) ¦ Wëldschued (€) ¦ Game damage (€)
+Wildschaden eintragen ¦ Saisir un dégât de gibier ¦ Wëldschued androen ¦ Record game damage
+Wildschäden ¦ Dégâts de gibier ¦ Wëldschied ¦ Game damage
 Wildsichtung ¦ Observation de gibier ¦ Wëldobservatioun ¦ Game sighting
 Wir haben dir eine Bestätigungs-Mail geschickt. Öffne den Link darin und melde dich danach an. ¦ Nous t'avons envoyé un e-mail de confirmation. Ouvre le lien qu'il contient, puis connecte-toi. ¦ Mir hunn dir eng Bestätegungs-Mail geschéckt. Maach de Link dran op a mell dech duerno un. ¦ We sent you a confirmation email. Open the link in it and then sign in.
 Wirklich auflösen? Die Einträge bleiben erhalten. ¦ Vraiment dissoudre ? Les entrées sont conservées. ¦ Wierklech opléisen? D'Androungen bleiwen erhalen. ¦ Really dissolve? The entries are kept.
