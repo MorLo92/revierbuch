@@ -50,7 +50,8 @@ function i18Skip(n){
 }
 function i18Text(n){
   if(I18_DONE.get(n)===n.data)return;
-  var r=trStr(n.data);
+  var r=null;if(n.parentNode&&n.parentNode.closest&&n.parentNode.closest('#tabs')){var tk=I18T['@tab '+n.data.trim()];if(tk!=null)r=tk}
+  if(r==null)r=trStr(n.data);
   if(r!=null&&r!==n.data){n.data=r;I18_DONE.set(n,r)}
 }
 function i18Attrs(el){

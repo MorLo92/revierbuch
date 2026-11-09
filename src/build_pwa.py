@@ -553,7 +553,7 @@ sub(".gbtn{display:flex;gap:6px;flex-wrap:wrap;width:100%}",
     ".pick{display:flex;align-items:center;gap:10px;cursor:pointer}.pick input{width:22px;height:22px;flex:none}")
 
 # ---------- Drückjagd-Planung ----------
-sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + open('start.js',encoding='utf8').read() + open('recent.js',encoding='utf8').read() + open('tabs.js',encoding='utf8').read() + open('legend.js',encoding='utf8').read() + open('speciesico.js',encoding='utf8').read() + open('sight.js',encoding='utf8').read() + open('account.js',encoding='utf8').read() + open('i18n.js',encoding='utf8').read() + 'function loop(){')
+sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + open('start.js',encoding='utf8').read() + open('recent.js',encoding='utf8').read() + open('tabs.js',encoding='utf8').read() + open('legend.js',encoding='utf8').read() + open('speciesico.js',encoding='utf8').read() + open('sight.js',encoding='utf8').read() + open('account.js',encoding='utf8').read() + open('groups.js',encoding='utf8').read() + open('i18n.js',encoding='utf8').read() + 'function loop(){')
 sub(".tabs{display:grid;grid-template-columns:repeat(4,1fr);", ".tabs{display:grid;grid-template-columns:repeat(5,1fr);")
 sub(".pick input{width:22px;height:22px;flex:none}", ".pick input{width:22px;height:22px;flex:none}\n.tabs button{letter-spacing:.03em!important;padding-inline:2px!important}")
 sub('<section class="view" id="viewStats" hidden>', '<section class="view" id="viewHunt" hidden><div class="pad gx" id="huntBody"></div></section>\n    <section class="view" id="viewStats" hidden>')
@@ -696,6 +696,13 @@ sub('<span class="pill" id="stStore"><i></i><span>Lade …</span></span>', '<but
 sub("st.title=S.mode==='cloud'?'Deine Daten liegen privat in deinem Konto.':'Die Daten bleiben nur in diesem Browser.';", "st.title=S.mode==='cloud'?'Deine Daten liegen privat in deinem Konto.':'Die Daten bleiben nur in diesem Browser.';accPill(st);")
 sub("""html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""", """html+=langCardHtml();html+=accCardHtml();html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""")
 
+# Tab Gruppen
+sub('.attr:empty{display:none}\n', '.attr:empty{display:none}\n#tabs button{min-width:0;overflow:hidden;font-size:clamp(7px,2.2vw,12px)!important;letter-spacing:.01em!important;padding-inline:1px!important}\n')
+sub('<section class="view" id="viewData" hidden>', '<section class="view" id="viewGroups" hidden><div class="pad gx" id="groupsBody"></div></section>\n    <section class="view" id="viewData" hidden>')
+sub("[['start','viewStart'],['map','viewMap'],['log','viewLog'],['hunt','viewHunt'],['stats','viewStats'],['data','viewData']].forEach", "[['start','viewStart'],['map','viewMap'],['log','viewLog'],['hunt','viewHunt'],['groups','viewGroups'],['stats','viewStats'],['data','viewData']].forEach")
+sub("else if(S.tab==='data')renderData();", "else if(S.tab==='groups')renderGroups();else if(S.tab==='data')renderData();")
+sub("hunt:'hunt',stats:'chart',data:'data'}", "hunt:'hunt',groups:'groups',stats:'chart',data:'data'}")
+
 # Sprachen
 src = src.replace("'de-LU'", 'LOC')
 sub("'use strict';", "'use strict';\n" + open(SP + '/i18n_head.js', encoding='utf8').read())
@@ -744,7 +751,7 @@ json.dump({
 
 # ---------- service worker ----------
 open(OUT + '/sw.js', 'w', encoding='utf8').write(r'''/* Revierbuch service worker: app shell offline, map tiles cached as they are viewed */
-const VERSION = 'v38';
+const VERSION = 'v39';
 const SHELL = 'shell-' + VERSION, TILES = 'tiles-v1', FONTS = 'fonts-v1';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'lots-lu.geojson', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 const MAX_TILES = 6000;

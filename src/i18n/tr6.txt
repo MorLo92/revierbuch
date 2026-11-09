@@ -13,3 +13,6 @@ gemischt ¦ mixte ¦ gemëscht ¦ mixed
 Adult ¦ Adulte ¦ Erwuessen ¦ Adult
 Tracks ¦ Traces ¦ Tracken ¦ Tracks
 Position ¦ Position ¦ Positioun ¦ Position
+Mit einem Konto kannst du Gruppen anlegen oder einer Gruppe beitreten und Einträge mit anderen Jägern deines Loses teilen. ¦ Avec un compte, tu peux créer des groupes ou en rejoindre un et partager des entrées avec d'autres chasseurs de ton lot. ¦ Mat engem Kont kanns du Gruppen uleeën oder enger Grupp bäitrieden an Androungen mat anere Jäger vun dengem Lous deelen. ¦ With an account you can create groups or join one and share entries with other hunters of your lot.
+@tab Statistik ¦ Stats ¦ Statistik ¦ Statistik
+@tab Einträge ¦ Entrées ¦ Lëscht ¦ Entries

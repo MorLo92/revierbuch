@@ -1,5 +1,5 @@
 /* ---------- Tabs: verschieben (lang drücken) und ausblenden ---------- */
-var TAB_ALL=[['start','Start'],['map','Karte'],['log','Einträge'],['hunt','Jagd'],['stats','Statistik'],['data','Daten']];
+var TAB_ALL=[['start','Start'],['map','Karte'],['log','Einträge'],['hunt','Jagd'],['groups','Gruppen'],['stats','Statistik'],['data','Daten']];
 function tabList(){
   var ord=cfgOrder(CARD_CFG.tabs),hid=cfgHid(CARD_CFG.tabs),nm={};TAB_ALL.forEach(function(x){nm[x[0]]=x[1]});
   return ord.filter(function(id){return hid.indexOf(id)<0}).map(function(id){return [id,nm[id]]});
