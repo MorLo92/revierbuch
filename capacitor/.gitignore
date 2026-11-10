@@ -1,0 +1,9 @@
+www/
+android/
+node_modules/
+assets/
+package.json
+package-lock.json
+capacitor.config.json
+capacitor.config.ts
+Revierbuch.apk
