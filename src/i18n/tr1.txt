@@ -80,7 +80,7 @@ Anschuss · ¦ Lieu du tir · ¦ Unschoss · ¦ Point of impact ·
 Anschuss: ¦ Lieu du tir : ¦ Unschoss: ¦ Point of impact:
 Ansitz reservieren ¦ Réserver un affût ¦ Hochsitz reservéieren ¦ Reserve a seat
 Ansitz-Reservierungen ¦ Réservations d'affût ¦ Hochsitz-Reservatiounen ¦ Seat reservations
-Ansitzbock / Drückjagdstand ¦ Siège d'affût / poste de battue ¦ Ansëtzbock / Klappjuegdstand ¦ Raised hide / driven-hunt stand
+Ansitzbock / Drückjagdstand ¦ Siège d'affût / poste de battue ¦ Usëtzbock / Klappjuegdstand ¦ Raised hide / driven-hunt stand
 Anstehende Ansitze ¦ Affûts à venir ¦ Kommend Hochsitze ¦ Upcoming sits
 Anzahl ¦ Nombre ¦ Unzuel ¦ Count
 Anzeigen ¦ Afficher ¦ Weisen ¦ Show
@@ -106,7 +106,7 @@ Auswahl ändern ¦ Modifier la sélection ¦ Auswiel änneren ¦ Change selectio
 Auto ¦ Auto ¦ Auto ¦ Auto
 Automatisch suchen ¦ Rechercher automatiquement ¦ Automatesch sichen ¦ Search automatically
 außerhalb deiner Lose und zählt nicht im Plan. ¦ en dehors de tes lots et ne compte pas dans le plan. ¦ ausserhalb vun dengen Lous a zielt net am Plang. ¦ outside your lots and does not count towards the plan.
-Außerhalb des 17.10.2026 bis 31.1.2027 sind nur Pirsch („à l’approche“) und Ansitz („à l’affût“) erlaubt. ¦ En dehors du 17.10.2026 au 31.1.2027, seuls l'approche et l'affût sont autorisés. ¦ Ausserhalb vum 17.10.2026 bis 31.1.2027 sinn nëmmen Pirsch („à l’approche“) an Ansëtz („à l’affût“) erlaabt. ¦ Outside 17.10.2026 to 31.1.2027 only stalking ("à l'approche") and sitting-up ("à l'affût") are allowed.
+Außerhalb des 17.10.2026 bis 31.1.2027 sind nur Pirsch („à l’approche“) und Ansitz („à l’affût“) erlaubt. ¦ En dehors du 17.10.2026 au 31.1.2027, seuls l'approche et l'affût sont autorisés. ¦ Ausserhalb vum 17.10.2026 bis 31.1.2027 sinn nëmmen Pirsch („à l’approche“) an Usëtz („à l’affût“) erlaabt. ¦ Outside 17.10.2026 to 31.1.2027 only stalking ("à l'approche") and sitting-up ("à l'affût") are allowed.
 Bachtal ¦ Bachtal ¦ Bachtal ¦ Bachtal
 Bauart der Kanzel ¦ Type de mirador ¦ Bauaart vum Hochsitz ¦ Type of high seat
 Bearbeiten ¦ Modifier ¦ Änneren ¦ Edit
