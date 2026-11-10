@@ -81,7 +81,7 @@ Anschuss: ¦ Lieu du tir : ¦ Unschoss: ¦ Point of impact:
 Ansitz reservieren ¦ Réserver un affût ¦ Hochsitz reservéieren ¦ Reserve a seat
 Ansitz-Reservierungen ¦ Réservations d'affût ¦ Hochsitz-Reservatiounen ¦ Seat reservations
 Ansitzbock / Drückjagdstand ¦ Siège d'affût / poste de battue ¦ Ansëtzbock / Klappjuegdstand ¦ Raised hide / driven-hunt stand
-Anstehende Ansitze ¦ Affûts à venir ¦ Kommend Hochsëtzer ¦ Upcoming sits
+Anstehende Ansitze ¦ Affûts à venir ¦ Kommend Hochsitze ¦ Upcoming sits
 Anzahl ¦ Nombre ¦ Unzuel ¦ Count
 Anzeigen ¦ Afficher ¦ Weisen ¦ Show
 Anzeigename ¦ Nom affiché ¦ Ugewisenen Numm ¦ Display name
