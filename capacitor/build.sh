@@ -2,7 +2,12 @@
 # Baut die Android-App (APK) aus der Web-App im Repo-Hauptordner.
 set -euo pipefail
 cd "$(dirname "$0")"
-: "${KEYSTORE_PASSWORD:?Secret KEYSTORE_PASSWORD fehlt (Repo > Settings > Secrets and variables > Actions)}"
+TESTMODE=0
+if [ -z "${KEYSTORE_PASSWORD:-}" ]; then
+  echo "Hinweis: Secret KEYSTORE_PASSWORD fehlt -> Testbau mit Wegwerf-Schluessel (nicht fuer Updates geeignet)"
+  TESTMODE=1
+  export KEYSTORE_PASSWORD=testtest123
+fi
 RUN="${GITHUB_RUN_NUMBER:-1}"
 
 rm -rf www android node_modules package.json package-lock.json capacitor.config.json capacitor.config.ts assets
@@ -42,7 +47,11 @@ open(p,'w',encoding='utf8').write(s)
 PY
 
 # Signatur und Versionsnummer
-openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -pass env:KEYSTORE_PASSWORD -in revierbuch.jks.enc -out "$PWD/android/app/revierbuch.jks"
+if [ "$TESTMODE" = 1 ]; then
+  keytool -genkeypair -keystore "$PWD/android/app/revierbuch.jks" -alias revierbuch -keyalg RSA -keysize 2048 -validity 30 -storepass "$KEYSTORE_PASSWORD" -keypass "$KEYSTORE_PASSWORD" -dname "CN=Test"
+else
+  openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -pass env:KEYSTORE_PASSWORD -in revierbuch.jks.enc -out "$PWD/android/app/revierbuch.jks"
+fi
 python3 - <<PY
 import re
 p='android/app/build.gradle'

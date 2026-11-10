@@ -6,6 +6,8 @@ permissions:
 jobs:
   apk:
     runs-on: ubuntu-latest
+    env:
+      HAVE_SECRET: ${{ secrets.KEYSTORE_PASSWORD != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -19,7 +21,14 @@ jobs:
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: bash capacitor/build.sh
+      - name: Test-APK als Artefakt
+        if: env.HAVE_SECRET != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Revierbuch-Test-APK
+          path: capacitor/Revierbuch.apk
       - name: Release veroeffentlichen
+        if: env.HAVE_SECRET == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
