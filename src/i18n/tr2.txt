@@ -148,7 +148,7 @@ Kanzel / Stand ¦ Mirador / poste ¦ Hochsitz / Stand ¦ High seat / stand
 Kanzel, Posten, Bock, Futterplatz, Hütte, Beschriftung ¦ Mirador, poste, siège, place d'affouragement, cabane, étiquette ¦ Hochsitz, Posten, Bock, Fudderplaz, Hütt, Beschrëftung ¦ High seat, stand, hide, feeding place, hut, label
 Karte ¦ Carte ¦ Kaart ¦ Map
 Karte und Daten lassen sich nicht ausblenden. ¦ La carte et les données ne peuvent pas être masquées. ¦ Kaart an Daten kënnen net verstoppt ginn. ¦ Map and data cannot be hidden.
-Karte verschieben, bis das Fadenkreuz auf einer Ecke der Fläche liegt, dann „Punkt setzen“. ¦ Déplace la carte jusqu'à ce que le réticule soit sur un coin de la surface, puis « Placer le point ». ¦ Kaart réckelen, bis d'Fiedekräiz op engem Eck vun der Fläch läit, dann „Punkt setzen“. ¦ Move the map until the crosshair is on a corner of the area, then "Set point".
+Karte verschieben, bis das Fadenkreuz auf einer Ecke der Fläche liegt, dann „Punkt setzen“. ¦ Déplace la carte jusqu'à ce que le réticule soit sur un coin de la surface, puis « Placer le point ». ¦ Kaart réckelen, bis d'Kräiz op engem Eck vun der Fläch läit, dann „Punkt setzen“. ¦ Move the map until the crosshair is on a corner of the area, then "Set point".
 Karte: ¦ Carte : ¦ Kaart: ¦ Map:
 Kartenmitte. Mit „Auf Karte setzen“ genauer festlegen. ¦ Centre de la carte. Précise avec « Placer sur la carte ». ¦ Kaartemëtt. Mat „Op d'Kaart setzen“ méi genee festleeën. ¦ Map centre. Use "Place on map" to set it more precisely.
 Kartoffeln ¦ Pommes de terre ¦ Gromperen ¦ Potatoes

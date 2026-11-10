@@ -185,7 +185,7 @@ Was ¦ Quoi ¦ Wat ¦ What
 Waschbär ¦ Raton laveur ¦ Wäschbier ¦ Raccoon
 Weiter ¦ Suivant ¦ Weider ¦ Next
 Weitere Losnummern, z. B. 12, 14 ¦ Autres numéros de lot, p. ex. 12, 14 ¦ Weider Lousnummeren, z. B. 12, 14 ¦ Further lot numbers, e.g. 12, 14
-Weitere Parzelle: Fadenkreuz darauf, „Kataster“. Nochmal dieselbe tippen wählt sie ab. Dann „Fertig“. ¦ Autre parcelle : réticule dessus, « Cadastre ». Toucher à nouveau la même la désélectionne. Puis « Terminé ». ¦ Weider Parzell: Fiedekräiz drop, „Kataster“. Nach eemol déiselwecht tippen wielt se of. Dann „Fäerdeg“. ¦ Another parcel: crosshair on it, "Cadastre". Tapping the same one again deselects it. Then "Done".
+Weitere Parzelle: Fadenkreuz darauf, „Kataster“. Nochmal dieselbe tippen wählt sie ab. Dann „Fertig“. ¦ Autre parcelle : réticule dessus, « Cadastre ». Toucher à nouveau la même la désélectionne. Puis « Terminé ». ¦ Weider Parzell: Kräiz drop, „Kataster“. Nach eemol déiselwecht tippen wielt se of. Dann „Fäerdeg“. ¦ Another parcel: crosshair on it, "Cadastre". Tapping the same one again deselects it. Then "Done".
 Weizen ¦ Blé ¦ Weess ¦ Wheat
 Welche Einträge ¦ Quelles entrées ¦ Wéi eng Androungen ¦ Which entries
 Wer sitzt an ¦ Qui est posté à ¦ Wien sëtzt un ¦ Who sits at
