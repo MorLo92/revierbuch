@@ -751,7 +751,7 @@ json.dump({
 
 # ---------- service worker ----------
 open(OUT + '/sw.js', 'w', encoding='utf8').write(r'''/* Revierbuch service worker: app shell offline, map tiles cached as they are viewed */
-const VERSION = 'v40';
+const VERSION = 'v41';
 const SHELL = 'shell-' + VERSION, TILES = 'tiles-v1', FONTS = 'fonts-v1';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'lots-lu.geojson', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 const MAX_TILES = 6000;
@@ -829,9 +829,9 @@ def icon(size):
     d.polygon([(cx, cy - r * .5), (cx + r * .5, cy), (cx, cy + r * .5), (cx - r * .5, cy)], fill='#2D5A43')
     return im.resize((size, size), Image.LANCZOS)
 
-icon(512).save(OUT + '/icon-512.png')
-icon(192).save(OUT + '/icon-192.png')
-icon(180).save(OUT + '/apple-touch-icon.png')
+import shutil
+for n in ('icon-512.png', 'icon-192.png', 'apple-touch-icon.png'):
+    shutil.copy('logo_final/' + n, OUT + '/' + n)
 
 open(OUT + '/README.md', 'w', encoding='utf8').write(
     '# Revierbuch\n\nJagdrevier-App für das Handy (Web-App). Karte von Geoportail.lu, Lose der Administration de la nature et des forêts.\n\n'

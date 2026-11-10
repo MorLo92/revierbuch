@@ -81,8 +81,9 @@ PY
   python3 - <<'PY'
 from PIL import Image
 im=Image.open('../icon-512.png').convert('RGBA').resize((1024,1024),Image.LANCZOS)
-im.save('assets/icon-only.png');im.save('assets/icon-foreground.png')
-Image.new('RGB',(1024,1024),(31,61,47)).save('assets/icon-background.png')
+im.save('assets/icon-only.png')
+Image.open('icon-foreground.png').convert('RGBA').resize((1024,1024),Image.LANCZOS).save('assets/icon-foreground.png')
+Image.new('RGB',(1024,1024),(43,91,69)).save('assets/icon-background.png')
 PY
   npm i --no-audit --no-fund -D @capacitor/assets
   npx capacitor-assets generate --android
