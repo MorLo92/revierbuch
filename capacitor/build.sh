@@ -77,9 +77,13 @@ PY
 # App-Symbol aus dem Web-Symbol (nicht kritisch)
 (
   mkdir -p assets
-  convert ../icon-512.png -resize 1024x1024 assets/icon-only.png
-  cp assets/icon-only.png assets/icon-foreground.png
-  convert -size 1024x1024 xc:'#1f3d2f' assets/icon-background.png
+  python3 -m pip install --quiet pillow
+  python3 - <<'PY'
+from PIL import Image
+im=Image.open('../icon-512.png').convert('RGBA').resize((1024,1024),Image.LANCZOS)
+im.save('assets/icon-only.png');im.save('assets/icon-foreground.png')
+Image.new('RGB',(1024,1024),(31,61,47)).save('assets/icon-background.png')
+PY
   npm i --no-audit --no-fund -D @capacitor/assets
   npx capacitor-assets generate --android
 ) || echo "Hinweis: Symbol-Erzeugung uebersprungen"
