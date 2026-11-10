@@ -1,6 +1,6 @@
 Nur wenn du ein Konto anlegst: E-Mail-Adresse, Anzeigename, Passwort (nur als Prüfwert gespeichert), Zugehörigkeit zu Gruppen und Rollen sowie deine Zustimmung mit Datum. Später zusätzlich die Einträge, die du bewusst mit einer Gruppe teilst (zum Beispiel Einrichtungen, Abschüsse, Sichtungen, jeweils mit Position, Zeit und Wildart). ¦ Uniquement si tu crées un compte : adresse e-mail, nom affiché, mot de passe (stocké uniquement sous forme de valeur de contrôle), appartenance aux groupes et rôles ainsi que ton consentement avec la date. Plus tard, en plus, les entrées que tu partages volontairement avec un groupe (par exemple installations, tirs, observations, chacune avec position, heure et espèce). ¦ Nëmmen wann du e Kont uleefs: E-Mail-Adress, Ugewisenen Numm, Passwuert (nëmmen als Kontrollwäert gespäichert), Zougehéieregkeet zu Gruppen a Rollen souwéi deng Zoustëmmung mat Datum. Méi spéit zousätzlech d'Androungen, déi du bewosst mat enger Grupp deels (zum Beispill Aarichtungen, Ofschëss, Observatiounen, jeweils mat Positioun, Zäit a Wëldaart). ¦ Only if you create an account: email address, display name, password (stored only as a check value), group and role memberships and your consent with date. Later also the entries you deliberately share with a group (for example facilities, kills, sightings, each with position, time and species).
 Nutria ¦ Ragondin ¦ Nutria ¦ Coypu
-Nächste Drückjagd ¦ Prochaine battue ¦ Nächst Dréckjuegd ¦ Next driven hunt
+Nächste Drückjagd ¦ Prochaine battue ¦ Nächst Klappjuegd ¦ Next driven hunt
 Nächste Parzelle übernommen, bitte prüfen. ¦ Parcelle suivante reprise, merci de vérifier. ¦ Nächst Parzell iwwerholl, w.e.g. kontrolléieren. ¦ Next parcel taken, please check.
 Offen ¦ Ouvert ¦ Oppen ¦ Open
 Offen ( ¦ Ouvert ( ¦ Oppen ( ¦ Open (
@@ -8,7 +8,7 @@ offene Nachsuche ¦ recherche ouverte ¦ oppen Nosich ¦ open tracking
 offene Nachsuchen ¦ recherches ouvertes ¦ oppen Nosichen ¦ open trackings
 Offene Nachsuchen ( ¦ Recherches ouvertes ( ¦ Oppen Nosichen ( ¦ Open trackings (
 Ohne Gruppe ¦ Sans groupe ¦ Ouni Grupp ¦ No group
-Ohne Kanzel ¦ Sans mirador ¦ Ouni Hochsëtz ¦ No high seat
+Ohne Kanzel ¦ Sans mirador ¦ Ouni Hochsitz ¦ No high seat
 Ohne Kompass-Erlaubnis zeigt der Pfeil von Norden. Erlaube die Bewegungssensoren in den Browser-Einstellungen. ¦ Sans autorisation de la boussole, la flèche part du nord. Autorise les capteurs de mouvement dans les réglages du navigateur. ¦ Ouni Kompass-Erlaabnis weist de Feil vum Norden. Erlaabt d'Bewegungssensoren an den Browser-Astellungen. ¦ Without compass permission the arrow points from north. Allow motion sensors in the browser settings.
 Ohne Kultur / leer ¦ Sans culture / vide ¦ Ouni Kultur / eidel ¦ No crop / empty
 ohne Namen ¦ sans nom ¦ ouni Numm ¦ unnamed
@@ -30,7 +30,7 @@ Plan gespeichert ¦ Plan enregistré ¦ Plang gespäichert ¦ Plan saved
 Plan je Los ¦ Plan par lot ¦ Plang pro Lous ¦ Plan per lot
 Polygon ¦ Polygone ¦ Polygon ¦ Polygon
 Position ¦ Position ¦ Positioun ¦ Position
-Position der gewählten Kanzel übernommen. ¦ Position du mirador choisi reprise. ¦ Positioun vum gewielten Hochsëtz iwwerholl. ¦ Position of the chosen high seat taken.
+Position der gewählten Kanzel übernommen. ¦ Position du mirador choisi reprise. ¦ Positioun vum gewielten Hochsitz iwwerholl. ¦ Position of the chosen high seat taken.
 Position des Postens. Für eine genaue Nachsuche den Anschuss mit „Mein Standort“ oder auf der Karte festlegen. ¦ Position du poste. Pour une recherche précise, définis le lieu du tir avec « Ma position » ou sur la carte. ¦ Positioun vum Posten. Fir eng genau Nosich den Unschoss mat „Meng Standuert“ oder op der Kaart festleeën. ¦ Position of the stand. For an accurate tracking, set the point of impact with "My location" or on the map.
 Position für ¦ Position pour ¦ Positioun fir ¦ Position for
 Posten ¦ Poste ¦ Posten ¦ Stand
@@ -135,7 +135,7 @@ Stücke ¦ Pièces ¦ Stécker ¦ Animals
 Stücken mit Gewicht ¦ pièces avec poids ¦ Stécker mat Gewiicht ¦ animals with weight
 Suche passende Adressen. Das dauert bis zu 10 Sekunden … ¦ Recherche d'adresses adaptées. Cela peut prendre jusqu'à 10 secondes … ¦ Sich passend Adressen. Dat dauert bis zu 10 Sekonnen … ¦ Searching for matching addresses. This takes up to 10 seconds …
 Suche … ¦ Recherche … ¦ Sich … ¦ Searching …
-Suchen: Wildart, Wildmarke, Kanzel ¦ Rechercher : espèce, marque de gibier, mirador ¦ Sichen: Wëldaart, Wëldmark, Hochsëtz ¦ Search: species, game tag, high seat
+Suchen: Wildart, Wildmarke, Kanzel ¦ Rechercher : espèce, marque de gibier, mirador ¦ Sichen: Wëldaart, Wëldmark, Hochsitz ¦ Search: species, game tag, high seat
 Tabs anpassen ¦ Personnaliser les onglets ¦ Tabs upassen ¦ Customise tabs
 Teilen ¦ Partager ¦ Deelen ¦ Share
 Teilen wird hier nicht unterstützt. ¦ Le partage n'est pas pris en charge ici. ¦ Deelen gëtt hei net ënnerstëtzt. ¦ Sharing is not supported here.
@@ -198,8 +198,8 @@ Wildacker / Äsungsfläche ¦ Culture à gibier / zone de nourrissage ¦ Wëldac
 Wildacker Hang ¦ Culture à gibier versant ¦ Wëldacker Hang ¦ Game plot slope
 Wildart ¦ Espèce ¦ Wëldaart ¦ Species
 Wildart, Anzahl, Uhrzeit ¦ Espèce, nombre, heure ¦ Wëldaart, Unzuel, Auerzäit ¦ Species, count, time
-Wildart, Kanzel, Wildmarke ¦ Espèce, mirador, marque de gibier ¦ Wëldaart, Hochsëtz, Wëldmark ¦ Species, high seat, game tag
-Wildart, Ort, Kanzel, Wildmarke ¦ Espèce, lieu, mirador, marque de gibier ¦ Wëldaart, Uert, Hochsëtz, Wëldmark ¦ Species, place, high seat, game tag
+Wildart, Kanzel, Wildmarke ¦ Espèce, mirador, marque de gibier ¦ Wëldaart, Hochsitz, Wëldmark ¦ Species, high seat, game tag
+Wildart, Ort, Kanzel, Wildmarke ¦ Espèce, lieu, mirador, marque de gibier ¦ Wëldaart, Uert, Hochsitz, Wëldmark ¦ Species, place, high seat, game tag
 Wildarten ¦ Espèces ¦ Wëldaarten ¦ Species
 Wildgans ¦ Oie sauvage ¦ Wëllgous ¦ Wild goose
 Wildkaninchen ¦ Lapin de garenne ¦ Wëllkningchen ¦ Wild rabbit
@@ -223,7 +223,7 @@ Wähle auf der Karte zuerst „Topokarte“ oder „Luftbild“. ¦ Choisis d'ab
 Wähle die Wildarten, die in der Übersicht und in der Tabelle erscheinen sollen. Die Schonzeit-Warnung beim Abschuss gilt weiterhin für alle. ¦ Choisis les espèces qui doivent apparaître dans l'aperçu et le tableau. L'avertissement de période de protection lors du tir reste valable pour toutes. ¦ Wiel d'Wëldaarten, déi an der Iwwersiicht an an der Tabell erschéine sollen. D'Schounzäit-Warnung beim Ofschoss gëllt weiderhin fir all. ¦ Choose the species that should appear in the overview and the table. The closed-season warning when recording a kill still applies to all.
 Wähle unter „Daten“ deine Jagdlose aus, dann erscheint hier der amtliche Plan de tir ¦ Choisis tes lots de chasse sous « Données », le plan de tir officiel apparaîtra ici ¦ Wiel ënner „Daten“ deng Juegdlous aus, dann erschéngt hei den amtlechen Plan de tir ¦ Choose your hunting lots under "Data" and the official plan de tir will appear here
 Wähle zuerst die Posten dieser Jagd. ¦ Choisis d'abord les postes de cette chasse. ¦ Wiel fir d'éischt d'Posten vun dëser Juegd. ¦ First choose the stands of this hunt.
-z. B. Drückjagd Eichberg ¦ p. ex. Battue Eichberg ¦ z. B. Dréckjuegd Eichberg ¦ e.g. Driven hunt Eichberg
+z. B. Drückjagd Eichberg ¦ p. ex. Battue Eichberg ¦ z. B. Klappjuegd Eichberg ¦ e.g. Driven hunt Eichberg
 z. B. Jagdgesellschaft Beispiel ¦ p. ex. Société de chasse Exemple ¦ z. B. Juegdgesellschaft Beispill ¦ e.g. Hunting party Example
 z. B. Linie 1 ¦ p. ex. Ligne 1 ¦ z. B. Linn 1 ¦ e.g. Line 1
 z. B. Mais ¦ p. ex. Maïs ¦ z. B. Mais ¦ e.g. Maize
@@ -238,7 +238,7 @@ Zeile entfernen ¦ Supprimer la ligne ¦ Zeil ewechhuelen ¦ Remove row
 Zeitpunkt ¦ Moment ¦ Zäitpunkt ¦ Time point
 Zeitraum ¦ Période ¦ Zäitraum ¦ Period
 Ziel ¦ Destination ¦ Zil ¦ Destination
-Zu einer Kanzel oder Einrichtung gehen ¦ Aller à un mirador ou une installation ¦ Zu engem Hochsëtz oder enger Aarichtung goen ¦ Go to a high seat or facility
+Zu einer Kanzel oder Einrichtung gehen ¦ Aller à un mirador ou une installation ¦ Zu engem Hochsitz oder enger Aarichtung goen ¦ Go to a high seat or facility
 Zu viele Versuche. Bitte in einigen Minuten noch einmal. ¦ Trop de tentatives. Réessaie dans quelques minutes. ¦ Ze vill Versich. Probéier w.e.g. an e puer Minutten nach eng Kéier. ¦ Too many attempts. Please try again in a few minutes.
 zur Jagd hinzugefügt ¦ ajouté à la chasse ¦ zur Juegd derbäigesat ¦ added to hunt
 Zurück ¦ Retour ¦ Zréck ¦ Back

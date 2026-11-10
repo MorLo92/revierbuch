@@ -7,7 +7,7 @@ Erste Nummer ¦ Premier numéro ¦ Éischt Nummer ¦ First number
 Erstellen ¦ Créer ¦ Erstellen ¦ Create
 Es braucht mindestens einen Administrator. ¦ Il faut au moins un administrateur. ¦ Et brauch mindestens een Administrateur. ¦ At least one administrator is required.
 Es gibt noch keine eigenen Abschüsse zum Exportieren. ¦ Il n'y a pas encore de tirs personnels à exporter. ¦ Et gëtt nach keng eegen Ofschëss fir z'exportéieren. ¦ There are no own kills to export yet.
-Es gibt noch keine Posten. Lege sie unter Eintragen → Einrichtung an (Art „Drückjagdposten“, „Kanzel“ oder „Ansitzbock / Drückjagdstand“). ¦ Il n'y a pas encore de postes. Crée-les sous Ajouter → Installation (type « Poste de battue », « Mirador » ou « Siège d'affût / poste de battue »). ¦ Et gëtt nach keng Posten. Leet se ënner Androen → Aarichtung un (Aart „Dréckjuegdposten“, „Hochsëtz“ oder „Ansëtzbock / Dréckjuegdstand“). ¦ There are no stands yet. Create them under Add → Facility (type "Driven-hunt stand", "High seat" or "Raised hide / driven-hunt stand").
+Es gibt noch keine Posten. Lege sie unter Eintragen → Einrichtung an (Art „Drückjagdposten“, „Kanzel“ oder „Ansitzbock / Drückjagdstand“). ¦ Il n'y a pas encore de postes. Crée-les sous Ajouter → Installation (type « Poste de battue », « Mirador » ou « Siège d'affût / poste de battue »). ¦ Et gëtt nach keng Posten. Leet se ënner Androen → Aarichtung un (Aart „Klappjuegdposten“, „Hochsitz“ oder „Ansëtzbock / Klappjuegdstand“). ¦ There are no stands yet. Create them under Add → Facility (type "Driven-hunt stand", "High seat" or "Raised hide / driven-hunt stand").
 Es läuft schon eine Aufzeichnung. ¦ Un enregistrement est déjà en cours. ¦ Et leeft schonn eng Opzeechnung. ¦ A recording is already running.
 Falls die Adresse registriert ist, wurde eine E-Mail zum Zurücksetzen gesendet. ¦ Si l'adresse est enregistrée, un e-mail de réinitialisation a été envoyé. ¦ Wann d'Adress registréiert ass, gouf eng E-Mail zum Zrécksetzen geschéckt. ¦ If the address is registered, a reset email has been sent.
 Farbe der Gruppe (optional) ¦ Couleur du groupe (facultatif) ¦ Faarf vun der Grupp (optional) ¦ Group colour (optional)
@@ -59,7 +59,7 @@ gedrückt und ziehe die Karte an die gewünschte Stelle. Mit dem Haken blendest 
 gefunden und eingetragen ¦ trouvé et saisi ¦ fonnt an ageschriwwen ¦ found and entered
 Gelöscht ¦ Supprimé ¦ Geläscht ¦ Deleted
 Gelöschte Fläche ¦ Surface supprimée ¦ Gelöscht Fläch ¦ Deleted area
-Gelöschte Kanzel ¦ Mirador supprimé ¦ Gelöschten Hochsëtz ¦ Deleted high seat
+Gelöschte Kanzel ¦ Mirador supprimé ¦ Gelöschten Hochsitz ¦ Deleted high seat
 Gelöschter Posten ¦ Poste supprimé ¦ Gelöschte Posten ¦ Deleted stand
 Gelöschter Stand ¦ Poste supprimé ¦ Gelöschte Stand ¦ Deleted stand
 Gerste ¦ Orge ¦ Gerscht ¦ Barley
@@ -143,9 +143,9 @@ Jungtiere ¦ Jeunes ¦ Jungdéieren ¦ Young animals
 Kachel bearbeiten ¦ Modifier la tuile ¦ Kachel änneren ¦ Edit tile
 Kacheln ¦ Tuiles ¦ Kacheln ¦ Tiles
 Kalb ¦ Faon ¦ Kallef ¦ Calf
-Kanzel ¦ Mirador ¦ Hochsëtz ¦ High seat
-Kanzel / Stand ¦ Mirador / poste ¦ Hochsëtz / Stand ¦ High seat / stand
-Kanzel, Posten, Bock, Futterplatz, Hütte, Beschriftung ¦ Mirador, poste, siège, place d'affouragement, cabane, étiquette ¦ Hochsëtz, Posten, Bock, Fudderplaz, Hütt, Beschrëftung ¦ High seat, stand, hide, feeding place, hut, label
+Kanzel ¦ Mirador ¦ Hochsitz ¦ High seat
+Kanzel / Stand ¦ Mirador / poste ¦ Hochsitz / Stand ¦ High seat / stand
+Kanzel, Posten, Bock, Futterplatz, Hütte, Beschriftung ¦ Mirador, poste, siège, place d'affouragement, cabane, étiquette ¦ Hochsitz, Posten, Bock, Fudderplaz, Hütt, Beschrëftung ¦ High seat, stand, hide, feeding place, hut, label
 Karte ¦ Carte ¦ Kaart ¦ Map
 Karte und Daten lassen sich nicht ausblenden. ¦ La carte et les données ne peuvent pas être masquées. ¦ Kaart an Daten kënnen net verstoppt ginn. ¦ Map and data cannot be hidden.
 Karte verschieben, bis das Fadenkreuz auf einer Ecke der Fläche liegt, dann „Punkt setzen“. ¦ Déplace la carte jusqu'à ce que le réticule soit sur un coin de la surface, puis « Placer le point ». ¦ Kaart réckelen, bis d'Fiedekräiz op engem Eck vun der Fläch läit, dann „Punkt setzen“. ¦ Move the map until the crosshair is on a corner of the area, then "Set point".
@@ -164,7 +164,7 @@ Keine anstehenden Reservierungen. ¦ Aucune réservation à venir. ¦ Keng komme
 Keine Daten für diese Auswahl. ¦ Aucune donnée pour cette sélection. ¦ Keng Daten fir dës Auswiel. ¦ No data for this selection.
 Keine Einträge gefunden. ¦ Aucune entrée trouvée. ¦ Keng Androungen fonnt. ¦ No entries found.
 Keine Flächen (Polygone) in der Datei gefunden. ¦ Aucune surface (polygone) trouvée dans le fichier. ¦ Keng Flächen (Polygonen) an der Datei fonnt. ¦ No areas (polygons) found in the file.
-Keine kommende Drückjagd geplant. ¦ Aucune battue à venir prévue. ¦ Keng kommend Dréckjuegd geplangt. ¦ No upcoming driven hunt planned.
+Keine kommende Drückjagd geplant. ¦ Aucune battue à venir prévue. ¦ Keng kommend Klappjuegd geplangt. ¦ No upcoming driven hunt planned.
 keine Parzelle an dieser Stelle ¦ aucune parcelle à cet endroit ¦ keng Parzell op dëser Plaz ¦ no parcel at this spot
 Keine Verbindung. Bitte später noch einmal versuchen. ¦ Pas de connexion. Réessaie plus tard. ¦ Keng Verbindung. Probéier w.e.g. méi spéit nach eng Kéier. ¦ No connection. Please try again later.
 Keine Wildart ausgewählt. ¦ Aucune espèce sélectionnée. ¦ Keng Wëldaart ausgewielt. ¦ No species selected.
@@ -182,7 +182,7 @@ Kultur / Bestand (neu) ¦ Culture / peuplement (nouveau) ¦ Kultur / Bestand (ne
 Lade … ¦ Chargement … ¦ Lued … ¦ Loading …
 laut Jagdzeitentabelle geschlossen. Jagdzeit: ¦ fermé selon le tableau des périodes de chasse. Période de chasse : ¦ laut Juegdzäitentabell zou. Juegdzäit: ¦ closed according to the season table. Season:
 Lege pro Rolle fest, was die Mitglieder sehen oder eintragen dürfen. „Ungefähr“ zeigt Positionen nur auf etwa 100 m gerundet. Administratoren dürfen alles. ¦ Définis pour chaque rôle ce que les membres peuvent voir ou saisir. « Approximatif » n'affiche les positions qu'arrondies à environ 100 m. Les administrateurs peuvent tout faire. ¦ Leet pro Roll fest, wat d'Memberen gesinn oder androen däerfen. „Ongeféier“ weist Positiounen nëmmen op ongeféier 100 m ofgerënnt. Administrateuren däerfen alles. ¦ Set for each role what members may see or enter. "Approximate" shows positions rounded to about 100 m only. Administrators may do everything.
-Lege zuerst eine Kanzel an. ¦ Crée d'abord un mirador. ¦ Leet fir d'éischt en Hochsëtz un. ¦ Create a high seat first.
+Lege zuerst eine Kanzel an. ¦ Crée d'abord un mirador. ¦ Leet fir d'éischt en Hochsitz un. ¦ Create a high seat first.
 Lege zuerst Einträge an, die du zusammenfassen willst. ¦ Crée d'abord les entrées que tu veux regrouper. ¦ Leet fir d'éischt Androungen un, déi du zesummefaasse wëlls. ¦ First create the entries you want to group.
 Legende ¦ Légende ¦ Legend ¦ Legend
 Lesen ¦ Lire ¦ Liesen ¦ Read
@@ -234,7 +234,7 @@ Nach Fläche ¦ Par surface ¦ No Fläch ¦ By area
 Nach Fläche · ¦ Par surface · ¦ No Fläch · ¦ By area ·
 Nach Geschlecht ¦ Par sexe ¦ No Geschlecht ¦ By sex
 Nach Jahr ¦ Par année ¦ No Joer ¦ By year
-Nach Kanzel ¦ Par mirador ¦ No Hochsëtz ¦ By high seat
+Nach Kanzel ¦ Par mirador ¦ No Hochsitz ¦ By high seat
 Nach Monat ¦ Par mois ¦ No Mount ¦ By month
 Nach Name oder Nummer suchen ¦ Rechercher par nom ou numéro ¦ No Numm oder Nummer sichen ¦ Search by name or number
 Nach Verursacher ¦ Par responsable ¦ No Verursaacher ¦ By cause
@@ -259,7 +259,7 @@ Nationale Nummer ¦ Numéro national ¦ Nationalen Nummer ¦ National number
 Neozoen und Sonstiges ¦ Néozoaires et divers ¦ Neozoen an Soss ¦ Invasive species and other
 Neu einzeichnen ¦ Redessiner ¦ Nei zeechnen ¦ Redraw
 Neu: ¦ Nouveau : ¦ Nei: ¦ New:
-Neue Drückjagd ¦ Nouvelle battue ¦ Nei Dréckjuegd ¦ New driven hunt
+Neue Drückjagd ¦ Nouvelle battue ¦ Nei Klappjuegd ¦ New driven hunt
 Neue Fläche ¦ Nouvelle surface ¦ Nei Fläch ¦ New area
 Neue Gruppe ¦ Nouveau groupe ¦ Nei Grupp ¦ New group
 Neue Kennzahl ¦ Nouvel indicateur ¦ Nei Kennzuel ¦ New metric
@@ -277,8 +277,8 @@ Noch kein Los markiert. ¦ Aucun lot marqué pour l'instant. ¦ Nach kee Lous ma
 Noch kein Plan für ¦ Pas encore de plan pour ¦ Nach kee Plang fir ¦ No plan yet for
 Noch kein Schaden eingetragen. ¦ Aucun dégât saisi pour l'instant. ¦ Nach kee Schued agedroen. ¦ No damage entered yet.
 Noch kein Wildschaden eingetragen. Zeichne unter „Eintragen → Fläche“ ein Feld oder eine Waldparzelle ein und trage dort Schäden ein. Hier siehst du dann die Jahre im Vergleich. ¦ Aucun dégât de gibier saisi. Dessine sous « Ajouter → Surface » un champ ou une parcelle forestière et saisis-y les dégâts. Tu verras ici les années en comparaison. ¦ Nach kee Wëldschued agedroen. Zeechent ënner „Androen → Fläch“ e Feld oder eng Bëschparzell an dréi do Schied an. Hei gesäis du dann d'Joeren am Vergläich. ¦ No game damage entered yet. Under "Add → Area" draw a field or forest plot and enter damage there. Here you will then see the years compared.
-Noch keine Drückjagd. Lege zuerst unter Eintragen → Einrichtung die Posten an (Art „Drückjagdposten“, optional mit Gruppe wie „Linie 1“). Dann erstellst du hier die Jagd, wählst die Posten und trägst die Schützen ein. ¦ Pas encore de battue. Crée d'abord les postes sous Ajouter → Installation (type « Poste de battue », éventuellement avec un groupe comme « Ligne 1 »). Ensuite, crée ici la chasse, choisis les postes et saisis les tireurs. ¦ Nach keng Dréckjuegd. Leet fir d'éischt ënner Androen → Aarichtung d'Posten un (Aart „Dréckjuegdposten“, optional mat Grupp wéi „Linn 1“). Dann erstells du hei d'Juegd, wiels d'Posten a gëss d'Schëtze an. ¦ No driven hunt yet. First create the stands under Add → Facility (type "Driven-hunt stand", optionally with a group such as "Line 1"). Then create the hunt here, choose the stands and enter the shooters.
-Noch keine Einrichtungen eingetragen. Lege zuerst eine Kanzel an. ¦ Aucune installation saisie. Crée d'abord un mirador. ¦ Nach keng Aarichtunge agedroen. Leet fir d'éischt en Hochsëtz un. ¦ No facilities entered yet. Create a high seat first.
+Noch keine Drückjagd. Lege zuerst unter Eintragen → Einrichtung die Posten an (Art „Drückjagdposten“, optional mit Gruppe wie „Linie 1“). Dann erstellst du hier die Jagd, wählst die Posten und trägst die Schützen ein. ¦ Pas encore de battue. Crée d'abord les postes sous Ajouter → Installation (type « Poste de battue », éventuellement avec un groupe comme « Ligne 1 »). Ensuite, crée ici la chasse, choisis les postes et saisis les tireurs. ¦ Nach keng Klappjuegd. Leet fir d'éischt ënner Androen → Aarichtung d'Posten un (Aart „Klappjuegdposten“, optional mat Grupp wéi „Linn 1“). Dann erstells du hei d'Juegd, wiels d'Posten a gëss d'Schëtze an. ¦ No driven hunt yet. First create the stands under Add → Facility (type "Driven-hunt stand", optionally with a group such as "Line 1"). Then create the hunt here, choose the stands and enter the shooters.
+Noch keine Einrichtungen eingetragen. Lege zuerst eine Kanzel an. ¦ Aucune installation saisie. Crée d'abord un mirador. ¦ Nach keng Aarichtunge agedroen. Leet fir d'éischt en Hochsitz un. ¦ No facilities entered yet. Create a high seat first.
 Noch keine Einträge. ¦ Pas encore d'entrées. ¦ Nach keng Androungen. ¦ No entries yet.
 Noch keine Flächen. Tippe auf „+ Fläche“ und zeichne ein Feld oder eine Waldparzelle ein. Die Größe wird berechnet, danach kannst du Wildschäden mit Preis pro ar eintragen. ¦ Pas encore de surfaces. Touche « + Surface » et dessine un champ ou une parcelle forestière. La taille est calculée, puis tu peux saisir les dégâts de gibier avec prix par are. ¦ Nach keng Flächen. Tipp op „+ Fläch“ an zeechent e Feld oder eng Bëschparzell. D'Gréisst gëtt berechent, duerno kanns du Wëldschied mat Präis pro Ar androen. ¦ No areas yet. Tap "+ Area" and draw a field or forest plot. The size is calculated, then you can enter game damage with a price per are.
 Noch keine Gruppen. Tippe auf „+ Gruppe“, wähle Einträge aus und gib einen Namen ein, z. B. „Linie 1“. Du kannst den Namen auch direkt beim Bearbeiten eines Eintrags eintippen. ¦ Pas encore de groupes. Touche « + Groupe », choisis des entrées et saisis un nom, p. ex. « Ligne 1 ». Tu peux aussi saisir le nom directement en modifiant une entrée. ¦ Nach keng Gruppen. Tipp op „+ Grupp“, wiel Androungen aus a gëff en Numm an, z. B. „Linn 1“. Du kanns den Numm och direkt beim Änneren vun enger Androung androen. ¦ No groups yet. Tap "+ Group", select entries and enter a name, e.g. "Line 1". You can also type the name directly when editing an entry.

@@ -4,14 +4,14 @@
 (unterbrochen) ¦ (interrompu) ¦ (ënnerbrach) ¦ (interrupted)
 (wähle oben ein Jahr für ein anderes Jahr) ¦ (choisis une année en haut pour une autre année) ¦ (wiel uewen e Joer fir en anert Joer) ¦ (pick a year above for another year)
 + Abschuss ¦ + Tir ¦ + Ofschoss ¦ + Kill
-+ Ansitz reservieren ¦ + Réserver un affût ¦ + Hochsëtz reservéieren ¦ + Reserve a seat
++ Ansitz reservieren ¦ + Réserver un affût ¦ + Hochsitz reservéieren ¦ + Reserve a seat
 + Fläche ¦ + Surface ¦ + Fläch ¦ + Area
 + Fläche einzeichnen ¦ + Dessiner une surface ¦ + Fläch zeechnen ¦ + Draw area
 + Gruppe ¦ + Groupe ¦ + Grupp ¦ + Group
 + Gruppe erstellen ¦ + Créer un groupe ¦ + Grupp erstellen ¦ + Create group
 + Kennzahl ¦ + Indicateur ¦ + Kennzuel ¦ + Metric
 + Linie ¦ + Ligne ¦ + Linn ¦ + Line
-+ Neue Drückjagd ¦ + Nouvelle battue ¦ + Nei Dréckjuegd ¦ + New driven hunt
++ Neue Drückjagd ¦ + Nouvelle battue ¦ + Nei Klappjuegd ¦ + New driven hunt
 + Neue Fläche ¦ + Nouvelle surface ¦ + Nei Fläch ¦ + New area
 + Posten ¦ + Poste ¦ + Posten ¦ + Stand
 + Schaden eintragen ¦ + Saisir un dégât ¦ + Schued androen ¦ + Record damage
@@ -41,7 +41,7 @@ Abschussplan 2024/2027 (meine Lose) ¦ Plan de tir 2024/2027 (mes lots) ¦ Ofsch
 Abschussplan meiner Lose ¦ Plan de tir de mes lots ¦ Ofschossplang vu menge Lous ¦ Cull plan of my lots
 Abschüsse ¦ Tirs ¦ Ofschëss ¦ Kills
 Abschüsse (Anzahl) ¦ Tirs (nombre) ¦ Ofschëss (Zuel) ¦ Kills (count)
-Abschüsse (gesamt, Wildart, Kanzel, Monat) ¦ Tirs (total, espèce, mirador, mois) ¦ Ofschëss (total, Wëldaart, Hochsëtz, Mount) ¦ Kills (total, species, high seat, month)
+Abschüsse (gesamt, Wildart, Kanzel, Monat) ¦ Tirs (total, espèce, mirador, mois) ¦ Ofschëss (total, Wëldaart, Hochsitz, Mount) ¦ Kills (total, species, high seat, month)
 Abschüsse gesamt ¦ Total des tirs ¦ Ofschëss insgesamt ¦ Total kills
 Abschüsse liegen ¦ Les tirs se trouvent ¦ D'Ofschëss leien ¦ The kills lie
 Abschüsse ohne passendes Geschlecht/Alter konnten nicht zugeordnet werden. ¦ Les tirs sans sexe/âge correspondant n'ont pas pu être attribués. ¦ Ofschëss ouni passend Geschlecht/Alter konnten net zougeuerdent ginn. ¦ Kills without a matching sex/age could not be assigned.
@@ -78,9 +78,9 @@ Anschuss ¦ Lieu du tir ¦ Unschoss ¦ Point of impact
 Anschuss festlegen ¦ Définir le lieu du tir ¦ Unschoss festleeën ¦ Set point of impact
 Anschuss · ¦ Lieu du tir · ¦ Unschoss · ¦ Point of impact ·
 Anschuss: ¦ Lieu du tir : ¦ Unschoss: ¦ Point of impact:
-Ansitz reservieren ¦ Réserver un affût ¦ Hochsëtz reservéieren ¦ Reserve a seat
-Ansitz-Reservierungen ¦ Réservations d'affût ¦ Hochsëtz-Reservatiounen ¦ Seat reservations
-Ansitzbock / Drückjagdstand ¦ Siège d'affût / poste de battue ¦ Ansëtzbock / Dréckjuegdstand ¦ Raised hide / driven-hunt stand
+Ansitz reservieren ¦ Réserver un affût ¦ Hochsitz reservéieren ¦ Reserve a seat
+Ansitz-Reservierungen ¦ Réservations d'affût ¦ Hochsitz-Reservatiounen ¦ Seat reservations
+Ansitzbock / Drückjagdstand ¦ Siège d'affût / poste de battue ¦ Ansëtzbock / Klappjuegdstand ¦ Raised hide / driven-hunt stand
 Anstehende Ansitze ¦ Affûts à venir ¦ Kommend Hochsëtzer ¦ Upcoming sits
 Anzahl ¦ Nombre ¦ Unzuel ¦ Count
 Anzeigen ¦ Afficher ¦ Weisen ¦ Show
@@ -108,7 +108,7 @@ Automatisch suchen ¦ Rechercher automatiquement ¦ Automatesch sichen ¦ Search
 außerhalb deiner Lose und zählt nicht im Plan. ¦ en dehors de tes lots et ne compte pas dans le plan. ¦ ausserhalb vun dengen Lous a zielt net am Plang. ¦ outside your lots and does not count towards the plan.
 Außerhalb des 17.10.2026 bis 31.1.2027 sind nur Pirsch („à l’approche“) und Ansitz („à l’affût“) erlaubt. ¦ En dehors du 17.10.2026 au 31.1.2027, seuls l'approche et l'affût sont autorisés. ¦ Ausserhalb vum 17.10.2026 bis 31.1.2027 sinn nëmmen Pirsch („à l’approche“) an Ansëtz („à l’affût“) erlaabt. ¦ Outside 17.10.2026 to 31.1.2027 only stalking ("à l'approche") and sitting-up ("à l'affût") are allowed.
 Bachtal ¦ Bachtal ¦ Bachtal ¦ Bachtal
-Bauart der Kanzel ¦ Type de mirador ¦ Bauaart vum Hochsëtz ¦ Type of high seat
+Bauart der Kanzel ¦ Type de mirador ¦ Bauaart vum Hochsitz ¦ Type of high seat
 Bearbeiten ¦ Modifier ¦ Änneren ¦ Edit
 Beginn ¦ Début ¦ Ufank ¦ Start
 Beispiel-Jagdlos ¦ Lot de chasse exemple ¦ Beispill-Juegdlous ¦ Example hunting lot
@@ -191,12 +191,12 @@ Dieser Browser kann keine Karten speichern. ¦ Ce navigateur ne peut pas enregis
 Dieses Jagdjahr (ab 1.4.) ¦ Cette année de chasse (dès le 1.4.) ¦ Dëst Juegdjoer (ab 1.4.) ¦ This hunting year (from 1 Apr)
 Dieses Jahr ¦ Cette année ¦ Dëst Joer ¦ This year
 Douglasienkultur ¦ Culture de douglas ¦ Douglasienkultur ¦ Douglas fir plantation
-Drückjagd ¦ Battue ¦ Dréckjuegd ¦ Driven hunt
-Drückjagd bearbeiten ¦ Modifier la battue ¦ Dréckjuegd änneren ¦ Edit driven hunt
-Drückjagdbock 1 ¦ Poste de battue 1 ¦ Dréckjuegdbock 1 ¦ Driven-hunt stand 1
-Drückjagdbock 2 ¦ Poste de battue 2 ¦ Dréckjuegdbock 2 ¦ Driven-hunt stand 2
-Drückjagden ¦ Battues ¦ Dréckjuegden ¦ Driven hunts
-Drückjagdposten ¦ Poste de battue ¦ Dréckjuegdposten ¦ Driven-hunt stand
+Drückjagd ¦ Battue ¦ Klappjuegd ¦ Driven hunt
+Drückjagd bearbeiten ¦ Modifier la battue ¦ Klappjuegd änneren ¦ Edit driven hunt
+Drückjagdbock 1 ¦ Poste de battue 1 ¦ Klappjuegdbock 1 ¦ Driven-hunt stand 1
+Drückjagdbock 2 ¦ Poste de battue 2 ¦ Klappjuegdbock 2 ¦ Driven-hunt stand 2
+Drückjagden ¦ Battues ¦ Klappjuegten ¦ Driven hunts
+Drückjagdposten ¦ Poste de battue ¦ Klappjuegdposten ¦ Driven-hunt stand
 Du bist Administrator dieser Gruppe. ¦ Tu es administrateur de ce groupe. ¦ Du bass Administrateur vun dëser Grupp. ¦ You are an administrator of this group.
 Du bist jetzt in der Gruppe. ¦ Tu fais maintenant partie du groupe. ¦ Du bass elo an der Grupp. ¦ You are now in the group.
 Du bist noch in keiner Gruppe. ¦ Tu n'es encore dans aucun groupe. ¦ Du bass nach an enger Grupp. ¦ You are not in any group yet.
