@@ -25,8 +25,14 @@ open(p,'w',encoding='utf8').write(s)
 PY
 
 npm init -y >/dev/null
-npm i --no-audit --no-fund @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7 @capacitor/filesystem@7 @capacitor/share@7 @capacitor/app@7
+npm i --no-audit --no-fund @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7 @capacitor/filesystem@7 @capacitor/share@7 @capacitor/app@7 @capacitor-community/background-geolocation@1.2.26 @capacitor/local-notifications@7
 npx cap init Revierbuch lu.revierbuch.app --web-dir www
+python3 - <<'PY'
+import json
+c=json.load(open('capacitor.config.json'))
+c.setdefault('android',{})['useLegacyBridge']=True
+json.dump(c,open('capacitor.config.json','w'),indent=2)
+PY
 npx cap add android
 
 # Berechtigungen (Standort, Kamera fuer Fotos, Display an)
@@ -38,6 +44,9 @@ perm='''
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 '''

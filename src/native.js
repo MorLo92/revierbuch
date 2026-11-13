@@ -1,6 +1,6 @@
 /* ---------- Android-App (Capacitor): Dateien speichern, Zurück-Taste ---------- */
 function isNative(){try{return !!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform())}catch(e){return false}}
-function nPlug(n){try{return window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins[n]||null}catch(e){return null}}
+function nPlug(n){try{if(!window.Capacitor)return null;var p=Capacitor.Plugins&&Capacitor.Plugins[n];if(!p&&Capacitor.registerPlugin&&Capacitor.PluginHeaders&&[].some.call(Capacitor.PluginHeaders,function(h){return h.name===n}))p=Capacitor.registerPlugin(n);return p||null}catch(e){return null}}
 function nativeSave(o){
   var fs=nPlug('Filesystem');if(!isNative()||!fs)return null;
   function w(dir){return fs.writeFile({path:'Revierbuch/'+o.filename,data:o.data,directory:dir,encoding:'utf8',recursive:true})}
@@ -22,3 +22,19 @@ function backPress(){
   var a=nPlug('App');if(!isNative()||!a||!a.addListener)return;
   try{a.addListener('backButton',function(){try{backPress()}catch(e){}})}catch(e){}
 })();
+
+/* Track im Hintergrund: Vordergrunddienst mit Benachrichtigung */
+var bgId=null,bgWant=false;
+function trkBg(on){
+  var g=nPlug('BackgroundGeolocation');if(!isNative()||!g)return;
+  bgWant=on;
+  if(!on){if(bgId!=null){var i=bgId;bgId=null;try{g.removeWatcher({id:i})}catch(e){}}return}
+  if(bgId!=null)return;
+  var ln=nPlug('LocalNotifications');
+  Promise.resolve(ln&&ln.requestPermissions?ln.requestPermissions().catch(function(){}):0).then(function(){
+    return g.addWatcher({backgroundTitle:'Aufzeichnung läuft',backgroundMessage:'Revierbuch zeichnet deinen Track auf.',requestPermissions:true,stale:false,distanceFilter:5},function(l,e){
+      if(e){if(e.code==='NOT_AUTHORIZED')toast('Standort im Hintergrund nicht erlaubt: In den Android-Einstellungen für Revierbuch „Immer“ oder „Beim Verwenden der App“ wählen.');return}
+      if(!l||!S.rec)return;
+      S.gps={lat:l.latitude,lon:l.longitude,acc:l.accuracy,t:l.time||Date.now()};S.gpsState='on';trkPoint();
+    })}).then(function(id){if(bgWant&&bgId==null)bgId=id;else if(!bgWant){try{g.removeWatcher({id:id})}catch(e){}}}).catch(function(){});
+}
