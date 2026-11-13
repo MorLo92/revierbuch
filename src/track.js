@@ -46,10 +46,10 @@ function trkGpx(t){
 function trkBox(t){var b=[1e9,1e9,-1e9,-1e9];t.pts.forEach(function(p){b[0]=Math.min(b[0],p[1]);b[1]=Math.min(b[1],p[0]);b[2]=Math.max(b[2],p[1]);b[3]=Math.max(b[3],p[0])});return b}
 function trkCardHtml(){
   var a=trkLoad().slice().sort(function(x,y){return y.t0-x.t0});
-  return '<div class="card"><h2 class="sec">Tracks</h2><p class="hint">Zeichnet deinen Weg per GPS auf, z. B. Pirschgang oder Treiberlinie. Während der Aufzeichnung muss die App geöffnet bleiben, der Bildschirm bleibt dafür an.</p>'+
+  return '<div class="card"><h2 class="sec">Tracks</h2><p class="hint">Zeichnet deinen Weg per GPS auf, z. B. Pirschgang oder Treiberlinie. Während der Aufzeichnung muss die App geöffnet bleiben, der Bildschirm bleibt dafür an. Die Tracks bleiben hier in der App gespeichert. Mit „GPX speichern“ erzeugst du eine Datei zum Weitergeben.</p>'+
     '<div class="btnrow"><button class="btn primary" id="tkStart" type="button">'+(S.rec?'Aufzeichnung beenden':'Aufzeichnung starten')+'</button></div>'+
     (a.length?'<div class="rows">'+a.map(function(t){return '<div class="lotrow" style="flex-wrap:wrap"><span style="flex:1;min-width:140px"><b>'+esc(t.name)+'</b><br><small>'+new Date(t.t0*1000).toLocaleDateString('de-LU')+' · '+trkKm(t.dist)+' · '+trkDur(t)+'</small></span>'+
-      '<button class="btn sm" data-tshow="'+esc(t.id)+'" type="button">'+(S.trkShow&&S.trkShow[t.id]?'Ausblenden':'Anzeigen')+'</button><button class="btn sm" data-tname="'+esc(t.id)+'" type="button">Name</button><button class="btn sm" data-tgpx="'+esc(t.id)+'" type="button">GPX</button><button class="btn sm danger" data-tdel="'+esc(t.id)+'" type="button">Löschen</button></div>'}).join('')+'</div>':'<p class="hint">Noch keine Tracks.</p>')+'</div>';
+      '<button class="btn sm" data-tshow="'+esc(t.id)+'" type="button">'+(S.trkShow&&S.trkShow[t.id]?'Ausblenden':'Anzeigen')+'</button><button class="btn sm" data-tname="'+esc(t.id)+'" type="button">Name</button><button class="btn sm" data-tgpx="'+esc(t.id)+'" type="button">GPX speichern</button><button class="btn sm danger" data-tdel="'+esc(t.id)+'" type="button">Löschen</button></div>'}).join('')+'</div>':'<p class="hint">Noch keine Tracks.</p>')+'</div>';
 }
 function bindTracks(){
   var s=$('#tkStart');if(s)s.onclick=function(){S.rec?trkStopSheet():trkStart()};

@@ -19,3 +19,9 @@ Los geht’s ¦ C'est parti ¦ Lass geet’s ¦ Let's go
 Einführung ¦ Introduction ¦ Aféierung ¦ Introduction
 Eine kurze Tour durch die wichtigsten Funktionen. ¦ Une courte visite des fonctions principales. ¦ Eng kuerz Tour duerch déi wichtegst Funktiounen. ¦ A short tour of the main features.
 Einführung ansehen ¦ Voir l'introduction ¦ Aféierung kucken ¦ View introduction
+
+Foto aufnehmen ¦ Prendre une photo ¦ Foto maachen ¦ Take photo
+GPX speichern ¦ Enregistrer GPX ¦ GPX späicheren ¦ Save GPX
+Gespeichert unter Dokumente/Revierbuch ¦ Enregistré dans Documents/Revierbuch ¦ Gespäichert ënner Dokumenter/Revierbuch ¦ Saved in Documents/Revierbuch
+Datei speichern oder senden ¦ Enregistrer ou envoyer le fichier ¦ Datei späicheren oder schécken ¦ Save or send file
+Datei bereit: im Menü „Speichern“ oder „Senden“ wählen ¦ Fichier prêt : choisis « Enregistrer » ou « Envoyer » dans le menu ¦ Datei prett: am Menü „Späicheren“ oder „Schécken“ wielen ¦ File ready: choose "Save" or "Send" in the menu

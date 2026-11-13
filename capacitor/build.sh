@@ -25,7 +25,7 @@ open(p,'w',encoding='utf8').write(s)
 PY
 
 npm init -y >/dev/null
-npm i --no-audit --no-fund @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
+npm i --no-audit --no-fund @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7 @capacitor/filesystem@7 @capacitor/share@7 @capacitor/app@7
 npx cap init Revierbuch lu.revierbuch.app --web-dir www
 npx cap add android
 
