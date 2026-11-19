@@ -1,7 +1,7 @@
 import re, os, shutil, json
 from PIL import Image, ImageDraw
 
-SP = '/tmp/claude-0/-home-claude/8fbd0610-666a-541e-8d22-64bb06f66a70/scratchpad'
+SP = os.path.dirname(os.path.abspath(__file__))
 OUT = SP + '/pwa'
 src = open(SP + '/revierbuch.html', encoding='utf8').read()
 
@@ -553,7 +553,7 @@ sub(".gbtn{display:flex;gap:6px;flex-wrap:wrap;width:100%}",
     ".pick{display:flex;align-items:center;gap:10px;cursor:pointer}.pick input{width:22px;height:22px;flex:none}")
 
 # ---------- Drückjagd-Planung ----------
-sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + open('start.js',encoding='utf8').read() + open('recent.js',encoding='utf8').read() + open('tabs.js',encoding='utf8').read() + open('legend.js',encoding='utf8').read() + open('speciesico.js',encoding='utf8').read() + open('sight.js',encoding='utf8').read() + open('account.js',encoding='utf8').read() + open('groups.js',encoding='utf8').read() + open('welcome.js',encoding='utf8').read() + open('native.js',encoding='utf8').read() + open('i18n.js',encoding='utf8').read() + 'function loop(){')
+sub('function loop(){', open('ansitz.js',encoding='utf8').read() + open('hunt.js',encoding='utf8').read() + open('plan.js',encoding='utf8').read() + open('track.js',encoding='utf8').read() + open('parcel.js',encoding='utf8').read() + open('lotplan.js',encoding='utf8').read() + open('seasons.js',encoding='utf8').read() + open('statlayout.js',encoding='utf8').read() + open('start.js',encoding='utf8').read() + open('recent.js',encoding='utf8').read() + open('tabs.js',encoding='utf8').read() + open('legend.js',encoding='utf8').read() + open('speciesico.js',encoding='utf8').read() + open('sight.js',encoding='utf8').read() + open('account.js',encoding='utf8').read() + open('groups.js',encoding='utf8').read() + open('welcome.js',encoding='utf8').read() + open('theme.js',encoding='utf8').read() + open('native.js',encoding='utf8').read() + open('i18n.js',encoding='utf8').read() + 'function loop(){')
 sub(".tabs{display:grid;grid-template-columns:repeat(4,1fr);", ".tabs{display:grid;grid-template-columns:repeat(5,1fr);")
 sub(".pick input{width:22px;height:22px;flex:none}", ".pick input{width:22px;height:22px;flex:none}\n.tabs button{letter-spacing:.03em!important;padding-inline:2px!important}")
 sub('<section class="view" id="viewStats" hidden>', '<section class="view" id="viewHunt" hidden><div class="pad gx" id="huntBody"></div></section>\n    <section class="view" id="viewStats" hidden>')
@@ -694,7 +694,7 @@ sub("""<dt>Geschlecht</dt><dd>'+SEX[o.sex]+'</dd>'+(o.kanzelId?'<dt>Von</dt><dd>
 # Konto und Gruppen
 sub('<span class="pill" id="stStore"><i></i><span>Lade …</span></span>', '<button class="pill" id="stStore" type="button" data-accopen aria-label="Konto und Gruppen"><i></i><span>Lade …</span></button>')
 sub("st.title=S.mode==='cloud'?'Deine Daten liegen privat in deinem Konto.':'Die Daten bleiben nur in diesem Browser.';", "st.title=S.mode==='cloud'?'Deine Daten liegen privat in deinem Konto.':'Die Daten bleiben nur in diesem Browser.';accPill(st);")
-sub("""html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""", """html+=welCardHtml();html+=langCardHtml();html+=accCardHtml();html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""")
+sub("""html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""", """html+=welCardHtml();html+=langCardHtml();html+=themeCardHtml();html+=accCardHtml();html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""")
 
 # Tab Gruppen
 sub('.attr:empty{display:none}\n', '.attr:empty{display:none}\n#tabs button{min-width:0;overflow:hidden;font-size:clamp(7px,2.2vw,12px)!important;letter-spacing:.01em!important;padding-inline:1px!important}\n')
@@ -710,6 +710,11 @@ sub('<input type="file" id="f-phin" accept="image/*" multiple hidden><button typ
 sub("var inp=$('#f-phin'),add=$('#f-phadd');add.onclick=function(){inp.click()};\n  inp.onchange=function(){",
     "var inp=$('#f-phin'),add=$('#f-phadd'),cam=$('#f-phcam');add.onclick=function(){inp.click()};$('#f-phcb').onclick=function(){cam.click()};\n  cam.onchange=function(){onPh(cam)};inp.onchange=function(){onPh(inp)};\n  function onPh(inp){")
 
+# ---------- Neues Design (flach, Charter + Inter, Hell und Dunkel) ----------
+_dsg=open('fonts.css',encoding='utf8').read()+open('design.css',encoding='utf8').read()
+sub('</style>', '</style>\n<style id="design">'+_dsg+'</style>\n<script>try{var _t=localStorage.getItem("revierbuch.theme");if(_t==="light"||_t==="dark")document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>')
+sub('family=Atkinson+Hyperlegible:wght@400;700&family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono','family=IBM+Plex+Mono')
+
 # Sprachen
 src = src.replace("'de-LU'", 'LOC')
 sub("'use strict';", "'use strict';\n" + open(SP + '/i18n_head.js', encoding='utf8').read())
@@ -722,7 +727,7 @@ assert 'claude:viewport' not in head_part
 
 html = ('<!doctype html>\n<html lang="de">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
-        '<meta name="theme-color" content="#2D5A43">\n<link rel="manifest" href="manifest.webmanifest">\n'
+        '<meta name="theme-color" content="#1E3A2C" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0B100D" media="(prefers-color-scheme: dark)">\n<link rel="manifest" href="manifest.webmanifest">\n'
         '<link rel="icon" href="icon-192.png" type="image/png">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
         '<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">\n'
         '<meta name="apple-mobile-web-app-title" content="Revierbuch"><meta name="apple-mobile-web-app-status-bar-style" content="default">\n'
@@ -732,7 +737,7 @@ html = ('<!doctype html>\n<html lang="de">\n<head>\n<meta charset="utf-8">\n'
 # (assembled below to keep the string simple)
 doc = ('<!doctype html>\n<html lang="de">\n<head>\n<meta charset="utf-8">\n'
        '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
-       '<meta name="theme-color" content="#2D5A43">\n<link rel="manifest" href="manifest.webmanifest">\n'
+       '<meta name="theme-color" content="#1E3A2C" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0B100D" media="(prefers-color-scheme: dark)">\n<link rel="manifest" href="manifest.webmanifest">\n'
        '<link rel="icon" href="icon-192.png" type="image/png">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
        '<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">\n'
        '<meta name="apple-mobile-web-app-title" content="Revierbuch"><meta name="apple-mobile-web-app-status-bar-style" content="default">\n'
@@ -749,7 +754,7 @@ json.dump({
     'name': 'Revierbuch', 'short_name': 'Revierbuch', 'lang': 'de',
     'description': 'Jagdrevier-Verwaltung mit Karte, Abschüssen und Statistik',
     'start_url': './', 'scope': './', 'display': 'standalone', 'orientation': 'portrait',
-    'background_color': '#EDEFE8', 'theme_color': '#2D5A43',
+    'background_color': '#EDEFE8', 'theme_color': '#1E3A2C',
     'icons': [
         {'src': 'icon-192.png', 'sizes': '192x192', 'type': 'image/png', 'purpose': 'any'},
         {'src': 'icon-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'any'},
@@ -758,7 +763,7 @@ json.dump({
 
 # ---------- service worker ----------
 open(OUT + '/sw.js', 'w', encoding='utf8').write(r'''/* Revierbuch service worker: app shell offline, map tiles cached as they are viewed */
-const VERSION = 'v43';
+const VERSION = 'v44';
 const SHELL = 'shell-' + VERSION, TILES = 'tiles-v1', FONTS = 'fonts-v1';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'lots-lu.geojson', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 const MAX_TILES = 6000;

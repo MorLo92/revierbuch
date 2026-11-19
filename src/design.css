@@ -1,0 +1,46 @@
+/* Neues Design: flach und ruhig. Hell = Waldgrün mit dunkler Kopfzeile, Dunkel = tiefes Grün-Schwarz.
+   Schrift: Charter (Überschriften), Inter (Text). Überschreibt nur Farben, Schrift und Formen der Basis. */
+:root{
+  --bg:#F6F7F4;--surface:#FFFFFF;--ink:#17201B;--ink-2:#5F6B64;--line:#DFE3DC;--accent:#2D5A43;--accent-ink:#FFFFFF;--map:#E7ECE1;--grid:#D7DFD0;
+  --bar:#1E3A2C;--bar-ink:#F1F6F2;--bar-ink2:#9DBBA9;--bar-on:#FFFFFF;--bar-mark:#8FD0AB;--bar-pill:rgba(255,255,255,.12);
+  --font-display:Charter,"Bitstream Charter","DejaVu Serif",Georgia,serif;
+  --font-body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1512;--surface:#161E19;--ink:#E6ECE4;--ink-2:#93A097;--line:#26312B;--accent:#6FBF92;--accent-ink:#08140D;--map:#0C120F;--grid:#18231C;
+  --bar:#0B100D;--bar-ink:#E6ECE4;--bar-ink2:#7D8B82;--bar-on:#E6ECE4;--bar-mark:#6FBF92;--bar-pill:rgba(255,255,255,.08)}}
+:root[data-theme="dark"]{
+  --bg:#0F1512;--surface:#161E19;--ink:#E6ECE4;--ink-2:#93A097;--line:#26312B;--accent:#6FBF92;--accent-ink:#08140D;--map:#0C120F;--grid:#18231C;
+  --bar:#0B100D;--bar-ink:#E6ECE4;--bar-ink2:#7D8B82;--bar-on:#E6ECE4;--bar-mark:#6FBF92;--bar-pill:rgba(255,255,255,.08)}
+.pad{gap:24px}
+.top{min-height:48px;padding-block:6px;background:var(--bar);border-bottom:0}
+.brand h1{font:700 23px/1 var(--font-display);letter-spacing:.02em;text-transform:none;color:var(--bar-ink)}
+.brand small{font-size:11.5px;color:var(--bar-ink);opacity:.75}
+.pill{border-radius:4px;min-height:26px;font-size:11.5px;background:var(--bar-pill);border-color:transparent;color:var(--bar-ink)}
+.pill i{background:var(--bar-ink2)}.pill.ok i{background:var(--bar-mark)}
+h2.sec{font:700 21px/1.1 var(--font-display);letter-spacing:0;text-transform:none;color:var(--ink);padding-bottom:6px;border-bottom:1px solid var(--line)}
+.card{background:transparent;border:0;border-radius:0;padding:0;gap:10px;box-shadow:none}
+.card .btn[data-q]{background:var(--surface)}
+.btn{border-radius:6px;min-height:44px;font-weight:600}
+.btn.primary{font-weight:700}
+.btn.sm{border-radius:6px}
+.rows{gap:0}
+.row{border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;padding:12px 2px}
+.row:last-child{border-bottom:0}
+.seg button{border-radius:6px;min-height:40px;font-size:14px}
+input[type=text],input[type=number],input[type=search],input[type=datetime-local],select,textarea{border-radius:6px;background:var(--surface)}
+.lbl{font:700 11px/1 var(--font-body);letter-spacing:.12em}
+.tabs{background:var(--bar);border-top:0}
+.tabs button{font:700 11px/1 var(--font-display);letter-spacing:.02em;text-transform:none;border-top:2px solid transparent;min-height:54px;color:var(--bar-ink2)}
+.tabs button[aria-current="page"]{color:var(--bar-on);border-top-color:var(--bar-mark)}
+.chip{border-radius:6px;box-shadow:none}
+.fab{border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.25);font:700 15px/1 var(--font-display);letter-spacing:.03em}
+.rb{border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.sbody h2{font:700 24px/1.1 var(--font-display);letter-spacing:0;text-transform:none}
+#sheet{border-radius:12px 12px 0 0}
+.big{font:700 52px/1 var(--font-display);letter-spacing:0}
+@media (max-width:430px){
+  .status{flex-direction:column;gap:3px;align-items:flex-end}
+  .pill{min-height:20px;padding:1px 8px;font-size:10.5px}
+  .brand h1{white-space:nowrap}
+}

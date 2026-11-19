@@ -25,3 +25,8 @@ GPX speichern ¦ Enregistrer GPX ¦ GPX späicheren ¦ Save GPX
 Gespeichert unter Dokumente/Revierbuch ¦ Enregistré dans Documents/Revierbuch ¦ Gespäichert ënner Dokumenter/Revierbuch ¦ Saved in Documents/Revierbuch
 Datei speichern oder senden ¦ Enregistrer ou envoyer le fichier ¦ Datei späicheren oder schécken ¦ Save or send file
 Datei bereit: im Menü „Speichern“ oder „Senden“ wählen ¦ Fichier prêt : choisis « Enregistrer » ou « Envoyer » dans le menu ¦ Datei prett: am Menü „Späicheren“ oder „Schécken“ wielen ¦ File ready: choose "Save" or "Send" in the menu
+Darstellung ¦ Affichage ¦ Duerstellung ¦ Appearance
+Automatisch folgt der Einstellung deines Handys. ¦ Automatique suit le réglage de ton téléphone. ¦ Automatesch follegt der Astellung vun denger Handy. ¦ Automatic follows your phone's setting.
+Automatisch ¦ Automatique ¦ Automatesch ¦ Automatic
+Hell ¦ Clair ¦ Hell ¦ Light
+Dunkel ¦ Sombre ¦ Donkel ¦ Dark
