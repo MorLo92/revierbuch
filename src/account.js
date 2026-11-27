@@ -1,6 +1,7 @@
 /* ---------- Konto und Gruppen (Supabase, ohne Zusatzbibliothek) ---------- */
 var SB={url:'https://vwcfcuwnevbgqeggkfgo.supabase.co',key:'sb_publishable_0ZAiISZ7mC8T6krAQwYi5g_FRbvKhF5'};
-var ACC={sess:null,name:'',groups:null,cur:null};
+var ACC={sess:null,name:'',groups:null,cur:null,gen:0};
+var _accCs=closeSheet;closeSheet=function(){ACC.gen++;_accCs.apply(this,arguments);try{if(S.tab==='groups'&&typeof GTAB!=='undefined'){GTAB.t=0;renderGroups()}}catch(_){}};
 var PRIV_VER='1',PRIV_CONTACT={name:'',mail:''};
 var ACC_CAT=[['installations','Einrichtungen'],['reservations','Reservierungen'],['kills','Abschüsse'],['sightings','Sichtungen'],['hunts','Drückjagden'],['plan','Abschussplan'],['parcels','Flächen'],['damages','Wildschäden'],['tracks','Tracks'],['photos','Fotos']];
 var ACC_APPROX=['kills','sightings'];
@@ -12,7 +13,10 @@ function accSaveSess(){try{if(ACC.sess)localStorage.setItem('revierbuch.sess',JS
 function accSetSess(r){ACC.sess={access:r.access_token,refresh:r.refresh_token,exp:Date.now()+(r.expires_in||3600)*1000-30000,uid:r.user&&r.user.id,email:r.user&&r.user.email};accSaveSess()}
 function accMsg(e){
   var m=(e&&e.message)||'';
-  if(e instanceof TypeError||/Failed to fetch|NetworkError|Load failed/i.test(m))return 'Keine Verbindung. Bitte später noch einmal versuchen.';
+  if(e instanceof TypeError||(e&&e.name==='AbortError')||/Failed to fetch|NetworkError|Load failed|aborted/i.test(m))return 'Keine Verbindung. Bitte später noch einmal versuchen.';
+  if(/JWT expired|Invalid Refresh Token|Refresh Token Not Found/i.test(m))return 'Die Anmeldung ist abgelaufen. Bitte neu anmelden.';
+  if(/duplicate key|already exists/i.test(m))return 'Diesen Namen gibt es schon.';
+  if(/^(Internal Server Error|Service Unavailable|Bad Gateway|Gateway Time-?out)/i.test(m)||/^Fehler 5\d\d$/.test(m))return 'Der Server antwortet gerade nicht richtig. Bitte später noch einmal versuchen.';
   if(/Invalid login credentials/i.test(m))return 'E-Mail oder Passwort stimmt nicht.';
   if(/already registered|already been registered/i.test(m))return 'Diese E-Mail ist bereits registriert.';
   if(/not confirmed/i.test(m))return 'Bitte zuerst den Link in der Bestätigungs-Mail öffnen.';
@@ -25,19 +29,28 @@ function sbRaw(path,opt,token){
   opt=opt||{};var h={apikey:SB.key,'Content-Type':'application/json'};
   if(token)h.Authorization='Bearer '+token;
   Object.keys(opt.headers||{}).forEach(function(k){h[k]=opt.headers[k]});
-  return fetch(SB.url+path,{method:opt.method||'GET',headers:h,body:opt.body!=null?JSON.stringify(opt.body):undefined}).then(function(r){
+  var mt=opt.method||'GET',ac=typeof AbortController!=='undefined'?new AbortController():null,tm=ac?setTimeout(function(){ac.abort()},20000):0;
+  if(token&&(mt==='PATCH'||mt==='DELETE')&&!h.Prefer)h.Prefer='return=representation';
+  return fetch(SB.url+path,{method:mt,headers:h,body:opt.body!=null?JSON.stringify(opt.body):undefined,signal:ac?ac.signal:undefined}).then(function(r){clearTimeout(tm);
     return r.text().then(function(t){var j=null;try{j=t?JSON.parse(t):null}catch(_){}
       if(!r.ok){var er=new Error((j&&(j.message||j.msg||j.error_description||j.error))||('Fehler '+r.status));er.status=r.status;er.code=j&&j.code;throw er}
-      return j})});
+      if(token&&(mt==='PATCH'||mt==='DELETE')&&h.Prefer==='return=representation'&&Array.isArray(j)&&!j.length){var e2=new Error('Keine Berechtigung oder nicht mehr vorhanden.');e2.status=403;e2.noperm=true;throw e2}
+      return j})},function(e){clearTimeout(tm);throw e});
 }
 function accFresh(){
   if(!ACC.sess)return Promise.reject(new Error('Nicht angemeldet'));
   if(ACC.sess.exp>Date.now())return Promise.resolve();
-  return sbRaw('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:ACC.sess.refresh}}).then(accSetSess,function(e){
-    if(e.status>=400&&e.status<500){ACC.sess=null;accSaveSess();renderHeader()}
+  if(ACC._rf)return ACC._rf;
+  ACC._rf=sbRaw('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:ACC.sess.refresh}}).then(function(r){ACC._rf=null;accSetSess(r)},function(e){
+    ACC._rf=null;
+    if(e.status===400||e.status===401||e.status===403){ACC.sess=null;ACC.groups=null;accSaveSess();renderHeader()}
     throw e});
+  return ACC._rf;
 }
-function sbApi(path,opt){return accFresh().then(function(){return sbRaw(path,opt,ACC.sess.access)})}
+function sbApi(path,opt,_re){return accFresh().then(function(){return sbRaw(path,opt,ACC.sess.access)}).catch(function(e){
+  if(e.status===401&&!_re&&ACC.sess){ACC.sess.exp=0;return sbApi(path,opt,true)}
+  if(e.status===401&&_re){ACC.sess=null;ACC.groups=null;accSaveSess();renderHeader();e.message='JWT expired'}
+  throw e})}
 function sbq(path){return sbApi('/rest/v1/'+path)}
 function sbRpc(fn,args){return sbApi('/rest/v1/rpc/'+fn,{method:'POST',body:args||{}})}
 function accUid(){return ACC.sess&&ACC.sess.uid}
@@ -57,12 +70,12 @@ document.addEventListener('click',function(e){if(e.target.closest('[data-accopen
 function accShell(title,body){openSheet('<h2>'+esc(title)+'</h2>'+body)}
 function accLoading(t){accShell(t||'Konto','<p class="hint">Lade …</p>')}
 function accErrView(e,back){
-  accShell('Fehler','<p class="warnbox">'+esc(accMsg(e))+'</p><div class="btnrow"><button class="btn primary" type="button" data-acc="'+(back||'home')+'">Noch einmal</button><button class="btn" type="button" data-acc="close">Schließen</button></div>');
+  accShell('Fehler','<p class="warnbox">'+esc(accMsg(e))+'</p><div class="btnrow"><button class="btn primary" type="button" data-acc="'+(ACC.sess?(back||'home'):'home')+'">'+(ACC.sess?'Noch einmal':'Neu anmelden')+'</button><button class="btn" type="button" data-acc="close">Schließen</button></div>');
 }
 function accSheet(){
   if(!ACC.sess){accAuthView('login');return}
-  accLoading();
-  accLoadAll().then(function(ok){if(ok)accHome()},function(e){accErrView(e,'home')});
+  accLoading();var g0=ACC.gen;
+  accLoadAll().then(function(ok){if(g0===ACC.gen&&ok)accHome()},function(e){if(g0===ACC.gen)accErrView(e,'home')});
 }
 function accAuthView(mode,msg,mail){
   var reg=mode==='reg';
@@ -97,12 +110,12 @@ function accPrivacy(){
    '<div class="btnrow"><button class="btn primary" type="button" data-acc="consent" style="flex:2">Akzeptieren</button><button class="btn" type="button" data-acc="logout" style="flex:1">Abmelden</button></div>');
 }
 
-function accLoadAll(){
+function accLoadAll(quiet){
   var uid=accUid();
   return Promise.all([sbq('profiles?select=display_name&id=eq.'+uid),sbq('consents?select=doc_version&doc_version=eq.'+PRIV_VER)]).then(function(r){
     ACC.name=(r[0][0]&&r[0][0].display_name)||'';try{localStorage.setItem('revierbuch.accname',ACC.name)}catch(_){}
     renderHeader();
-    if(!r[1].length){accPrivacy();return false}
+    if(!r[1].length){if(!quiet)accPrivacy();return false}
     return accLoadGroups().then(function(){return true});
   });
 }
@@ -120,7 +133,7 @@ function accLoadGroups(){
   });
 }
 function lotSort(a,b){return (parseInt(a,10)||0)-(parseInt(b,10)||0)||String(a).localeCompare(String(b))}
-function lotChip(l){return '<span class="pill'+(l.approved?'':' busy')+'" title="'+(l.approved?'aktiv':'wartet auf Freigabe')+'"><i></i><span>Los '+esc(l.lot_id)+(l.approved?'':' · wartet')+'</span></span>'}
+function lotChip(l){return '<span class="lchip'+(l.approved?'':' wait')+'" title="'+(l.approved?'aktiv':'wartet auf Freigabe')+'"><span>Los '+esc(l.lot_id)+'</span>'+(l.approved?'':'<small>wartet</small>')+'</span>'}
 function accHome(){
   var gs=ACC.groups||[];
   accShell('Konto und Gruppen',
@@ -152,7 +165,7 @@ function permSel(role,cat,val){
   return '<label class="lgrow" style="min-height:40px;gap:8px"><span class="tx">'+esc(ACC_CAT.filter(function(c){return c[0]===cat})[0][1])+'</span><select data-acc-perm="'+esc(role)+'" data-cat="'+cat+'" style="flex:none;min-width:110px">'+opts.map(function(o){return '<option value="'+o+'"'+((val||'none')===o?' selected':'')+'>'+ACC_LVL[o]+'</option>'}).join('')+'</select></label>';
 }
 function accGroup(gid){
-  ACC.cur=gid;accLoading('Gruppe');
+  ACC.cur=gid;accLoading('Gruppe');var g0=ACC.gen;
   var g=(ACC.groups||[]).filter(function(x){return x.id===gid})[0];if(!g){accHome();return}
   return Promise.all([
     sbq('group_roles?select=id,name,perms&group_id=eq.'+gid+'&order=name'),
@@ -164,9 +177,9 @@ function accGroup(gid){
     var ids=r[1].map(function(m){return m.user_id});
     return sbq('profiles?select=id,display_name&id='+inList(ids)).then(function(pf){
       ACC.det={g:g,roles:r[0],members:r[1],lots:r[2].sort(function(a,b){return lotSort(a.lot_id,b.lot_id)}),invites:r[3],reqs:r[4],names:{}};
-      pf.forEach(function(p){ACC.det.names[p.id]=p.display_name});accGroupView();
+      pf.forEach(function(p){ACC.det.names[p.id]=p.display_name});if(g0===ACC.gen)accGroupView();
     });
-  }).catch(function(e){accErrView(e,'home')});
+  }).catch(function(e){if(g0===ACC.gen)accErrView(e,'home')});
 }
 function accGroupView(msg,newCode){
   var d=ACC.det,g=d.g,uid=accUid(),adm=g.admin;
@@ -178,9 +191,9 @@ function accGroupView(msg,newCode){
   var rq=d.reqs.filter(function(q){return q.group_id!==g.id&&d.lots.some(function(l){return l.approved&&l.lot_id===q.lot_id})});
   if(rq.length)h+='<h3 style="margin:14px 0 6px">Anfragen anderer Gruppen</h3><div class="rows">'+rq.map(function(q){return '<div class="lotrow" style="flex-wrap:wrap"><span style="flex:1;min-width:150px"><b>'+esc(q.group_name)+'</b><br><small>möchte Los '+esc(q.lot_id)+(q.requested_by?' · '+esc(q.requested_by):'')+'</small></span><button class="btn sm primary" type="button" data-acc="approve" data-g="'+esc(q.group_id)+'" data-v="'+esc(q.lot_id)+'">Freigeben</button><button class="btn sm danger" type="button" data-acc="reject" data-g="'+esc(q.group_id)+'" data-v="'+esc(q.lot_id)+'">Ablehnen</button></div>'}).join('')+'</div>';
   h+='<h3 style="margin:14px 0 6px">Mitglieder ('+d.members.length+')</h3><div class="rows">'+d.members.map(function(m){
-    var me=m.user_id===uid,val=m.is_admin?'admin':(m.role_id||'');
+    var me=m.user_id===uid,val=m.is_admin?'admin':(m.role_id||''),noRole=!val;
     return '<div class="lotrow" style="flex-wrap:wrap"><span style="flex:1;min-width:130px"><b>'+esc(d.names[m.user_id]||'Mitglied')+'</b>'+(me?' <small>(du)</small>':'')+'</span>'+
-      (adm?'<select data-acc-mrole="'+esc(m.user_id)+'" style="flex:none;min-width:130px"><option value="admin"'+(val==='admin'?' selected':'')+'>Administrator</option>'+d.roles.map(function(r){return '<option value="'+esc(r.id)+'"'+(val===r.id?' selected':'')+'>'+esc(r.name)+'</option>'}).join('')+'</select>'+(me?'':'<button class="btn sm danger" type="button" data-acc="rmmember" data-v="'+esc(m.user_id)+'">Entfernen</button>'):'<small>'+(m.is_admin?'Administrator':esc(roleName(m.role_id)))+'</small>')+'</div>';
+      (adm?'<select data-acc-mrole="'+esc(m.user_id)+'" style="flex:none;min-width:130px">'+(noRole?'<option value="" selected disabled>ohne Rolle</option>':'')+'<option value="admin"'+(val==='admin'?' selected':'')+'>Administrator</option>'+d.roles.map(function(r){return '<option value="'+esc(r.id)+'"'+(val===r.id?' selected':'')+'>'+esc(r.name)+'</option>'}).join('')+'</select>'+(me?'':'<button class="btn sm danger" type="button" data-acc="rmmember" data-v="'+esc(m.user_id)+'">Entfernen</button>'):'<small>'+(m.is_admin?'Administrator':esc(roleName(m.role_id)))+'</small>')+'</div>';
   }).join('')+'</div>';
   if(adm){
     h+='<h3 style="margin:14px 0 6px">Rollen und Rechte</h3><p class="hint">Lege pro Rolle fest, was die Mitglieder sehen oder eintragen dürfen. „Ungefähr“ zeigt Positionen nur auf etwa 100 m gerundet. Administratoren dürfen alles.</p>';
@@ -204,9 +217,9 @@ function accGroupView(msg,newCode){
 /* ---------- Aktionen ---------- */
 function accBusy(b,on){if(b){b.disabled=!!on}}
 function accReload(){return accLoadGroups().then(function(){return accGroup(ACC.cur)})}
-function accRun(b,p,okFn,failFn){accBusy(b,true);return p.then(function(r){accBusy(b,false);if(okFn)okFn(r)},function(e){accBusy(b,false);if(failFn)failFn(e);else accNote(accMsg(e))})}
-function confirm2(b,txt){if(b.dataset.s!=='1'){b.dataset.s='1';b.dataset.t=b.textContent;b.textContent=txt||'Wirklich?';setTimeout(function(){if(b.isConnected){b.dataset.s='';b.textContent=b.dataset.t}},3500);return false}return true}
-function lotList(str){return String(str||'').split(/[^0-9]+/).filter(Boolean).map(function(x){return String(parseInt(x,10))}).filter(function(x,i,a){return x!=='0'&&x!=='NaN'&&a.indexOf(x)===i})}
+function accRun(b,p,okFn,failFn){accBusy(b,true);return p.then(function(r){accBusy(b,false);if(okFn)okFn(r)},function(e){accBusy(b,false);if(failFn)failFn(e);else if(e&&e.noperm){accLoadGroups().then(function(){return accGroup(ACC.cur)}).then(function(){accNote(accMsg(e))},function(){})}else accNote(accMsg(e))})}
+function confirm2(b,txt){if(b.dataset.s==='1'&&Date.now()-(+b.dataset.at||0)<700)return false;if(b.dataset.s!=='1'){b.dataset.s='1';b.dataset.at=Date.now();b.dataset.t=b.textContent;b.textContent=txt||'Wirklich?';setTimeout(function(){if(b.isConnected){b.dataset.s='';b.textContent=b.dataset.t}},3500);return false}return true}
+function lotList(str){return String(str||'').split(/[^0-9]+/).filter(function(x){return x&&x.length<=6}).map(function(x){return String(parseInt(x,10))}).filter(function(x,i,a){return x!=='0'&&x!=='NaN'&&x.length<=6&&a.indexOf(x)===i})}
 
 $('#sheetBody').addEventListener('click',function(e){
   var b=e.target.closest('[data-acc]');if(!b||b.disabled)return;
@@ -221,7 +234,8 @@ $('#sheetBody').addEventListener('click',function(e){
     if(a==='signup'&&!nm){accNote('Bitte einen Anzeigenamen eingeben.');return}
     accBusy(b,true);accNote('');
     var req=a==='login'?sbRaw('/auth/v1/token?grant_type=password',{method:'POST',body:{email:mail,password:pw}}):sbRaw('/auth/v1/signup',{method:'POST',body:{email:mail,password:pw,data:{display_name:nm}}});
-    req.then(function(r){
+    var g1=ACC.gen;req.then(function(r){
+      if(g1!==ACC.gen)return;
       if(!r||!r.access_token){accBusy(b,false);accAuthView('login','Wir haben dir eine Bestätigungs-Mail geschickt. Öffne den Link darin und melde dich danach an.',mail);return}
       accSetSess(r);accSheet();
     }).catch(function(er){accBusy(b,false);accNote(accMsg(er))});
@@ -252,11 +266,11 @@ $('#sheetBody').addEventListener('click',function(e){
     lots=lots.filter(function(x,i,ar){return ar.indexOf(x)===i});
     if(!gn){accNote('Bitte einen Namen eingeben.');return}
     if(!lots.length){accNote('Bitte mindestens ein Los angeben.');return}
-    accRun(b,sbRpc('create_group',{p_name:gn,p_lots:lots}),function(id){accLoadGroups().then(function(){accGroup(id)})});
+    var g2=ACC.gen;accRun(b,sbRpc('create_group',{p_name:gn,p_lots:lots}),function(id){accLoadGroups().then(function(){if(g2===ACC.gen)accGroup(id)})});
   }
   else if(a==='join'){
     var code=val('#ac-code').toLowerCase().replace(/[^a-z0-9]/g,'');if(!code){accNote('Bitte den Einladungscode eingeben.');return}
-    accRun(b,sbRpc('accept_invite',{p_code:code}),function(id){accLoadGroups().then(function(){toast('Du bist jetzt in der Gruppe.');accGroup(id)})});
+    var g3=ACC.gen;accRun(b,sbRpc('accept_invite',{p_code:code}),function(id){accLoadGroups().then(function(){toast('Du bist jetzt in der Gruppe.');if(g3===ACC.gen)accGroup(id)})});
   }
   else if(a==='group'){accGroup(v)}
   else if(a==='addlot'){
@@ -289,7 +303,7 @@ $('#sheetBody').addEventListener('click',function(e){
     accRun(b,sbApi('/rest/v1/group_roles',{method:'POST',body:{group_id:ACC.cur,name:rn,perms:ACC_GAST},headers:{Prefer:'return=minimal'}}),function(){accReload()});
   }
   else if(a==='rmrole'){
-    if(!confirm2(b,'Rolle löschen?'))return;
+    if(!confirm2(b,'Wirklich? Mitglieder verlieren ihre Rechte.'))return;
     accRun(b,sbApi('/rest/v1/group_roles?id=eq.'+v,{method:'DELETE'}),function(){accReload()});
   }
   else if(a==='mkinvite'){
@@ -310,7 +324,7 @@ $('#sheetBody').addEventListener('change',function(e){
   if(t.dataset.accPerm){
     var r=d.roles.filter(function(x){return x.id===t.dataset.accPerm})[0],p=Object.assign({},r.perms||{});
     if(t.value==='none')delete p[t.dataset.cat];else p[t.dataset.cat]=t.value;
-    sbApi('/rest/v1/group_roles?id=eq.'+r.id,{method:'PATCH',body:{perms:p}}).then(function(){r.perms=p;toast('Gespeichert')},function(er){toast(accMsg(er))});
+    r.perms=p;sbApi('/rest/v1/group_roles?id=eq.'+r.id,{method:'PATCH',body:{perms:p}}).then(function(){toast('Gespeichert')},function(er){toast(accMsg(er));accGroup(ACC.cur)});
   }else if(t.dataset.accRname!==undefined){
     var nm=t.value.trim(),r2=d.roles.filter(function(x){return x.id===t.dataset.accRname})[0];if(!nm){t.value=r2.name;return}
     sbApi('/rest/v1/group_roles?id=eq.'+r2.id,{method:'PATCH',body:{name:nm}}).then(function(){r2.name=nm;toast('Gespeichert')},function(er){t.value=r2.name;toast(accMsg(er))});
@@ -320,4 +334,12 @@ $('#sheetBody').addEventListener('change',function(e){
     var body=toAdmin?{is_admin:true}:{is_admin:false,role_id:t.value};
     sbApi('/rest/v1/group_members?group_id=eq.'+ACC.cur+'&user_id=eq.'+uid,{method:'PATCH',body:body}).then(function(){m.is_admin=toAdmin;if(!toAdmin)m.role_id=t.value;toast('Gespeichert');if(uid===accUid())accLoadGroups()},function(er){toast(accMsg(er));accGroup(ACC.cur)});
   }
+});
+
+$('#sheetBody').addEventListener('keydown',function(e){
+  if(e.key!=='Enter'||e.isComposing)return;var t=e.target;
+  if(!t||t.tagName!=='INPUT'||!/^ac-/.test(t.id||''))return;
+  var m={'ac-mail':1,'ac-pw':1,'ac-name':1,'ac-code':'join','ac-gname':'creategroup','ac-lotx':'creategroup','ac-addlot':'addlot','ac-nrole':'addrole'},k=m[t.id];if(!k)return;
+  var b=k===1?$('#sheetBody [data-acc="login"],#sheetBody [data-acc="signup"],#sheetBody [data-acc="savename"]'):$('#sheetBody [data-acc="'+k+'"]');
+  if(b){e.preventDefault();b.click()}
 });

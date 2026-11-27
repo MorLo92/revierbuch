@@ -48,3 +48,18 @@ Während der Aufzeichnung bleibt GPS an. ¦ Le GPS reste actif pendant l'enregis
 Los {n} ist schon markiert. ¦ Le lot {n} est déjà marqué. ¦ De Lous {n} ass schonn markéiert. ¦ Lot {n} is already marked.
 Revierkarte ¦ Carte du territoire ¦ Revierkaart ¦ Hunting ground map
 Abschussplan {n} · meine Lose ¦ Plan de tir {n} · mes lots ¦ Ofschossplang {n} · meng Lose ¦ Cull plan {n} · my lots
+Die Anmeldung ist abgelaufen. Bitte neu anmelden. ¦ La connexion a expiré. Veuillez vous reconnecter. ¦ D'Umeldung ass ofgelaf. Mellt Iech w.e.g. nei un. ¦ Your sign-in has expired. Please sign in again.
+Diesen Namen gibt es schon. ¦ Ce nom existe déjà. ¦ Dësen Numm gëtt et schonn. ¦ This name already exists.
+Der Server antwortet gerade nicht richtig. Bitte später noch einmal versuchen. ¦ Le serveur ne répond pas correctement. Veuillez réessayer plus tard. ¦ De Server äntwert grad net richteg. Probéiert w.e.g. méi spéit nach eng Kéier. ¦ The server is not responding properly. Please try again later.
+Keine Berechtigung oder nicht mehr vorhanden. ¦ Pas d'autorisation ou n'existe plus. ¦ Keng Beruechtegung oder gëtt et net méi. ¦ No permission, or it no longer exists.
+Neu anmelden ¦ Se reconnecter ¦ Nei umellen ¦ Sign in again
+ohne Rolle ¦ sans rôle ¦ ouni Roll ¦ no role
+wartet ¦ en attente ¦ waart ¦ waiting
+Wirklich? Mitglieder verlieren ihre Rechte. ¦ Vraiment ? Les membres perdent leurs droits. ¦ Wierklech? Memberen verléieren hir Rechter. ¦ Sure? Members lose their rights.
+Bitte zuerst die Datenschutzerklärung akzeptieren, um Gruppen zu nutzen. ¦ Veuillez d'abord accepter la déclaration de confidentialité pour utiliser les groupes. ¦ Akzeptéiert w.e.g. fir d'éischt d'Dateschutzerklärung, fir Gruppen ze notzen. ¦ Please accept the privacy policy first to use groups.
+Datenschutzerklärung ansehen ¦ Voir la déclaration de confidentialité ¦ Dateschutzerklärung kucken ¦ View privacy policy
+Einladung ungültig oder abgelaufen ¦ Invitation invalide ou expirée ¦ Invitatioun ongülteg oder ofgelaf ¦ Invitation invalid or expired
+Keine Berechtigung ¦ Pas d'autorisation ¦ Keng Beruechtegung ¦ No permission
+Nur Administratoren ¦ Administrateurs uniquement ¦ Nëmmen Administrateuren ¦ Administrators only
+Mindestens ein Los nötig ¦ Au moins un lot est nécessaire ¦ Op d'mannst ee Lous néideg ¦ At least one lot is required
+Datenschutzerklärung nicht akzeptiert ¦ Déclaration de confidentialité non acceptée ¦ Dateschutzerklärung net akzeptéiert ¦ Privacy policy not accepted

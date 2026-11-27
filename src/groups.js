@@ -1,6 +1,6 @@
 /* ---------- Tab "Gruppen" ---------- */
 ICON.groups='<circle cx="9" cy="8" r="3"/><path d="M3 20v-1a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v1"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14.5a4 4 0 0 1 4 4V20"/>';
-var GTAB={t:0,err:false};
+var GTAB={t:0,err:false,consent:false};
 function renderGroups(){
   var el=$('#groupsBody');if(!el)return;
   var h='<div class="card"><h2 class="sec">Gruppen</h2>';
@@ -9,12 +9,15 @@ function renderGroups(){
     return;
   }
   var gs=ACC.groups;
+  if(!gs&&GTAB.consent){
+    el.innerHTML=h+'<p class="hint">Bitte zuerst die Datenschutzerklärung akzeptieren, um Gruppen zu nutzen.</p><div class="btnrow"><button class="btn primary" type="button" data-accopen>Datenschutzerklärung ansehen</button></div></div>';return;
+  }
   if(!gs&&GTAB.err){
     el.innerHTML=h+'<p class="warnbox">Keine Verbindung. Bitte später noch einmal versuchen.</p><div class="btnrow"><button class="btn" type="button" data-gtab="reload">Noch einmal</button></div></div>';return;
   }
   if(!gs||Date.now()-GTAB.t>30000){
-    GTAB.t=Date.now();GTAB.err=false;
-    accLoadAll().then(function(ok){if(!ok)GTAB.err=true;if(S.tab==='groups')renderGroups()},function(){GTAB.err=true;if(S.tab==='groups')renderGroups()});
+    GTAB.t=Date.now();GTAB.err=false;GTAB.consent=false;
+    accLoadAll(true).then(function(ok){if(!ok)GTAB.consent=true;if(S.tab==='groups')renderGroups()},function(){GTAB.err=true;if(S.tab==='groups')renderGroups()});
   }
   if(!gs){el.innerHTML=h+'<p class="hint">Lade …</p></div>';return}
   h+=gs.length?'<div class="rows">'+gs.map(function(g){

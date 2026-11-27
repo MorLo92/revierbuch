@@ -48,3 +48,9 @@ input[type=text],input[type=number],input[type=search],input[type=datetime-local
 input[type=date],input[type=time],input[type=email],input[type=password],input[type=tel],input[type=url]{width:100%;min-height:46px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:10px 12px;font-size:16px;min-width:0;font-family:var(--font-body)}
 input[type=datetime-local]{font-size:15px;padding:10px 8px}
 .tabs button{font-size:11px}
+.lchip{display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:2px 10px;border-radius:999px;border:1px solid var(--accent);background:var(--surface);color:var(--ink);font-size:13px;font-weight:600}
+.lchip.wait{border-style:dashed;border-color:var(--line);color:var(--ink-2)}
+.lchip small{font-size:11px;font-weight:600;color:var(--ink-2)}
+#sheetBody{overflow-wrap:anywhere}
+#sheetBody select,#sheetBody input{max-width:100%}
+#sheetBody button[data-acc="rmlot"]{min-height:36px!important;min-width:36px}
