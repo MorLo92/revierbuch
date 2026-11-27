@@ -11,7 +11,8 @@
 --  8. groups.created_by und profiles.id konnten verändert werden
 --  9. Gäste ("ungefähr") bekamen in data die Rohposition (pos, kanzelId ...)
 -- 10. geteilte Einträge: lot_id, category, owner_id waren nachträglich änderbar
--- 11. Konto löschen und Einwilligung widerrufen (delete_my_account, revoke_consent)
+-- 11. Konto löschen und Einwilligung widerrufen (delete_my_account, revoke_consent);
+--     geteilte Einträge gehören dem Los und bleiben nach Konto- oder Gruppenlöschung erhalten (owner_id wird leer)
 
 -- ============ 1 + 8: Spaltenrechte ============
 revoke update on public.group_members from authenticated;
@@ -150,7 +151,8 @@ $$;
 create or replace function private.lock_item_keys()
 returns trigger language plpgsql set search_path = '' as $$
 begin
-  if new.id <> old.id or new.lot_id <> old.lot_id or new.category <> old.category or new.owner_id <> old.owner_id then
+  if pg_trigger_depth() > 1 then return new; end if;  -- Besitzer leeren beim Löschen eines Kontos
+  if new.id <> old.id or new.lot_id <> old.lot_id or new.category <> old.category or new.owner_id is distinct from old.owner_id then
     raise exception 'Los, Kategorie und Besitzer eines Eintrags lassen sich nicht ändern';
   end if;
   return new;
@@ -170,9 +172,11 @@ do $$ begin
   alter table public.group_invites drop constraint if exists group_invites_created_by_fkey;
   alter table public.group_invites add constraint group_invites_created_by_fkey
     foreign key (created_by) references auth.users(id) on delete cascade;
+  -- geteilte Einträge gehören dem Los: beim Löschen des Kontos bleiben sie, nur der Besitzer wird geleert
+  alter table public.shared_items alter column owner_id drop not null;
   alter table public.shared_items drop constraint if exists shared_items_owner_id_fkey;
   alter table public.shared_items add constraint shared_items_owner_id_fkey
-    foreign key (owner_id) references auth.users(id) on delete cascade;
+    foreign key (owner_id) references auth.users(id) on delete set null;
 end $$;
 
 create or replace function public.delete_my_account()
@@ -197,7 +201,7 @@ begin
              and not exists (select 1 from public.group_members o where o.group_id = m.group_id and o.user_id <> uid) loop
     delete from public.groups where id = g;
   end loop;
-  delete from auth.users where id = uid;  -- Profil, Zustimmung, Mitgliedschaften, Einladungen, Einträge: Kaskade
+  delete from auth.users where id = uid;  -- Profil, Zustimmung, Mitgliedschaften, Einladungen: Kaskade; Einträge bleiben am Los
 end $$;
 revoke execute on function public.delete_my_account() from public, anon;
 grant execute on function public.delete_my_account() to authenticated;

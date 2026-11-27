@@ -6,7 +6,7 @@ var PRIV_VER='1',PRIV_CONTACT={name:'',mail:''};
 var ACC_CAT=[['installations','Einrichtungen'],['reservations','Reservierungen'],['kills','Abschüsse'],['sightings','Sichtungen'],['hunts','Drückjagden'],['plan','Abschussplan'],['parcels','Flächen'],['damages','Wildschäden'],['tracks','Tracks'],['photos','Fotos']];
 var ACC_APPROX=['kills','sightings'];
 var ACC_LVL={none:'Nichts',approx:'Ungefähr',read:'Lesen',write:'Schreiben'};
-var ACC_GAST={installations:'read',sightings:'approx',kills:'approx',hunts:'read'};
+var ACC_GAST={sightings:'approx',kills:'approx'};
 
 (function(){try{var j=JSON.parse(localStorage.getItem('revierbuch.sess')||'null');if(j&&j.refresh)ACC.sess=j;ACC.name=localStorage.getItem('revierbuch.accname')||''}catch(e){}})();
 function accSaveSess(){try{if(ACC.sess)localStorage.setItem('revierbuch.sess',JSON.stringify(ACC.sess));else{localStorage.removeItem('revierbuch.sess');localStorage.removeItem('revierbuch.accname')}}catch(e){}}
@@ -100,7 +100,7 @@ var PRIV_HTML=function(){
   '<h3>4. Wer kann was sehen?</h3><p>Geteilte Einträge sehen die Mitglieder der Gruppen, die das jeweilige Los verwalten, entsprechend ihrer Rolle. Die Rolle legt der Administrator der Gruppe fest. Mitglieder mit der Stufe „Ungefähr“ sehen Positionen nur auf etwa 100 Meter gerundet. Dein Anzeigename ist für Mitglieder deiner Gruppen sichtbar.</p>'+
   '<h3>5. Zweck und Rechtsgrundlage</h3><p>Zweck ist das Teilen von Revierinformationen innerhalb von Jagdgruppen. Rechtsgrundlage ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die du jederzeit widerrufen kannst.</p>'+
   '<h3>6. Speicherung und Dienstleister</h3><p>Die Daten werden bei Supabase gespeichert. Die Datenbank liegt in Frankfurt am Main (EU). Eine Weitergabe zu Werbezwecken findet nicht statt.</p>'+
-  '<h3>7. Speicherdauer</h3><p>Deine Daten werden gespeichert, solange dein Konto besteht. Auf Wunsch werden Konto und zugehörige Daten gelöscht.</p>'+
+  '<h3>7. Speicherdauer</h3><p>Deine Daten werden gespeichert, solange dein Konto besteht. Du kannst dein Konto in der App jederzeit selbst löschen; dann werden E-Mail, Name, Zustimmung und Mitgliedschaften gelöscht. Einträge, die du mit einer Gruppe geteilt hast, gehören zum Los und bleiben für die Gruppe erhalten; sie werden dann nicht mehr dir zugeordnet. Wenn die Verwaltung eines Loses endet, entscheidet der letzte Administrator, welche Einträge gelöscht werden.</p>'+
   '<h3>8. Deine Rechte</h3><p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Wende dich dazu an die oben genannte Kontaktadresse. Du kannst dich außerdem bei der zuständigen Aufsichtsbehörde beschweren, in Luxemburg ist das die Commission nationale pour la protection des données (CNPD, cnpd.lu).</p>'+
   '<p class="hint">Fassung 1</p>';
 };
@@ -183,12 +183,28 @@ function accGroup(gid){
     });
   }).catch(function(e){if(g0===ACC.gen)accErrView(e,'home')});
 }
+function accReleaseView(lot){
+  var d=ACC.det;if(!d)return;
+  accLoading('Los abgeben');var g0=ACC.gen,gid=ACC.cur;
+  sbq('shared_items?select=category&lot_id=eq.'+encodeURIComponent(lot)+'&deleted=eq.false&limit=5000').then(function(rows){
+    if(g0!==ACC.gen)return;
+    var cnt={};(rows||[]).forEach(function(x){cnt[x.category]=(cnt[x.category]||0)+1});
+    var wait=(d.reqs||[]).filter(function(q){return q.lot_id===lot&&q.group_id!==gid});
+    var h='<p class="hint">Du gibst Los '+esc(lot)+' ab. Die Einträge gehören zum Los. Wähle, welche Einträge gelöscht werden. Alle anderen bleiben im Los und sind für die Gruppe sichtbar, die das Los danach verwaltet.</p>';
+    var ks=ACC_CAT.filter(function(c){return cnt[c[0]]});
+    h+=ks.length?'<div class="rows">'+ks.map(function(c){return '<label class="lgrow" style="min-height:44px;gap:10px"><input type="checkbox" class="ac-rc" value="'+c[0]+'" style="width:22px;height:22px;flex:none"><span class="tx">'+esc(c[1])+' löschen <small>('+cnt[c[0]]+')</small></span></label>'}).join('')+'</div>':'<p class="hint">Zu diesem Los gibt es keine geteilten Einträge.</p>';
+    h+='<label class="field" style="margin-top:10px"><span class="lbl">Übergeben an</span><select id="ac-rto"><option value="">Niemanden (das Los wird frei)</option>'+wait.map(function(q){return '<option value="'+esc(q.group_id)+'">'+esc(q.group_name)+'</option>'}).join('')+'</select></label>';
+    h+='<p class="warnbox" id="ac-msg" hidden></p><div class="btnrow" style="margin-top:12px"><button class="btn danger" type="button" data-acc="dorelease" data-v="'+esc(lot)+'">Los abgeben</button><button class="btn" type="button" data-acc="group" data-v="'+esc(gid)+'">Zurück</button></div>';
+    accShell('Los '+lot+' abgeben',h);
+  }).catch(function(e){if(g0===ACC.gen)accErrView(e,'home')});
+}
 function accGroupView(msg,newCode){
   var d=ACC.det,g=d.g,uid=accUid(),adm=g.admin;
   var roleName=function(id){var r=d.roles.filter(function(x){return x.id===id})[0];return r?r.name:'ohne Rolle'};
   var h='<p class="hint">'+(adm?'Du bist Administrator dieser Gruppe.':'Deine Rolle: '+esc(g.role)+'.')+'</p>';
   h+='<h3 style="margin:10px 0 6px">Lose</h3><div style="display:flex;flex-wrap:wrap;gap:6px">'+d.lots.map(function(l){return '<span style="display:inline-flex;align-items:center;gap:4px">'+lotChip(l)+(adm?'<button class="btn sm" type="button" data-acc="rmlot" data-v="'+esc(l.lot_id)+'" aria-label="Los '+esc(l.lot_id)+' entfernen" style="min-height:28px;padding:0 8px">✕</button>':'')+'</span>'}).join('')+'</div>';
   if(d.lots.some(function(l){return !l.approved}))h+='<p class="hint">„wartet“: Ein Administrator der Gruppe, die das Los schon verwaltet, muss zustimmen. Bis dahin siehst du dort nichts.</p>';
+  if(adm)h+='<p class="hint">Mit ✕ gibst du ein Los ab und wählst, welche geteilten Einträge dabei gelöscht werden. Beim Verlassen der Gruppe oder beim Löschen deines Kontos bleiben die Einträge im Los.</p>';
   if(adm)h+='<div class="btnrow" style="margin-top:8px"><input type="text" id="ac-addlot" inputmode="numeric" placeholder="Losnummer" style="flex:1;min-width:110px"><button class="btn" type="button" data-acc="addlot">Los hinzufügen</button></div>';
   var rq=d.reqs.filter(function(q){return q.group_id!==g.id&&d.lots.some(function(l){return l.approved&&l.lot_id===q.lot_id})});
   if(rq.length)h+='<h3 style="margin:14px 0 6px">Anfragen anderer Gruppen</h3><div class="rows">'+rq.map(function(q){return '<div class="lotrow" style="flex-wrap:wrap"><span style="flex:1;min-width:150px"><b>'+esc(q.group_name)+'</b><br><small>möchte Los '+esc(q.lot_id)+(q.requested_by?' · '+esc(q.requested_by):'')+'</small></span><button class="btn sm primary" type="button" data-acc="approve" data-g="'+esc(q.group_id)+'" data-v="'+esc(q.lot_id)+'">Freigeben</button><button class="btn sm danger" type="button" data-acc="reject" data-g="'+esc(q.group_id)+'" data-v="'+esc(q.lot_id)+'">Ablehnen</button></div>'}).join('')+'</div>';
@@ -263,7 +279,7 @@ $('#sheetBody').addEventListener('click',function(e){
     accRun(b,sbApi('/rest/v1/profiles?id=eq.'+accUid(),{method:'PATCH',body:{display_name:nn}}),function(){ACC.name=nn;try{localStorage.setItem('revierbuch.accname',nn)}catch(_){}renderHeader();accSheet()});
   }
   else if(a==='delaccount'){
-    if(!confirm2(b,'Konto und alle Gruppendaten endgültig löschen?'))return;
+    if(!confirm2(b,'Konto endgültig löschen?'))return;
     accRun(b,sbRpc('delete_my_account'),function(){ACC.sess=null;ACC.groups=null;accSaveSess();renderHeader();closeSheet();toast('Konto gelöscht. Dein Revierbuch auf diesem Gerät bleibt erhalten.')});
   }
   else if(a==='newgroup'){accNewGroup()}
@@ -283,9 +299,11 @@ $('#sheetBody').addEventListener('click',function(e){
     var ls=lotList(val('#ac-addlot'));if(!ls.length){accNote('Bitte eine Losnummer eingeben.');return}
     accRun(b,Promise.all(ls.map(function(x){return sbRpc('add_lot',{p_group:ACC.cur,p_lot:x})})),function(){accReload()});
   }
-  else if(a==='rmlot'){
-    if(!confirm2(b,'Entfernen?'))return;
-    accRun(b,sbApi('/rest/v1/group_lots?group_id=eq.'+ACC.cur+'&lot_id=eq.'+encodeURIComponent(v),{method:'DELETE'}),function(){accReload()});
+  else if(a==='rmlot'){accReleaseView(v)}
+  else if(a==='dorelease'){
+    var cats=$$('.ac-rc').filter(function(x){return x.checked}).map(function(x){return x.value}),to=val('#ac-rto');
+    if(!confirm2(b,cats.length?'Wirklich? Die gewählten Einträge werden gelöscht.':'Wirklich abgeben?'))return;
+    accRun(b,sbRpc('release_lot',{p_group:ACC.cur,p_lot:v,p_delete_categories:cats,p_delete_ids:[],p_to_group:to||null}),function(n){toast(n?(n+' Einträge gelöscht'):'Los abgegeben');accLoadGroups().then(function(){return accGroup(ACC.cur)})});
   }
   else if(a==='approve'){accRun(b,sbRpc('approve_lot',{p_group:b.dataset.g,p_lot:v}),function(){toast('Freigegeben');accReload()})}
   else if(a==='reject'){
@@ -298,7 +316,7 @@ $('#sheetBody').addEventListener('click',function(e){
   }
   else if(a==='leave'){
     if(!confirm2(b,'Wirklich verlassen?'))return;
-    accRun(b,sbApi('/rest/v1/group_members?group_id=eq.'+ACC.cur+'&user_id=eq.'+accUid(),{method:'DELETE'}),function(){accLoadGroups().then(accHome)});
+    accRun(b,sbApi('/rest/v1/group_members?group_id=eq.'+ACC.cur+'&user_id=eq.'+accUid(),{method:'DELETE'}),function(){toast('Deine Einträge bleiben im Los.');accLoadGroups().then(accHome)});
   }
   else if(a==='delgroup'){
     if(!confirm2(b,'Gruppe wirklich löschen?'))return;

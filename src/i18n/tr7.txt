@@ -72,3 +72,21 @@ Diese Rolle gehört nicht zur Gruppe ¦ Ce rôle n'appartient pas au groupe ¦ D
 Ungültige Losnummer ¦ Numéro de lot invalide ¦ Ongültegt Lousnummer ¦ Invalid lot number
 Höchstens 50 Lose pro Gruppe ¦ 50 lots maximum par groupe ¦ Héchstens 50 Lose pro Grupp ¦ At most 50 lots per group
 Du bist der einzige Administrator einer Gruppe mit weiteren Mitgliedern. Bestimme zuerst einen weiteren Administrator. ¦ Vous êtes le seul administrateur d'un groupe comptant d'autres membres. Désignez d'abord un autre administrateur. ¦ Du bass deen eenzegen Administrateur vun enger Grupp mat weidere Memberen. Bestëmm fir d'éischt en zweeten Administrateur. ¦ You are the only administrator of a group with other members. Name another administrator first.
+Konto endgültig löschen? ¦ Supprimer définitivement le compte ? ¦ Konto endgülteg läschen? ¦ Delete the account permanently?
+Deine Einträge bleiben im Los. ¦ Tes entrées restent dans le lot. ¦ Deng Androungen bleiwen am Lous. ¦ Your entries stay in the lot.
+Los abgeben ¦ Rendre le lot ¦ Lous ofginn ¦ Hand over lot
+Du gibst Los {n} ab. Die Einträge gehören zum Los. Wähle, welche Einträge gelöscht werden. Alle anderen bleiben im Los und sind für die Gruppe sichtbar, die das Los danach verwaltet. ¦ Tu rends le lot {n}. Les entrées appartiennent au lot. Choisis celles qui sont supprimées. Toutes les autres restent dans le lot et sont visibles pour le groupe qui gère ensuite le lot. ¦ Du gëss Lous {n} of. D'Androunge gehéieren zum Lous. Wiel aus, wéi eng geläscht ginn. All déi anerer bleiwe am Lous a si fir d'Grupp sichtbar, déi d'Lous duerno verwalt. ¦ You are handing over lot {n}. The entries belong to the lot. Choose which entries are deleted. All others stay in the lot and are visible to the group that manages it afterwards.
+Zu diesem Los gibt es keine geteilten Einträge. ¦ Il n'y a pas d'entrées partagées pour ce lot. ¦ Fir dëst Lous gëtt et keng gedeelt Androungen. ¦ There are no shared entries for this lot.
+Übergeben an ¦ Transférer à ¦ Iwwerginn un ¦ Hand over to
+Niemanden (das Los wird frei) ¦ Personne (le lot devient libre) ¦ Keen (d'Lous gëtt fräi) ¦ Nobody (the lot becomes free)
+Wirklich? Die gewählten Einträge werden gelöscht. ¦ Vraiment ? Les entrées choisies seront supprimées. ¦ Wierklech? déi gewielten Androunge ginn geläscht. ¦ Sure? The selected entries will be deleted.
+Wirklich abgeben? ¦ Vraiment rendre ? ¦ Wierklech ofginn? ¦ Really hand over?
+Los abgegeben ¦ Lot rendu ¦ Lous ofginn ¦ Lot handed over
+Mit ✕ gibst du ein Los ab und wählst, welche geteilten Einträge dabei gelöscht werden. Beim Verlassen der Gruppe oder beim Löschen deines Kontos bleiben die Einträge im Los. ¦ Avec ✕ tu rends un lot et choisis quelles entrées partagées sont supprimées. Si tu quittes le groupe ou supprimes ton compte, les entrées restent dans le lot. ¦ Mat ✕ gëss du e Lous of a wiels aus, wéi eng gedeelt Androunge geläscht ginn. Wann du d'Grupp verléiss oder däi Kont läschs, bleiwe d'Androunge am Lous. ¦ With ✕ you hand over a lot and choose which shared entries are deleted. If you leave the group or delete your account, the entries stay in the lot.
+Dieses Los gehört nicht zur Gruppe ¦ Ce lot n'appartient pas au groupe ¦ Dëst Lous gehéiert net zur Grupp ¦ This lot does not belong to the group
+Höchstens 100 Lose pro Person ¦ 100 lots maximum par personne ¦ Héchstens 100 Lose pro Persoun ¦ At most 100 lots per person
+Höchstens 10 Gruppen pro Person ¦ 10 groupes maximum par personne ¦ Héchstens 10 Gruppen pro Persoun ¦ At most 10 groups per person
+Ungültige Rechte ¦ Droits invalides ¦ Ongülteg Rechter ¦ Invalid permissions
+Bitte einen Namen eingeben ¦ Veuillez saisir un nom ¦ Gitt w.e.g. en Numm an ¦ Please enter a name
+Los {n} abgeben ¦ Rendre le lot {n} ¦ Lous {n} ofginn ¦ Hand over lot {n}
+{n} Einträge gelöscht ¦ {n} entrées supprimées ¦ {n} Androunge geläscht ¦ {n} entries deleted
