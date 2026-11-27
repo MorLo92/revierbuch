@@ -15,6 +15,7 @@ function accMsg(e){
   var m=(e&&e.message)||'';
   if(e instanceof TypeError||(e&&e.name==='AbortError')||/Failed to fetch|NetworkError|Load failed|aborted/i.test(m))return 'Keine Verbindung. Bitte später noch einmal versuchen.';
   if(/JWT expired|Invalid Refresh Token|Refresh Token Not Found/i.test(m))return 'Die Anmeldung ist abgelaufen. Bitte neu anmelden.';
+  if(/Could not find the function|PGRST202/i.test(m))return 'Diese Funktion ist auf dem Server noch nicht eingerichtet.';
   if(/duplicate key|already exists/i.test(m))return 'Diesen Namen gibt es schon.';
   if(/^(Internal Server Error|Service Unavailable|Bad Gateway|Gateway Time-?out)/i.test(m)||/^Fehler 5\d\d$/.test(m))return 'Der Server antwortet gerade nicht richtig. Bitte später noch einmal versuchen.';
   if(/Invalid login credentials/i.test(m))return 'E-Mail oder Passwort stimmt nicht.';
@@ -145,6 +146,7 @@ function accHome(){
    '<div class="btnrow"><input type="text" id="ac-code" placeholder="Einladungscode" autocomplete="off" autocapitalize="none" style="flex:1;min-width:140px"><button class="btn" type="button" data-acc="join">Beitreten</button></div>'+
    '<p class="warnbox" id="ac-msg" hidden></p>'+
    '<div class="btnrow" style="margin-top:16px"><button class="btn" type="button" data-acc="logout">Abmelden</button><button class="btn" type="button" data-acc="close">Schließen</button></div>'+
+   '<div class="btnrow"><button class="btn sm danger" type="button" data-acc="delaccount">Konto löschen</button></div>'+
    '<p class="hint">Geteilt wird noch nichts. Zuerst richten wir Gruppen, Lose und Rollen ein.</p>');
 }
 function accNewGroup(){
@@ -259,6 +261,10 @@ $('#sheetBody').addEventListener('click',function(e){
   else if(a==='savename'){
     var nn=val('#ac-name');if(!nn){accNote('Bitte einen Namen eingeben.');return}
     accRun(b,sbApi('/rest/v1/profiles?id=eq.'+accUid(),{method:'PATCH',body:{display_name:nn}}),function(){ACC.name=nn;try{localStorage.setItem('revierbuch.accname',nn)}catch(_){}renderHeader();accSheet()});
+  }
+  else if(a==='delaccount'){
+    if(!confirm2(b,'Konto und alle Gruppendaten endgültig löschen?'))return;
+    accRun(b,sbRpc('delete_my_account'),function(){ACC.sess=null;ACC.groups=null;accSaveSess();renderHeader();closeSheet();toast('Konto gelöscht. Dein Revierbuch auf diesem Gerät bleibt erhalten.')});
   }
   else if(a==='newgroup'){accNewGroup()}
   else if(a==='creategroup'){

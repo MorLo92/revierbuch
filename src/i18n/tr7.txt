@@ -63,3 +63,12 @@ Keine Berechtigung ¦ Pas d'autorisation ¦ Keng Beruechtegung ¦ No permission
 Nur Administratoren ¦ Administrateurs uniquement ¦ Nëmmen Administrateuren ¦ Administrators only
 Mindestens ein Los nötig ¦ Au moins un lot est nécessaire ¦ Op d'mannst ee Lous néideg ¦ At least one lot is required
 Datenschutzerklärung nicht akzeptiert ¦ Déclaration de confidentialité non acceptée ¦ Dateschutzerklärung net akzeptéiert ¦ Privacy policy not accepted
+Konto löschen ¦ Supprimer le compte ¦ Konto läschen ¦ Delete account
+Konto und alle Gruppendaten endgültig löschen? ¦ Supprimer définitivement le compte et toutes les données de groupe ? ¦ Konto an all Gruppendaten endgülteg läschen? ¦ Permanently delete the account and all group data?
+Konto gelöscht. Dein Revierbuch auf diesem Gerät bleibt erhalten. ¦ Compte supprimé. Votre carnet sur cet appareil est conservé. ¦ Konto geläscht. Däi Revierbuch op dësem Apparat bleift erhalen. ¦ Account deleted. Your Revierbuch on this device is kept.
+Diese Funktion ist auf dem Server noch nicht eingerichtet. ¦ Cette fonction n'est pas encore configurée sur le serveur. ¦ Dës Funktioun ass um Server nach net ageriicht. ¦ This function is not set up on the server yet.
+Es braucht mindestens einen Administrator ¦ Il faut au moins un administrateur ¦ Et brauch op d'mannst een Administrateur ¦ At least one administrator is required
+Diese Rolle gehört nicht zur Gruppe ¦ Ce rôle n'appartient pas au groupe ¦ Dës Roll gehéiert net zur Grupp ¦ This role does not belong to the group
+Ungültige Losnummer ¦ Numéro de lot invalide ¦ Ongültegt Lousnummer ¦ Invalid lot number
+Höchstens 50 Lose pro Gruppe ¦ 50 lots maximum par groupe ¦ Héchstens 50 Lose pro Grupp ¦ At most 50 lots per group
+Du bist der einzige Administrator einer Gruppe mit weiteren Mitgliedern. Bestimme zuerst einen weiteren Administrator. ¦ Vous êtes le seul administrateur d'un groupe comptant d'autres membres. Désignez d'abord un autre administrateur. ¦ Du bass deen eenzegen Administrateur vun enger Grupp mat weidere Memberen. Bestëmm fir d'éischt en zweeten Administrateur. ¦ You are the only administrator of a group with other members. Name another administrator first.
