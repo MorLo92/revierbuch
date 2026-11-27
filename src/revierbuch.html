@@ -119,7 +119,7 @@ input.mono{font-family:var(--font-mono);letter-spacing:.04em}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;margin:0}
 .kv dt{color:var(--ink-2)} .kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
 .kv code{font-family:var(--font-mono)}
-#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;max-width:min(92vw,520px);text-align:center;box-shadow:var(--shadow)}
+#toast{pointer-events:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;max-width:min(92vw,520px);text-align:center;box-shadow:var(--shadow)}
 
 /* lists */
 h2.sec{margin:0;font:700 20px/1 var(--font-display);letter-spacing:.07em;text-transform:uppercase}
@@ -148,6 +148,7 @@ h2.sec{margin:0;font:700 20px/1 var(--font-display);letter-spacing:.07em;text-tr
 .big{font:700 56px/1 var(--font-display);letter-spacing:.02em}
 .lotrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
 .lotrow span{flex:1;min-width:120px;overflow-wrap:anywhere}
+.row small,.sbody dd,.sbody p{overflow-wrap:anywhere}
 .pick{max-height:46vh;overflow:auto;display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:10px;padding:6px}
 .pick label{display:flex;gap:10px;align-items:center;padding:8px;border-radius:8px;min-height:44px}
 .pick input{width:20px;height:20px;flex:none;accent-color:var(--accent)}
@@ -333,7 +334,7 @@ var Store={
   },
   done:function(n){if(!this.first[n]){this.first[n]=1;if(--this.pending<=0)markReady()}},
   loadLocal:function(){try{var j=JSON.parse(localStorage.getItem(LS)||'null');if(j){['markers','sightings','kills','lots'].forEach(function(n){D[n]=j[n]||[]});D.settings=j.settings||{};D.lots.forEach(prepCustom)}}catch(e){}},
-  saveLocal:function(){try{localStorage.setItem(LS,JSON.stringify({markers:D.markers,sightings:D.sightings,kills:D.kills,lots:D.lots.map(plain),settings:D.settings}))}catch(e){toast('Lokaler Speicher ist voll oder gesperrt.')}},
+  saveLocal:function(){try{localStorage.setItem(LS,JSON.stringify({markers:D.markers,sightings:D.sightings,kills:D.kills,lots:D.lots.map(plain),settings:D.settings}))}catch(e){S.lsFail=true;toast('Lokaler Speicher ist voll oder gesperrt.')}},
   put:function(coll,obj,quiet){
     var o=coll==='lots'?plain(obj):clone(obj);delete o.demo;
     if(S.mode==='cloud'){var w=clone(o);if(coll==='lots'&&w.polys){w.geo=JSON.stringify(w.polys);delete w.polys}return this.base.collection(coll).doc(w.id).set(w).then(function(){if(!quiet)renderAll()})}
@@ -541,7 +542,7 @@ function locate(center){
   return getPos().then(function(p){S.gps=p;S.gpsState='on';if(center)centerOn(p.lat,p.lon,Math.max(S.view.z,16));startWatch();dirty=true;renderHeader();return p}).catch(function(e){gpsFail(e);throw e});
 }
 $('#bLoc').onclick=function(){locate(true).catch(function(){})};
-$('#stGps').onclick=function(){if(S.gpsState==='on'){gpsOff()}else locate(true).catch(function(){})};
+$('#stGps').onclick=function(){if(S.rec){toast('Während der Aufzeichnung bleibt GPS an.');return}if(S.gpsState==='on'){gpsOff()}else locate(true).catch(function(){})};
 function gpsOff(){if(S.watch!=null){try{navigator.geolocation.clearWatch(S.watch)}catch(x){}S.watch=null}S.gps=null;S.gpsState='off';dirty=true;renderHeader()}
 
 /* ---------- header, tabs, layer chips ---------- */
@@ -642,7 +643,7 @@ function bindForm(){
   var pk=$('#f-pick');if(pk)pk.onclick=function(){pickOnMap(f.kind,d,f.edit)};
   var gp=$('#f-gps');if(gp)gp.onclick=function(){gp.disabled=true;locate(false).then(function(p){d.lat=p.lat;d.lon=p.lon;d.posManual=true;updPos()}).catch(function(){}).then(function(){gp.disabled=false})};
   var del=$('#f-del');if(del)del.onclick=function(){
-    if(del.dataset.s!=='1'){del.dataset.s='1';del.textContent='Wirklich löschen?';return}
+    if(del.dataset.s!=='1'){del.dataset.s='1';var lk=f.kind==='marker'&&(G('kills').some(function(k){return k.kanzelId===d.id})||G('sightings').some(function(k){return k.kanzelId===d.id})||(typeof reservs==='function'&&reservs().some(function(r){return r.seatId===d.id})));del.textContent=lk?'Wirklich löschen? Verknüpfte Einträge verlieren die Kanzel.':'Wirklich löschen?';return}
     var coll={marker:'markers',sight:'sightings',kill:'kills'}[f.kind];
     guard(Store.del(coll,d.id),'Löschen fehlgeschlagen').then(function(){closeSheet();toast('Gelöscht')},function(){});
   };
@@ -681,7 +682,7 @@ function saveForm(){
   else{
     var t=new Date(d.tsl);if(isNaN(t)){toast('Bitte Datum und Uhrzeit angeben.');return}
     if(f.kind==='sight'){coll='sightings';o={id:d.id,species:d.species,count:d.count||1,sex:d.sex,ts:t.toISOString(),lat:d.lat,lon:d.lon,kanzelId:d.kanzelId||'',note:d.note||''}}
-    else{coll='kills';o={id:d.id,species:d.species,sex:d.sex,age:d.age,weight:d.weight==null||isNaN(d.weight)?null:d.weight,ts:t.toISOString(),lat:d.lat,lon:d.lon,kanzelId:d.kanzelId||'',tag:(d.tag||'').trim(),note:d.note||''}}
+    else{coll='kills';o={id:d.id,species:d.species,sex:d.sex,age:d.age,weight:d.weight==null||isNaN(d.weight)||d.weight<=0||d.weight>1000?null:d.weight,ts:t.toISOString(),lat:d.lat,lon:d.lon,kanzelId:d.kanzelId||'',tag:(d.tag||'').trim(),note:d.note||''}}
   }
   var b=$('#f-save');b.disabled=true;
   guard(Store.put(coll,o)).then(function(){closeSheet();toast('Gespeichert');if(S.tab==='map'){S.sel={k:f.kind==='marker'?'fac':f.kind==='sight'?'sight':'kill',id:o.id};dirty=true}},function(){b.disabled=false});
@@ -693,7 +694,7 @@ function showDetail(kind,o){
   var rows='',title,demo=!!o.demo;
   if(kind==='fac'){
     var nk=G('kills').filter(function(k){return k.kanzelId===o.id}).length,ns=G('sightings').filter(function(k){return k.kanzelId===o.id}).length;
-    title=o.name||FAC[o.type].label;
+    if(!FAC[o.type])o.type='sonst';title=o.name||FAC[o.type].label;
     rows='<dt>Art</dt><dd>'+esc(FAC[o.type].label)+'</dd><dt>Position</dt><dd><code>'+posText(o)+'</code></dd>'+(SEATS.indexOf(o.type)>-1?'<dt>Abschüsse</dt><dd>'+nk+'</dd><dt>Sichtungen</dt><dd>'+ns+'</dd>':'')+(o.note?'<dt>Notiz</dt><dd>'+esc(o.note)+'</dd>':'');
   }else if(kind==='sight'){
     title=(o.count||1)+'× '+o.species;
@@ -797,10 +798,10 @@ function renderData(){
   $('#exTog').onclick=function(){guard(Store.setting({hideExamples:!D.settings.hideExamples}))};
   var c=$('#expCsv');if(c)c.onclick=exportCsv;var j=$('#expJson');if(j)j.onclick=exportJson;
   var add=$('#addLot');if(add)add.onclick=function(){
-    var n=parseInt($('#addNo').value,10);
+    var rawNo=String($('#addNo').value).trim(),n=/^\d{1,4}$/.test(rawNo)?parseInt(rawNo,10):NaN;
     if(!BASE.length){toast('Die Lose sind noch nicht geladen.');return}
     var l=BASE.filter(function(x){return x.no===n})[0];if(!l){toast('Ein Los mit dieser Nummer gibt es nicht.');return}
-    var arr=(D.settings.myLots||[]).slice();if(arr.indexOf(n)<0)arr.push(n);
+    var arr=(D.settings.myLots||[]).slice();if(arr.indexOf(n)>-1){toast('Los '+n+' ist schon markiert.');fitBox(l.bb);switchTab('map');return}arr.push(n);
     guard(Store.setting({myLots:arr})).then(function(){toast('Los '+n+' hinzugefügt');switchTab('map');fitBox(l.bb)},function(){});
   };
   $$('#dataBody [data-fit]').forEach(function(b){b.onclick=function(){var n=+b.dataset.fit,l=BASE.filter(function(x){return x.no===n})[0];if(l){switchTab('map');fitBox(l.bb)}}});
@@ -814,9 +815,9 @@ function exportJson(){
   dl.save({filename:'revierbuch-sicherung-'+today()+'.json',data:data}).then(function(){toast('Sicherung gespeichert')}).catch(function(e){if(!e||e.code!=='declined')toast('Speichern nicht möglich ('+(e&&e.code||'Fehler')+').')});
 }
 function exportCsv(){
-  var q=function(v){v=String(v==null?'':v);return /[";\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+  var q=function(v){v=String(v==null?'':v);if(/^[=+\-@\t\r]/.test(v)&&!/^-?\d+([.,]\d+)?$/.test(v))v="'"+v;return /[";\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
   var rows=[['Datum','Uhrzeit','Wildart','Geschlecht','Altersklasse','Gewicht kg','Wildmarke','Kanzel','Breite','Länge','Notiz']];
-  D.kills.slice().sort(function(a,b){return new Date(a.ts)-new Date(b.ts)}).forEach(function(k){var d=new Date(k.ts);rows.push([d.toLocaleDateString('de-LU'),d.toLocaleTimeString('de-LU',{hour:'2-digit',minute:'2-digit'}),k.species,SEX[k.sex],AGE[k.age],k.weight==null?'':String(k.weight).replace('.',','),k.tag,facName(k.kanzelId),k.lat.toFixed(6),k.lon.toFixed(6),k.note])});
+  D.kills.slice().sort(function(a,b){return new Date(a.ts)-new Date(b.ts)}).forEach(function(k){var d=new Date(k.ts);rows.push([d.toLocaleDateString('de-LU'),d.toLocaleTimeString('de-LU',{hour:'2-digit',minute:'2-digit'}),k.species,SEX[k.sex],AGE[k.age],k.weight==null?'':String(k.weight).replace('.',','),k.tag,facName(k.kanzelId),(typeof k.lat==='number'?k.lat.toFixed(6):''),(typeof k.lon==='number'?k.lon.toFixed(6):''),k.note])});
   if(rows.length===1){toast('Es gibt noch keine eigenen Abschüsse zum Exportieren.');return}
   dl.save({filename:'abschuesse-'+today()+'.csv',data:'﻿'+rows.map(function(r){return r.map(q).join(';')}).join('\r\n')}).then(function(){toast('CSV gespeichert')}).catch(function(e){if(!e||e.code!=='declined')toast('Speichern nicht möglich ('+(e&&e.code||'Fehler')+').')});
 }
@@ -825,14 +826,15 @@ function exportCsv(){
 var fileMode='lots';
 $('#fileIn').addEventListener('change',function(e){
   var f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
-  var r=new FileReader();r.onload=function(){try{handleFile(f.name,String(r.result))}catch(err){toast(err.message||'Datei konnte nicht gelesen werden.')}};r.onerror=function(){toast('Datei konnte nicht gelesen werden.')};r.readAsText(f);
+  var r=new FileReader();r.onload=function(){try{handleFile(f.name,String(r.result))}catch(err){toast(/^[A-ZÄÖÜ]/.test(String(err&&err.message))&&!/^(Unexpected|Expected|JSON)/.test(err.message)?err.message:'Datei konnte nicht gelesen werden.')}};r.onerror=function(){toast('Datei konnte nicht gelesen werden.')};r.readAsText(f);
 });
 function handleFile(name,text){
   var t=text.replace(/^﻿/,'').trim(),feats;
   if(/\.kml$/i.test(name)||t.charAt(0)==='<'){feats=parseKml(t)}
   else{
-    var j=JSON.parse(t);
+    var j;try{j=JSON.parse(t)}catch(e){throw new Error('Die Datei ist kein gültiges JSON oder GeoJSON.')}
     if(j&&(j.app==='revierbuch'||(j.kills&&j.markers)))return importBackup(j);
+    if(!j||typeof j!=='object')throw new Error('Die Datei enthält keine Sicherung und keine Flächen.');
     feats=parseGeoJson(j);
   }
   if(!feats.length)throw new Error('Keine Flächen (Polygone) in der Datei gefunden.');
@@ -894,9 +896,10 @@ function pickLots(feats){
   $('#pkOk').onclick=function(){
     var sel=feats.filter(function(f,i){return chosen[i]});if(!sel.length)return;
     $('#pkOk').disabled=true;$('#pkOk').textContent='Speichere …';
-    var made=[],seq=Promise.resolve();
+    var made=[],seq=Promise.resolve(),skippedLots=0;
     sel.forEach(function(f){seq=seq.then(function(){
       var polys=f.polys.map(function(pl){return pl.map(cleanRing).filter(function(r){return r.length>3})}).filter(function(pl){return pl.length});
+      if(!polys.length){skippedLots++;return}
       var lot={id:uid('l'),name:f.name,ha:f.ha||null,polys:polys},tries=0;
       while(JSON.stringify(lot).length>240000&&tries++<6)lot.polys=thin(lot.polys);
       made.push(lot);return Store.put('lots',lot,true);
@@ -904,16 +907,33 @@ function pickLots(feats){
     seq.then(function(){
       return null;
     }).then(function(){
-      closeSheet();toast(made.length+' '+(made.length===1?'Los':'Lose')+' importiert');renderAll();
+      closeSheet();renderAll();
+      if(!made.length){toast('Keine Fläche mit gültiger Form gefunden (mindestens 3 Eckpunkte).');return}
+      toast(made.length+' '+(made.length===1?'Los':'Lose')+' importiert'+(skippedLots?', '+skippedLots+' ohne gültige Form übersprungen':''));
       var b=[180,90,-180,-90];made.forEach(function(l){var x=bboxOf(l.polys);b=[Math.min(b[0],x[0]),Math.min(b[1],x[1]),Math.max(b[2],x[2]),Math.max(b[3],x[3])]});
       switchTab('map');fitBox(b);
     }).catch(function(e){toast('Import fehlgeschlagen ('+(e&&e.code||'Fehler')+').');renderAll()});
   };
 }
 function importBackup(j){
-  var n=0,seq=Promise.resolve();
-  ['markers','sightings','kills','lots'].forEach(function(c){(j[c]||[]).forEach(function(o){if(o&&o.id){seq=seq.then(function(){n++;return Store.put(c,o,true)})}})});
-  seq.then(function(){return j.settings?Store.setting(j.settings):null}).then(function(){renderAll();toast(n+' Einträge eingelesen')}).catch(function(e){toast('Einlesen fehlgeschlagen ('+(e&&e.code||'Fehler')+').')});
+  if(!j||typeof j!=='object'||Array.isArray(j)){toast('Das ist keine gültige Sicherungsdatei.');return}
+  var n=0,skip=0,seq=Promise.resolve(),NUM=function(x){return typeof x==='number'&&isFinite(x)},POS=function(o){return (o.lat==null||NUM(o.lat))&&(o.lon==null||NUM(o.lon))},TS=function(o){return typeof o.ts==='string'&&!isNaN(new Date(o.ts))};
+  var chk={
+    markers:function(o){return FAC[o.type]&&NUM(o.lat)&&NUM(o.lon)},
+    sightings:function(o){return typeof o.species==='string'&&TS(o)&&POS(o)},
+    kills:function(o){return typeof o.species==='string'&&TS(o)&&POS(o)&&(o.weight==null||NUM(o.weight))},
+    lots:function(o){return Array.isArray(o.polys)&&o.polys.length>0}
+  };
+  S.lsFail=false;
+  ['markers','sightings','kills','lots'].forEach(function(c){var a=j[c];if(a!=null&&!Array.isArray(a)){skip++;return}(a||[]).forEach(function(o){
+    if(o&&typeof o==='object'&&typeof o.id==='string'&&o.id&&chk[c](o)){seq=seq.then(function(){n++;return Store.put(c,o,true)})}else skip++})});
+  var st=(j.settings&&typeof j.settings==='object'&&!Array.isArray(j.settings))?j.settings:null;
+  if(st&&st.myLots!=null){st=Object.assign({},st);st.myLots=Array.isArray(st.myLots)?st.myLots.filter(function(x){return Number.isInteger(x)&&x>0&&x<10000}):[]}
+  seq.then(function(){return st?Store.setting(st):null}).then(function(){
+    renderAll();
+    if(S.lsFail)toast('Der Speicher ist voll: Die Daten konnten nicht gespeichert werden.');
+    else toast(n+' Einträge eingelesen'+(skip?', '+skip+' übersprungen (unvollständig)':''));
+  }).catch(function(e){toast('Einlesen fehlgeschlagen ('+(e&&e.code||'Fehler')+').')});
 }
 
 /* ---------- boot ---------- */

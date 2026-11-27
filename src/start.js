@@ -61,7 +61,7 @@ function metricCalc(m){
     if(m.measure==='weight'){fmt=function(v){return nf.format(Math.round(v*10)/10)+' kg'}}}
   var rows=Object.keys(acc).map(function(k){var e=acc[k];return {label:e.label,sort:e.sort,v:m.measure==='weight'?e.v/Math.max(1,e.n):e.v,n:e.n}});
   if(m.group==='month'||m.group==='year')rows.sort(function(a,b){return a.sort-b.sort});else rows.sort(function(a,b){return b.v-a.v});
-  return {rows:rows.slice(0,m.group==='month'?24:10),fmt:fmt};
+  return {rows:(m.group==='month'||m.group==='year')?rows.slice(-(m.group==='month'?24:10)):rows.slice(0,10),fmt:fmt};
 }
 function metricInner(m){
   var r=metricCalc(m);

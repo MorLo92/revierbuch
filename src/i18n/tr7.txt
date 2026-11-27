@@ -30,3 +30,21 @@ Automatisch folgt der Einstellung deines Handys. ¦ Automatique suit le réglage
 Automatisch ¦ Automatique ¦ Automatesch ¦ Automatic
 Hell ¦ Clair ¦ Hell ¦ Light
 Dunkel ¦ Sombre ¦ Donkel ¦ Dark
+Abschuss bearbeiten ¦ Modifier le tir ¦ Ofschoss änneren ¦ Edit shot
+Wildsichtung bearbeiten ¦ Modifier l'observation ¦ Wëldobservatioun änneren ¦ Edit sighting
+Einrichtung bearbeiten ¦ Modifier l'installation ¦ Aeraichtung änneren ¦ Edit facility
+noch nicht festgelegt ¦ pas encore défini ¦ nach net festgeluecht ¦ not set yet
+Tippe nochmal auf Speichern, um trotzdem zu reservieren. ¦ Touche encore Enregistrer pour réserver quand même. ¦ Dréck nach eng Kéier op Späicheren, fir trotzdeem ze reservéieren. ¦ Tap Save again to reserve anyway.
+Wirklich löschen? Verknüpfte Einträge verlieren die Kanzel. ¦ Vraiment supprimer ? Les entrées liées perdent le mirador. ¦ Wierklech läschen? Verbonne Androen verléieren den Hochsëtz. ¦ Really delete? Linked entries lose the high seat.
+Beginn und Ende dürfen nicht gleich sein. ¦ Le début et la fin ne peuvent pas être identiques. ¦ Ufank an Enn däerfen net d'selwecht sinn. ¦ Start and end must not be the same.
+Dieser Zeitraum liegt schon in der Vergangenheit. ¦ Cette période est déjà passée. ¦ Dësen Zäitraum läit schonn an der Vergaangenheet. ¦ This period is already in the past.
+Das ist keine gültige Sicherungsdatei. ¦ Ce n'est pas un fichier de sauvegarde valide. ¦ Dat ass keng gülteg Sécherungsdatei. ¦ This is not a valid backup file.
+Die Datei ist kein gültiges JSON oder GeoJSON. ¦ Le fichier n'est pas un JSON ou GeoJSON valide. ¦ D'Datei ass kee gültegt JSON oder GeoJSON. ¦ The file is not valid JSON or GeoJSON.
+Die Datei enthält keine Sicherung und keine Flächen. ¦ Le fichier ne contient ni sauvegarde ni surfaces. ¦ D'Datei enthält weder Sécherung nach Flächen. ¦ The file contains neither a backup nor areas.
+Datei konnte nicht gelesen werden. ¦ Le fichier n'a pas pu être lu. ¦ D'Datei konnt net gelies ginn. ¦ The file could not be read.
+Der Speicher ist voll: Die Daten konnten nicht gespeichert werden. ¦ La mémoire est pleine : les données n'ont pas pu être enregistrées. ¦ De Späicher ass voll: D'Daten konnten net gespäichert ginn. ¦ Storage is full: the data could not be saved.
+Keine Fläche mit gültiger Form gefunden (mindestens 3 Eckpunkte). ¦ Aucune surface valide trouvée (au moins 3 points). ¦ Keng Fläch mat gülteger Form fonnt (op d'mannst 3 Eckpunkten). ¦ No area with a valid shape found (at least 3 corner points).
+Während der Aufzeichnung bleibt GPS an. ¦ Le GPS reste actif pendant l'enregistrement. ¦ Wärend der Opzeechnung bleift GPS un. ¦ GPS stays on while recording.
+Los {n} ist schon markiert. ¦ Le lot {n} est déjà marqué. ¦ De Lous {n} ass schonn markéiert. ¦ Lot {n} is already marked.
+Revierkarte ¦ Carte du territoire ¦ Revierkaart ¦ Hunting ground map
+Abschussplan {n} · meine Lose ¦ Plan de tir {n} · mes lots ¦ Ofschossplang {n} · meng Lose ¦ Cull plan {n} · my lots

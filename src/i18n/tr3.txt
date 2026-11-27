@@ -265,7 +265,7 @@ Zweck ist das Teilen von Revierinformationen innerhalb von Jagdgruppen. Rechtsgr
 Öffnen ¦ Ouvrir ¦ Opmaachen ¦ Open
 Ø Gewicht ¦ Poids moy. ¦ Ø Gewiicht ¦ Avg weight
 Ø Gewicht aufgebrochen (kg) ¦ Poids moy. éviscéré (kg) ¦ Ø Gewiicht opgebrach (kg) ¦ Avg dressed weight (kg)
-Überläufer / Jährling ¦ Bête rousse / yearling ¦ Iwwerlaf / Joerling ¦ Young boar / yearling
+Überläufer / Jährling ¦ Bête de compagnie / jeune de 1 an ¦ Iwwerlaf / Joerling ¦ Young boar / yearling
 Übernehmen ¦ Appliquer ¦ Iwwerhuelen ¦ Apply
 übernehmen ¦ appliquer ¦ iwwerhuelen ¦ apply
 Überschneidung: ¦ Chevauchement : ¦ Iwwerschneidung: ¦ Overlap:

@@ -28,7 +28,7 @@ function dmgYear(d){return +String(d.date).slice(0,4)}
 function dmgTotal(d){return Math.round((d.ar||0)*(d.price||0)*100)/100}
 function fmtAr(ar){return N2.format(Math.round(ar*100)/100)+' ar'}
 function fmtArea(m2){var ar=m2/100;return fmtAr(ar)+(ar>=100?' ('+N2.format(Math.round(ar)/100)+' ha)':'')}
-function numIn(v){var x=parseFloat(String(v).replace(',','.'));return isNaN(x)?null:x}
+function numIn(v){var s=String(v).trim().replace(/\s/g,'');if(s.indexOf(',')>-1&&s.indexOf('.')>-1){s=s.lastIndexOf(',')>s.lastIndexOf('.')?s.replace(/\./g,'').replace(',','.'):s.replace(/,/g,'')}else s=s.replace(',','.');var x=parseFloat(s);return isNaN(x)?null:x}
 /* Fläche in m² aus Breiten-/Längengraden (lokal ebene Näherung, für Felder auf Zentimeter genau genug) */
 function polyArea(pts){
   var n=pts.length;if(n<3)return 0;

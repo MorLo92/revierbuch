@@ -141,7 +141,7 @@ function postsPicker(h){
   var groups=Array.from(new Set(ms.map(function(m){return m.group||''}))).filter(Boolean);
   openSheet('<h2>Posten wählen</h2><p class="hint">Hake die Posten an, die bei dieser Jagd besetzt sind. Mit den Gruppen-Knöpfen wählst du eine ganze Linie auf einmal.</p>'+
     (groups.length?'<div class="btnrow">'+groups.map(function(g){return '<button class="btn sm" type="button" data-g="'+esc(g)+'">'+esc(g)+' ('+ms.filter(function(m){return m.group===g}).length+')</button>'}).join('')+'</div>':'')+
-    '<div class="rows">'+ms.map(function(m,i){return '<label class="row pick"><input type="checkbox" data-i="'+i+'"'+(sel[m.id]?' checked':'')+'>'+entMk({k:'fac',o:m})+'<span class="rt"><b>'+esc(m.name||FAC[m.type].label)+'</b>'+(m.group?'<small>'+esc(m.group)+'</small>':'')+'</span></label>'}).join('')+'</div>'+
+    '<div class="rows">'+ms.map(function(m,i){return '<label class="row pk"><input type="checkbox" data-i="'+i+'"'+(sel[m.id]?' checked':'')+'>'+entMk({k:'fac',o:m})+'<span class="rt"><b>'+esc(m.name||FAC[m.type].label)+'</b>'+(m.group?'<small>'+esc(m.group)+'</small>':'')+'</span></label>'}).join('')+'</div>'+
     '<div class="btnrow"><button class="btn primary" id="pk-save" type="button" style="flex:2">Übernehmen</button><button class="btn" id="pk-cancel" type="button" style="flex:1">Abbrechen</button></div>');
   $('#pk-cancel').onclick=closeSheet;
   $$('#sheetBody [data-g]').forEach(function(b){b.onclick=function(){

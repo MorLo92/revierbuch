@@ -614,7 +614,7 @@ sub("  /* markers */\n", "  drawTracks(v);\n  /* markers */\n")
 sub("function newEntry(kind,at){if(kind==='guide'){pickTarget();return}", "function newEntry(kind,at){if(kind==='track'){trkStart();return}if(kind==='guide'){pickTarget();return}")
 sub("Zu einer Kanzel oder Einrichtung gehen</small></span></button>'", "Zu einer Kanzel oder Einrichtung gehen</small></span></button>'+\n  '<button class=\"choice\" data-n=\"track\" type=\"button\"><span class=\"mk\" style=\"background:#E08A00\">●</span><span><b>Track aufzeichnen</b><small>Deinen Weg per GPS mitschneiden</small></span></button>'")
 sub("settings:D.settings},null,1);", "settings:D.settings,tracks:trkLoad()},null,1);")
-sub("  seq.then(function(){return j.settings?", "  seq.then(function(){if(j.tracks)trkMerge(j.tracks);return j.settings?")
+sub("  seq.then(function(){return st?Store.setting(st)", "  seq.then(function(){if(j.tracks){try{trkMerge(j.tracks)}catch(e){}}return st?Store.setting(st)")
 sub("'application/json'}),a=document.createElement('a');", "'application/json'}),a=document.createElement('a');")
 sub("{type:/\\.csv$/.test(o.filename)?'text/csv;charset=utf-8':'application/json'}", "{type:/\\.csv$/.test(o.filename)?'text/csv;charset=utf-8':/\\.gpx$/.test(o.filename)?'application/gpx+xml':'application/json'}")
 sub("if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))", "trkRecover();\nif('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))")
@@ -697,7 +697,7 @@ sub("st.title=S.mode==='cloud'?'Deine Daten liegen privat in deinem Konto.':'Die
 sub("""html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""", """html+=welCardHtml();html+=langCardHtml();html+=themeCardHtml();html+=accCardHtml();html+='<div class="card"><h2 class="sec">Speicher und Export</h2>'+""")
 
 # Tab Gruppen
-sub('.attr:empty{display:none}\n', '.attr:empty{display:none}\n#tabs button{min-width:0;overflow:hidden;font-size:clamp(7px,2.2vw,12px)!important;letter-spacing:.01em!important;padding-inline:1px!important}\n')
+sub('.attr:empty{display:none}\n', '.attr:empty{display:none}\n#tabs button{min-width:0;overflow:hidden;font-size:clamp(10px,2.9vw,11px)!important;letter-spacing:.01em!important;padding-inline:1px!important}\n')
 sub('<section class="view" id="viewData" hidden>', '<section class="view" id="viewGroups" hidden><div class="pad gx" id="groupsBody"></div></section>\n    <section class="view" id="viewData" hidden>')
 sub("[['start','viewStart'],['map','viewMap'],['log','viewLog'],['hunt','viewHunt'],['stats','viewStats'],['data','viewData']].forEach", "[['start','viewStart'],['map','viewMap'],['log','viewLog'],['hunt','viewHunt'],['groups','viewGroups'],['stats','viewStats'],['data','viewData']].forEach")
 sub("else if(S.tab==='data')renderData();", "else if(S.tab==='groups')renderGroups();else if(S.tab==='data')renderData();")
@@ -763,7 +763,7 @@ json.dump({
 
 # ---------- service worker ----------
 open(OUT + '/sw.js', 'w', encoding='utf8').write(r'''/* Revierbuch service worker: app shell offline, map tiles cached as they are viewed */
-const VERSION = 'v44';
+const VERSION='v45';
 const SHELL = 'shell-' + VERSION, TILES = 'tiles-v1', FONTS = 'fonts-v1';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'lots-lu.geojson', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 const MAX_TILES = 6000;

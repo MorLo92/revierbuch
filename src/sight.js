@@ -23,6 +23,7 @@ function sightSync(init){
   }
 }
 function brkSave(d,o){
+  if((d.count||1)<=1){delete o.cm;delete o.cf;delete o.cu;return}
   var m=d.cm||0,w=d.cf||0,u=d.cu||0,sum=m+w+u;
   if(sum>0){o.cm=m;o.cf=w;o.cu=u;o.count=sum}
 }

@@ -5,13 +5,14 @@ function trkSave(a){try{localStorage.setItem(TRK_KEY,JSON.stringify(a));VER++}ca
 function trkMerge(a){var cur=trkLoad().slice(),ids={};cur.forEach(function(t){ids[t.id]=1});(a||[]).forEach(function(t){if(t&&t.id&&!ids[t.id]&&t.pts)cur.push(t)});trkSave(cur)}
 function trkDur(t){var s=Math.max(0,(t.t1||0)-(t.t0||0)),h=Math.floor(s/3600),m=Math.round(s%3600/60);return h?h+' h '+m+' min':m+' min'}
 function trkKm(d){return d>=1000?nf.format(Math.round(d/10)/100)+' km':Math.round(d)+' m'}
+document.addEventListener('visibilitychange',function(){if(document.hidden&&S.rec)trkSaveRec()});window.addEventListener('pagehide',function(){if(S.rec)trkSaveRec()});
 function trkSaveRec(){try{localStorage.setItem(REC_KEY,JSON.stringify(S.rec))}catch(e){}}
 function trkFinish(r,name){
   if(r.pts.length<2){toast('Track zu kurz, nicht gespeichert.');return}
   var a=trkLoad().slice();a.push({id:r.id,name:name||r.name,t0:r.t0,t1:Math.round(Date.now()/1000),dist:Math.round(r.dist),pts:r.pts});trkSave(a);
   toast('Track gespeichert · '+trkKm(r.dist));
 }
-function trkRecover(){try{var r=JSON.parse(localStorage.getItem(REC_KEY)||'null');if(r&&r.pts&&r.pts.length>1){r.name=(r.name||'Track')+' (unterbrochen)';r.t1=r.pts[r.pts.length-1][2];var a=trkLoad().slice();a.push({id:r.id,name:r.name,t0:r.t0,t1:r.t1,dist:Math.round(r.dist||0),pts:r.pts});trkSave(a);toast('Eine unterbrochene Aufzeichnung wurde gesichert.')}localStorage.removeItem(REC_KEY)}catch(e){}}
+function trkRecover(){try{var r=JSON.parse(localStorage.getItem(REC_KEY)||'null');if(r&&r.pts&&r.pts.length>0){r.name=(r.name||'Track')+' (unterbrochen)';r.t1=r.pts[r.pts.length-1][2];var a=trkLoad().slice();a.push({id:r.id,name:r.name,t0:r.t0,t1:r.t1,dist:Math.round(r.dist||0),pts:r.pts});trkSave(a);toast('Eine unterbrochene Aufzeichnung wurde gesichert.')}localStorage.removeItem(REC_KEY)}catch(e){}}
 function trkStart(){
   if(S.rec){toast('Es läuft schon eine Aufzeichnung.');return}
   closeSheet();switchTab('map');
@@ -25,7 +26,7 @@ function trkPoint(){
   var r=S.rec;if(!r||!S.gps||S.gps.acc>40)return;var p=S.gps,L=r.pts[r.pts.length-1];
   if(L){var d=distM(L[0],L[1],p.lat,p.lon);if(d<6)return;r.dist+=d}
   r.pts.push([+p.lat.toFixed(5),+p.lon.toFixed(5),Math.round(p.t/1000)]);dirty=true;
-  if(r.pts.length%10===0)trkSaveRec();renderLayers();
+  if(r.pts.length<3||r.pts.length%3===0)trkSaveRec();renderLayers();
 }
 function trkStopSheet(){
   var r=S.rec;if(!r)return;

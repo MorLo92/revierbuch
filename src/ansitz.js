@@ -36,8 +36,10 @@ function resForm(seatId,r){
   $('#rs-save').onclick=function(){
     var o={id:d.id,seatId:$('#rs-seat').value,date:$('#rs-date').value,from:$('#rs-from').value,to:$('#rs-to').value,who:$('#rs-who').value.trim(),note:$('#rs-note').value.trim()};
     if(!o.date||!o.from){toast('Bitte Datum und Beginn angeben.');return}
-    var s=resStart(o),e=resEnd(o),cf=reservs().filter(function(x){return x.id!==o.id&&x.seatId===o.seatId&&resStart(x)<e&&resEnd(x)>s});
-    if(cf.length&&!confirmed){confirmed=true;var w=$('#rs-warn');w.hidden=false;w.textContent='Überschneidung: '+cf.map(function(x){return (x.who||'ohne Namen')+', '+fmtRes(x)}).join(' / ')+'. Tippe nochmal auf Speichern, um trotzdem zu reservieren.';return}
+    if(o.to&&o.to===o.from){toast('Beginn und Ende dürfen nicht gleich sein.');return}
+    var s=resStart(o),e=resEnd(o);if(e<new Date()){toast('Dieser Zeitraum liegt schon in der Vergangenheit.');return}
+    var cf=reservs().filter(function(x){return x.id!==o.id&&x.seatId===o.seatId&&resStart(x)<e&&resEnd(x)>s});
+    if(cf.length&&!confirmed){confirmed=true;var w=$('#rs-warn');w.hidden=false;w.innerHTML='<span>Überschneidung:</span> <span data-noi18n>'+cf.map(function(x){return esc((x.who||'ohne Namen')+', '+fmtRes(x))}).join(' / ')+'.</span><br><span>Tippe nochmal auf Speichern, um trotzdem zu reservieren.</span>';return}
     var arr=reservs().slice(),i=arr.findIndex(function(x){return x.id===o.id});if(i>-1)arr[i]=o;else arr.push(o);
     saveRes(arr).then(function(){closeSheet();toast('Reserviert');if(S.tab==='hunt')renderHunt()},function(){});
   };

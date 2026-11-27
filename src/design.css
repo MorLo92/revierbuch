@@ -44,3 +44,7 @@ input[type=text],input[type=number],input[type=search],input[type=datetime-local
   .pill{min-height:20px;padding:1px 8px;font-size:10.5px}
   .brand h1{white-space:nowrap}
 }
+.top :focus-visible,.tabs :focus-visible{outline:3px solid var(--bar-on);outline-offset:-3px}
+input[type=date],input[type=time],input[type=email],input[type=password],input[type=tel],input[type=url]{width:100%;min-height:46px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:10px 12px;font-size:16px;min-width:0;font-family:var(--font-body)}
+input[type=datetime-local]{font-size:15px;padding:10px 8px}
+.tabs button{font-size:11px}
